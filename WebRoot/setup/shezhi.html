@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+	
+</head>
+<body>
+
+<div class="header"><a class="headleft"><img src="../images/fl_03.png" alt=""></a>设置<!-- <a class="headright">完成</a> --></div>
+
+<div class="grzl" style="margin-top:0.5rem"><a href="about.html" style="color:#333">关于我们</a></div>
+<div class="grzl hc"><a style="color:#333">清除缓存</a></div>
+<div class="zhezhao"></div>
+
+<div class="qchc">
+	<div>确定清除本地缓存？</div>
+	<p><span style="border-right:1px solid #eee">确定</span><span class="qx">取消</span></p>
+</div>
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<!-- <script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script> -->
+<script>
+	$(function(){
+		$('.qchc').hide();
+		$('.zhezhao').hide();
+		$('.hc').click(function(){
+			$('.qchc').show();
+			$('.zhezhao').show();
+		});
+		$('.qx').click(function(){
+			$('.qchc').hide();
+			$('.zhezhao').hide();
+		});
+	});
+</script>
+</body>
+</html>

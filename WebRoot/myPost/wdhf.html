@@ -1,0 +1,231 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+     <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+     <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>我的回复<!-- <a class="headright">确定</a> --></div>
+<!--
+<div class="pinglun">
+	<div class="pingl" style="border-bottom:#e6e6e6 1px solid">
+		<div class="txname">
+			<div class="toux"><img src="../images/pj_12.png" alt=""></div>
+			<div class="namex">
+				酒神<br>
+				赢得了豪华大礼，很开心
+			</div>
+			<div class="sjtime">2017-10-11 <img src="../images/bs_05.png" alt=""></div>
+		</div>
+
+		<div class="txname" style="background:#f4f4f4;margin:3%;padding:3%">
+			<div class="toux"><img src="../images/pj_12.png" alt=""></div>
+			<div class="namex">
+				酒神<br>
+				赢得了豪华大礼，很开心
+			</div>
+			<div class="sjtime">2017-10-11 </div>
+		</div>
+	</div>
+</div>
+
+
+<div class="pinglun">
+	<div class="pingl" style="border-bottom:#e6e6e6 1px solid">
+		<div class="txname">
+			<div class="toux"><img src="../images/pj_12.png" alt=""></div>
+			<div class="namex">
+				酒神<br>
+				赢得了豪华大礼，很开心
+			</div>
+			<div class="sjtime">2017-10-11 <img src="../images/bs_05.png" alt=""></div>
+		</div>
+
+		<div class="txname" style="background:#f4f4f4;margin:3%;padding:3%">
+			<div class="toux"><img src="../images/pj_12.png" alt=""></div>
+			<div class="namex">
+				酒神<br>
+				赢得了豪华大礼，很开心
+			</div>
+			<div class="sjtime">2017-10-21 </div>
+		</div>
+	</div>
+</div>
+-->
+<input type="hidden" id="member" value='abc'/>
+<input type="hidden" id="userName" value="testname"  />
+<input type="hidden" id="userImage" value="testTieZi.jpg"/>
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+<!-- <script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script>  -->
+<script type="text/javascript" >
+mui.init();
+	$(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+		$("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+		if(member!="noParam"){
+           getMemberReturnList();
+	   }else{
+		  mui.alert("请先回首页登录");
+	   }
+		
+	});
+	function getMemberReturnList(){
+		var member=$("#member").val();
+		var TOKEN=$("#token").val();
+		var url=path+"app/member/getMemberReturnList";
+		//var url="http://127.0.0.1:8087/app/member/getMemberReturnList";
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN},
+			cache: false,
+			async: false,
+			success: function (data) {
+				 setRemarkInfos(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				mui.alert("加载失败");
+			}
+		});
+	}
+
+	function setRemarkInfos(data){
+		var userName=$("#userName").val();
+		var userImage=$("#userImage").val();
+        var strhtml='';
+		if (data!=null&&data.code==1) {
+			var result=data.result;
+			if(result!=null&&result.length>0){
+				$.each(result, function (index, val) {
+					var str='';
+					var pcreateTime;
+					var createTime;
+					if(val.publish.createTime==null){
+						pcreateTime=dateFormat(Date.now());
+					}
+					else{
+						pcreateTime=dateFormat(val.publish.createTime);
+					}
+					if(val.createTime==null){
+						createTime=dateFormat(Date.now());
+					}
+					else{
+						createTime=dateFormat(val.createTime);
+					}
+					str='<div class="pinglun" id='+val.id+'>\
+							<div class="pingl" style="border-bottom:#e6e6e6 1px solid">\
+								<div class="txname">\
+									<div class="toux"><img src="'+thumbPath+userImage+'" alt=""></div>\
+									<div class="namex">\
+										'+userName+'<br>\
+										'+val.content+'\
+									</div>\
+									<div class="sjtime">'+createTime+'\
+									  <img src="../images/bs_05.png" hfid='+val.id+' onclick="delwdhf(this)" alt="">\
+									</div>\
+								</div>\
+								<div class="txname" style="background:#f4f4f4;margin:3%;padding:3%">\
+									<div class="toux">\
+									   <!--<img src="../images/pj_12.png" alt="">-->\
+									   <img src="'+thumbPath+val.publish.img+'" alt="">\
+									</div>\
+									<div class="namex" member="'+val.publish.member+'">\
+										'+val.publish.nick+'<br>\
+										'+val.publish.content+'\
+									</div>\
+									<div class="sjtime">'+pcreateTime+' </div>\
+								</div>\
+							</div>\
+						</div>';
+					strhtml=strhtml+str;
+				});
+			}
+		}
+		$(".pinglun").remove();
+		$("#header").after(strhtml);
+	}
+
+	function delwdhf(e){
+         var id=$(e).attr("hfid");
+		 var TOKEN=$("#token").val();
+		var url=path+"app/member/deleteMemberReturn";
+		//var url="http://127.0.0.1:8087/app/member/deleteMemberReturn";
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,id:id},
+			cache: false,
+			async: false,
+			success: function (data) {
+				mui.alert("删除成功");
+				$("#"+id).remove();
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				mui.alert("删除失败");
+			}
+		});
+	}
+
+	
+	function dateFormat(longTypeDate){  
+		var dateType = "";  
+		var date = new Date();  
+		date.setTime(longTypeDate); 
+		dateType = date.getFullYear()+"-"+getMonth(date)+"-"+getDay(date);//yyyy-MM-dd格式日期
+		return dateType;
+    } 
+	//返回 01-12 的月份值   
+	function getMonth(date){  
+		var month = "";  
+		month = date.getMonth() + 1; //getMonth()得到的月份是0-11  
+		if(month<10){  
+			month = "0" + month;  
+		}  
+		return month;  
+	}  
+	//返回01-30的日期  
+	function getDay(date){  
+		var day = "";  
+		day = date.getDate();  
+		if(day<10){  
+			day = "0" + day;  
+		}  
+		return day;  
+	}
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<link href="../css/green.css" type="text/css" rel="stylesheet" />
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/> 
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<script type="text/javascript" src="../js/path.js?a=222"></script>
+    
+</head>
+<body>
+
+<div class="header" id="header">
+	<a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>我的收藏
+	<a class="headright"><img src="../images/fl_05.png" alt=""></a>
+</div>
+
+<ul class="fenl">
+	<a href="javascript:void(0);" class="zhus" style="width:33%" id="shopping">商品</a>
+	<a href="javascript:void(0);" style="width:33%" id="article" onclick="gotoArticle()">文章</a>
+	<a href="javascript:void(0);" style="width:34%" id="article" onclick="gotoMemberCollection()">私人订制</a>
+</ul>
+
+<div class="mui-content">
+	<ul id="OA_task_1" class="mui-table-view" style="background: none;">
+		<!--
+		<li class="mui-table-view-cell">
+			<div class="mui-slider-right mui-disabled">
+					<a class="mui-btn mui-btn-red">取消<br>收藏</a>
+			</div>
+			<div class="mui-slider-handle">
+			<img src="../images/fl_21.png" alt="" />
+			<div class="title-you">茅台品牌经典原浆</div>
+				<span class="sell-you">￥10000</span>
+					//不放开<i href="#0" class="fiexd-you" onclick="goodToCart(this)"><img src="../images/fl_24.png" alt=""></i>
+			</div>
+		</li>
+
+		<li class="mui-table-view-cell">
+			<div class="mui-slider-right mui-disabled">
+					<a class="mui-btn mui-btn-red">取消<br>收藏</a>
+			</div>
+			<div class="mui-slider-handle">
+			<img src="../images/fl_21.png" alt="" />
+			<div class="title-you">茅台品牌经典原浆</div>
+				<span class="sell-you">￥10000</span>
+					//不放开<i href="#0" class="fiexd-you" onclick="goodToCart(this)"><img src="../images/fl_24.png" alt=""></i>
+			</div>
+		</li>
+		-->
+	</ul>
+</div>
+<input type="hidden" id="member" val="abc" />			
+<input type="hidden" id="userName" val="nick" />
+<input type="hidden" id="userImage" val="nick.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>	
+
+<script type="text/javascript">
+  mui.init();
+	/*
+	(function($) {
+		$('#OA_task_1').on('tap', '.mui-btn', function(event) {
+			var elem = this;
+			var li = elem.parentNode.parentNode;
+			var btnArray = ['确认', '取消'];
+			mui.confirm('确认取消收藏此记录？', btnArray, function(e) {
+				if (e.index==1) {
+					li.parentNode.removeChild(li);
+                    cancelColl(elem);
+				} else {
+					setTimeout(function() {
+						$.swipeoutClose(li);
+					}, 0);
+				}
+			});
+		});
+	})(mui);
+	*/
+  $(document).ready(function(){ 
+      var curUrl=window.location.href;
+      var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	  var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+      userName=decodeURI(userName);
+	  var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+	  userImage=decodeURI(userImage);
+	  var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+
+      $("#token").val(token);
+	  $("#member").val(member);
+	  $("#userName").val(decodeURI(userName));
+	  $("#userImage").val(decodeURI(userImage));
+	  /*
+	  if(member!="noParam"){
+           getMemberCollectionListByType();
+	   }else{
+		  mui.alert("请先回首页登录");
+	  }
+	  */
+	  getMemberCollectionListByType();
+  });
+function getMemberCollectionListByType(){
+       var member=$("#member").val();
+	   var TOKEN=$("#token").val();
+	   var url=path+"app/member/getMemberCollectionListByType";
+	   //var url="http://127.0.0.1:8087/app/member/getMemberCollectionListByType";
+	   	//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,type:2},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+			        //刷新点赞数量
+                    setCollectionList(data);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新点赞数量
+				mui.alert("加载商品收藏列表错误");
+			}
+		});
+	}
+
+	function setCollectionList(data){
+
+		if (data!=null&&data.code==1) {
+			//刷新页面					
+			var result=data.result;
+			var strhtml="";
+			if(result!=null&&result.length>0){
+				$.each(result, function (index, val) { 
+					var str="";
+					var collection=val.collection;
+					str='<li class="mui-table-view-cell">\
+							<div class="mui-slider-right mui-disabled">\
+								<a class="mui-btn mui-btn-red" cguid="'+val.collGuid+'" href="javascript:void(0);" >取消<br>收藏</a>\
+							</div>\
+							<div class="mui-slider-handle">\
+							<img src="'+proImg+collection.image+'" proGuid='+collection.proGuid+' onclick="gotoDetail(this)" alt="" />\
+							<div class="title-you">'+collection.name+'</div>\
+								<span class="sell-you">￥'+collection.price+'</span>\
+								<!--<i href="#0" class="fiexd-you" onclick="goodToCart(this)" guid="'+val.collGuid+'">\
+								   <img src="../images/fl_24.png" alt="">\
+								</i>-->\
+							</div>\
+						 </li>';
+					strhtml=strhtml+str;
+				});
+				console.log(strhtml);
+				//
+				if($(".mui-table-view-cell")!=null){
+                   $(".mui-table-view-cell").remove();
+				}
+				
+				$("#OA_task_1").html(strhtml);
+			}
+		}
+	}
+	//删除
+	/*
+	function cancelColl(e){
+        var collGuid=$(e).attr("cguid");
+		 var TOKEN=$("#token").val();
+		var url=path+"app/member/cancelMemberCollection";
+		//var url="http://127.0.0.1:8087/app/member/cancelMemberCollection";
+        	//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,collGuid:collGuid},
+			cache: false,
+			async: false,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新点赞数量
+					//alert("取消成功");
+					$(e).parent().parent().remove();
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新点赞数量
+			    mui.alert("取消收藏失败");
+			}
+		});
+		
+	}
+	*/
+	//
+	function gotoArticle(){
+	   var member=$("#member").val();
+	   var userName=$("#userName").val();
+	   var userImage=$("#userImage").val();
+	   var token=$("#token").val();
+       var url="collectionArticle.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token;
+	   window.location.href=url;
+	}
+
+	function gotoMemberCollection(){
+	   var member=$("#member").val();
+	   var userName=$("#userName").val();
+	   var userImage=$("#userImage").val();
+	   var token=$("#token").val();
+       var url="memberCollection.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token;
+	   window.location.href=url;
+	}
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+
+function gotoDetail(e){
+	 var productGuid=$(e).attr("proGuid");
+     var member=$("#member").val();
+	 var userName=$("#userName").val();
+	 var userImage=$("#userImage").val();
+	 var token=$("#token").val();
+	 window.location.href="../commodity/commodity.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token+"&productGuid="+productGuid;
+}
+</script>
+
+</body>
+</html>

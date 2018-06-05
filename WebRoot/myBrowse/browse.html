@@ -1,0 +1,178 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/dateFormatUtil.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>浏览记录<!--<a href="javascript:void(0);" class="posi"><img src="../images/fl_05.png" alt=""></a>--><a class="headright" onclick="cleanBrowse()">清空</a></div>
+<!--
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="shuj_right">
+		<div>茅台经典原浆</div>
+		<p><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a></p>
+	</div>
+</div>
+
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="shuj_right">
+		<div>茅台经典原浆</div>
+		<p><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a></p>
+	</div>
+</div>
+-->
+
+<input type="hidden" id="member" val="" />
+<input type="hidden" id="userName" val='' />
+<input type="hidden" id="userImage" val="" />
+<input type="hidden" id="token" value=""/>
+<!-- <script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>-->
+<script type="text/javascript" >
+
+mui.init()
+  $(document).ready(function(){
+	   var curUrl=window.location.href;
+	   var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	   var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+	   userName=decodeURI(userName);
+	   var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+	   userImage=decodeURI(userImage);
+	   var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+       $("#member").val(member);
+	   $("#userName").val(userName);
+       $("#userImage").val(userImage);
+	   $("#token").val(token);
+	   /*
+	   if(member!="noParam"){
+            getMemberBrowsingHistory();
+	    }else{
+		   mui.alert("请先回首页登录");
+	    }
+		*/
+		getMemberBrowsingHistory();
+	});
+	//
+	function getMemberBrowsingHistory(){
+       var member=$("#member").val();
+	   var TOKEN=$("#token").val();
+	   var url=path+"app/member/getMemberBrowsingHistory";
+	   //var url="http://localhost:8087/app/member/getMemberBrowsingHistory";
+	   	//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+			        //刷新点赞数量
+                    setBrowseList(data);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新点赞数量
+				mui.alert("加载失败");
+			}
+		});
+	}
+
+	function setBrowseList(data){
+        if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtml="";
+		if(result!=null&&result.length>0){
+			$.each(result, function (index, val) { 
+				var str="";
+				var goods=val.goods;
+				var snum=0;
+				if(goods.salenum!=null){
+                    snum=goods.salenum;
+				}
+				str='<div class="shuj">\
+							<!--<div class="shuj_left" guid='+goods.guid+' onclick="gotoDetail(this)"><img src="'+proImg+goods.image+'" alt=""></div>-->\
+							<div class="shuj_left" guid='+goods.guid+' ><img src="'+proImg+goods.image+'" alt=""></div>\
+							<div class="shuj_right">\
+								<div>'+goods.name+'</div>\
+								<p><span>￥'+goods.price+'</span><span>销量：'+snum+'</span>\
+								<!--<a href="javascript:void(0);" stock='+goods.stock+' onclick="addShopping(this)"><img src="../images/fl_24.png" alt=""></a>--></p>\
+							</div>\
+						</div>';
+				strhtml=strhtml+str;
+			});
+			console.log(strhtml);
+			//
+	        $(".shuj").remove();
+			$("#header").after(strhtml);
+		}
+	}
+}
+
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+//清空
+function cleanBrowse(){
+	var btnArray = ['确认', '取消'];
+	mui.confirm('确认清空？',btnArray, function(e) {
+			if (e.index==1) {
+				var TOKEN=$("#token").val();
+				var url=path+"app/member/clearBrowsingHistory";
+				$.ajax({
+					url:url,
+					type: "GET",
+					dataType: "JSON",
+					data:{TOKEN:TOKEN},
+					cache: false,
+					async: true,
+					success: function (data) {
+						if (data!=null&&data.code==1) {
+							//刷新点赞数量
+							$(".shuj").remove();
+						}else{
+							mui.alert("清空出错");
+						}
+					},
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						//alert(XMLHttpRequest.status);
+						//alert(XMLHttpRequest.readyState);
+						//alert(textStatus);
+						//刷新点赞数量
+						mui.alert("清空出错");
+					}
+				});
+			}
+	});
+}
+
+function gotoDetail(e){
+	 var productGuid=$(e).attr("guid");
+     var member=$("#member").val();
+	 var userName=$("#userName").val();
+	 var userImage=$("#userImage").val();
+	 var token=$("#token").val();
+	 window.location.href="../commodity/commodity.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token+"&productGuid="+productGuid;
+}
+</script>
+
+</body>
+</html>

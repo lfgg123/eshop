@@ -1,0 +1,165 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header" id="header" ><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>919畅销<a class="headright"><img src="../images/fl_05.png" alt=""></a></div>
+<!--
+<div class="marb" >
+	<div><img src="../images/gzmt_02.png" alt=""></div>
+	<div class="spname">
+		<div>52度茅台集团经典原浆</div>
+		<section>味香质醇、回味无穷的味道，简简单单的一瓶酒，，却蕴含着各种天然的芳香。</section>
+		<p>￥1000 &nbsp;&nbsp;<span>销量 : 1200</span> <img src="../images/fl_24.png" alt=""></p>
+	</div>
+</div>
+<div class="marb">
+	<div><img src="../images/gzmt_02.png" alt=""></div>
+	<div class="spname">
+		<div>52度茅台集团经典原浆</div>
+		<section>味香质醇、回味无穷的味道，简简单单的一瓶酒，，却蕴含着各种天然的芳香。</section>
+		<p>￥1000 &nbsp;&nbsp;<span>销量 : 1200</span> <img src="../images/fl_24.png" alt=""></p>
+	</div>
+</div>
+-->
+<input type="hidden" id="member" value="abc" />
+<input type="hidden" id="userName" value=""/>
+<input type="hidden" id="userImage" value=""/>
+<input type="hidden"  id="token" value=""/>
+
+<script type="text/javascript">
+
+	mui.init();
+	$(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+		$("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+	    get919HotGoodsList();
+	});
+	function get919HotGoodsList(){
+		var TOKEN=$("#token").val();
+		
+		var url=path+"app/goods/get919HotGoodsList";
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+	//		data:{TOKEN:TOKEN},
+			cache: false,
+			async: false,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							var imgPath = proImg+val.image;
+							var sdec="";
+							if(val.seoDescription!=null){
+                                sdec=val.seoDescription;
+							}
+							var snum=0;
+							if(val.salenum!=null){
+								snum=val.salenum;
+							}
+							str='<div class="marb" >\
+									<div gname="'+val.name+'" cost="'+val.price+'" pguid="'+val.proGuid+'" guid="'+val.guid+'" onclick="detailCommodity(this)" ><img src="'+imgPath+'" alt=""></div>\
+									<div class="spname">\
+										<div>'+val.name+'</div>\
+										<section> 介绍:'+sdec+' </section>\
+										<p>￥'+val.price+' &nbsp;&nbsp;<span>销量 : '+snum+'</span><img src="../images/fl_24.png" alt="" guid='+val.guid+' onclick="addCart(this)"></p>\
+									</div>\
+								</div>';
+							strhtml=strhtml+str;	
+						})
+					}
+					//清除列表
+					if($(".marb")!=null&&$(".marb")!=undefined){
+                        $(".marb").remove();
+					}
+					//加载列表
+					$("#header").after(strhtml);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新页面					
+				mui.alert("加载失败");
+			}
+		});
+	}
+	  	//添加购物车
+  function addCart(e){
+	   var goodGuid=$(e).attr("guid");
+	   var member=$("#member").val();
+	   if(member=="noParam"){
+		   //mui.alert("请先回首页登录"); 
+           window.location.href="http://127.0.0.1:8080/login.html";
+		   //return false;
+	   }
+	   var TOKEN=$("#token").val();
+	   var url=path+"app/purchase/goodToCart";
+	   	//后台请求
+		$.ajax({
+			url:url,
+			type: "POST",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,goodGuid:goodGuid,quantity:1,prdType:0},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+                    //alert("添加成功");
+					mui.alert("添加成功");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//alert("添加成功");
+				mui.alert("添加失败");
+			}
+		});
+	}
+function goHomePage(){
+	window.location.href=path+"homePage.html";
+}
+
+function detailCommodity(e){
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+	var productGuid=$(e).attr("pguid");
+	var name=$(e).attr("gname");
+	var cost=$(e).attr("cost");
+	var goodGuid=$(e).attr("guid");
+	window.location.href="../commodity/commodity.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid+"&name="+name+"&cost="+cost+"&goodGuid="+goodGuid+"&enterFlag=1";
+}
+</script>
+</body>
+</html>

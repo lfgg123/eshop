@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/icheck.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+	<style>
+	.ddhead a{width: 25%}
+	</style>
+	
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goback()"><img src="../images/fl_03.png" alt=""></a>配送管理<!-- <a class="headright">确定</a> --></div>
+
+<ul class="ddhead" id="ddhead">
+	<a href="javascript:void(0);" name="aBanner" id="new" class="colorl" onclick="changeBanner(this)">新任务</a>
+	<a href="javascript:void(0);" name="aBanner" id="wait" onclick="changeBanner(this)">待取货1</a>
+	<a href="javascript:void(0);" name="aBanner" id="sending" onclick="changeBanner(this)">配送中1</a>
+	<a href="javascript:void(0);" name="aBanner" id="over" onclick="changeBanner(this)">已完成</a>
+</ul>
+<!--
+<div class="nmbs" id="nmbs">订单号:</div>
+<div class="pssj" id="pssj">配送时间:</div>
+-->
+<!--
+<div class="psyq">茅台经典原浆 X1<span>￥10000</span></div>
+<div class="psyq">茅台经典原浆 X1<span>￥10000</span></div>
+-->
+<!--
+<div class="wxzfs">支付方式 <span id="zfstatus"></span></div>
+<div class="psgl">
+	<div class="psgl_left"><img src="../images/psgl_03.png" alt=""></div>
+	<div class="psgl_center" id="sendAddress"></div>
+	<div class="psgl_right"><img src="../images/psgl_06.png" alt="">导航</div>
+</div>
+<div class="rbz"><img src="../images/psgl_11.png" alt="">人不在放在门口</div>
+-->
+<!--
+<div class="sdsj" style="display:none;" id="remarkdiv" ><textarea placeholder="备注（选填，20字以内）" style="width:100%;" id="remarkMessage" ></textarea></div>
+<div class="qrqh" id="qrqh"><a href="javascript:void(0);" onclick="surebtn()">确认配送</a></div>
+-->
+<input type="hidden" id="member" val='abc' />			
+<input type="hidden" id="userName" val="nick" />
+<input type="hidden" id="userImage" val="nick.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+<input type="hidden"  id="tmpbanner" tag="new" />
+<script type="text/javascript">
+
+var testdata={
+    "code": 1,
+    "message": "操作成功",
+    "result": [
+        {
+            "orderItems": [
+                {
+                    "name": "飞天茅台1[75°,750ml]",
+                    "id": 4,
+                    "goodGuid": "9fddf2c2611a4e7989186bdd6792fe1e",
+                    "price": 240,
+                    "quantity": 2,
+                    "isBack": 0,
+                    "evaStatus": 0,
+                    "image": null,
+                    "order": 3,
+                    "sn": "3"
+                }
+            ],
+            "address": "djksfjs",
+            "id": 3,
+            "wine": null,
+            "evaStatus": 0,
+            "createTime": 1510317778000,
+            "member": "abc",
+            "phone": null,
+            "finishTime": null,
+            "consignee": "王五",
+            "province": "上海",
+            "city": "上海",
+            "area": "浦东",
+            "freight": null,
+            "sn": "3",
+            "payment": "微信",
+            "fee": 90,
+            "deliveryTime": null,
+            "fullCutDeals": null,
+            "isnee": 0,
+            "isEnoughCut": null,
+            "orderStatus": 0,
+            "payStatus": 1,
+            "disStatus": 0,
+            "payTime": 1510317773000
+        },{
+            "orderItems": [
+                {
+                    "name": "飞天茅台2[75°,750ml]",
+                    "id": 4,
+                    "goodGuid": "9fddf2c2611a4e7989186bdd6792fe1e",
+                    "price": 240,
+                    "quantity": 2,
+                    "isBack": 0,
+                    "evaStatus": 0,
+                    "image": null,
+                    "order": 3,
+                    "sn": "3"
+                }
+            ],
+            "address": "djksfjs",
+            "id": 3,
+            "wine": null,
+            "evaStatus": 0,
+            "createTime": 1510317778000,
+            "member": "abc",
+            "phone": null,
+            "finishTime": null,
+            "consignee": "李四",
+            "province": "天津",
+            "city": "天津",
+            "area": "测试",
+            "freight": null,
+            "sn": "5",
+            "payment": "微信",
+            "fee": 90,
+            "deliveryTime": null,
+            "fullCutDeals": null,
+            "isnee": 0,
+            "isEnoughCut": null,
+            "orderStatus": 0,
+            "payStatus": 1,
+            "disStatus": 0,
+            "payTime": 1510317773000
+        }
+    ]
+}
+	 mui.init();
+	$(document).ready(function(){ 
+		
+		var curUrl=window.location.href;
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+        var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+		$("#member").val(member);
+		$("#userName").val(decodeURI(userName));
+		$("#userImage").val(decodeURI(userImage));
+		$("#token").val(token);
+		/*
+		if(member!="noParam"){
+            getTaskList();
+	    }else{
+		   mui.alert("请先回首页登录");
+	    }	
+		*/
+		getTaskList();    
+	});
+
+  function changeBanner(e){
+      var bid=$(e).attr("id");
+	  var banners=document.getElementsByName("aBanner");
+	  for(var j=banners.length;j>=0;j--){
+		  $(banners[j]).attr("class","");
+	  }
+	  if(bid=="new"){
+          $("#new").attr("class","colorl");
+	  }else if(bid=="wait"){
+          $("#wait").attr("class","colorl");
+	  }else if(bid=="sending"){
+		  $("#sending").attr("class","colorl");
+	  }else{
+		  $("#over").attr("class","colorl");
+	  }
+	  $("#tmpbanner").attr("tag",bid);
+	  getTaskList();
+  }	
+  function getTaskList(){
+	  var url="";
+	  var banner=$("#tmpbanner").attr("tag");
+	  $("#remarkdiv").css("display","none");
+	  if(banner=="new"){
+           url=path+"app/order/getNewTaskList";
+		   
+		 //url="http://127.0.0.1:8087/app/order/getNewTaskList";
+	  }else if(banner=="wait"){
+           url=path+"app/order/getWaitToFetchTaskList";
+		   $("#remarkdiv").css("display","");
+	      //url="http://127.0.0.1:8087/app/order/getWaitToFetchTaskList"; 
+	  }else if(banner=="sending"){
+		   url=path+"app/order/getBeingDeliveredTaskList";
+	      //url="http://127.0.0.1:8087/app/order/getBeingDeliveredTaskList"; 
+	  }else{
+		   url=path+"app/order/getCompletedTaskList";
+	      //url="http://127.0.0.1:8087/app/order/getCompletedTaskList"; 
+	  }
+	  
+	   var TOKEN=$("#token").val();
+		//后台请求
+	   $.ajax({
+		   url:url,
+		   type: "GET",
+		   data:{TOKEN:TOKEN},
+		   dataType: "JSON",
+		   cache: false,
+		   async: false,
+		   success: function (data) {
+			  setTasklist(data);
+		   },
+		   error: function (XMLHttpRequest, textStatus, errorThrown) {
+			  mui.alert("加载失败");
+		   }
+		});
+  }
+
+  function confirmDelivery(e){
+	  var url="";
+	  var banner=$("#tmpbanner").attr("tag");
+      var sendData=null;
+	  var orderId=Number($(e).attr("orderId"));
+	  var TOKEN=$("#token").val();
+	  var snRemark=$(e).attr("snRemark");
+	  if(banner=="new"){
+          url=path+"app/systemconfig/confirmDelivery";
+		  sendData={TOKEN:TOKEN,orderId:orderId};
+	      //url="http://127.0.0.1:8087/app/systemconfig/confirmDelivery";
+	  }else if(banner=="wait"){
+          url=path+"app/systemconfig/confirmGetGoods";
+		  var remarkId=$(e).attr("snRemark");
+          var remark=$("#"+remarkId).val();
+		  sendData={TOKEN:TOKEN,orderId:orderId,remark:remark};
+	      //url="http://127.0.0.1:8087/app/systemconfig/confirmGetGoods";
+	  }else if(banner=="sending"){
+		   url=path+"app/systemconfig/confirmDelivered";
+		   sendData={TOKEN:TOKEN,orderId:orderId};
+	      //url="http://127.0.0.1:8087/app/systemconfig/confirmDelivered"; 
+	  }
+	   //后台请求
+	  $.ajax({
+		   url:url,
+		   type: "GET",
+		   data:sendData,
+		   dataType: "JSON",
+		   cache: false,
+		   async: false,
+		   success: function (data) {
+			   if(data.code==1){
+				   var cleanEle=document.getElementsByName("pageInfo");
+					for(var j=cleanEle.length;j>=0;j--){
+						var item=$(cleanEle[j]).attr("item");
+                        if(item==snRemark){
+							$(cleanEle[j]).remove();
+						}
+					}
+				   mui.alert("确认成功");
+			   }
+		   },
+		   error: function (XMLHttpRequest, textStatus, errorThrown) {
+			  mui.alert("确认失败");
+		   }
+	  });
+  }
+
+  function setTasklist(data){
+	  
+	  var result=data.result;
+	  //result=testdata.result;
+      if(data.code==1&&result!=null&&result.length>0){
+            var strhtml="";
+			$.each(result, function (index, val) {
+			    //默认地址和收件人
+				var goods=val.orderItems;
+				var goodstr="";
+				var strInfo="";
+				//var deliveryTime=dateFormat(val.deliveryTime);
+				var deliveryTime="立即送达(半小时内)";
+				if(val.deliveryTime!=null&&val.deliveryTime.indexOf("立即")<0){
+					deliveryTime="当天: "+val.deliveryTime;
+				}
+				var addressTime='<div name="pageInfo" item="'+val.sn+'_remark" class="nmbs" id="nmbs">订单号:'+val.sn+'</div>\
+                                  <div name="pageInfo" item="'+val.sn+'_remark" class="pssj" id="pssj">配送时间:'+deliveryTime+'</div>';
+				for(var k=0;k<goods.length;k++){
+				
+					var fee=Number(goods[k].quantity)*Number(goods[k].price);
+					goodstr=goodstr+'<div name="pageInfo" item="'+val.sn+'_remark" class="psyq">'+goods[k].name+' X'+goods[k].quantity+'<span>￥'+fee+'</span></div>';
+				}
+				var payStatus=val.payStatus;
+				var payStatusStr="(未支付)";
+				if(payStatus==1){
+					payStatusStr="(已支付)";
+				}
+				//payStatusStr=val.payment+payStatusStr;
+				payStatusStr=val.payTypeSt+payStatusStr;
+				strInfo=strInfo+'<div name="pageInfo" item="'+val.sn+'_remark" class="wxzfs">支付方式 <span>'+payStatusStr+'</span></div>\
+								 <div name="pageInfo" item="'+val.sn+'_remark" class="psgl">\
+									<div class="psgl_left"><img src="../images/psgl_03.png" alt=""></div>\
+									<div class="psgl_center">地址:'+val.address+ '(' +val.phone + ')</div>\
+									<!--<div class="psgl_right"><img src="../images/psgl_06.png" alt="">导航</div>-->\
+								</div>\
+								<div name="pageInfo" item="'+val.sn+'_remark" class="rbz"><img src="../images/psgl_11.png" alt="">人不在放在门口</div>';
+				var btnInfo="";
+				var sureStr="";
+				var banner=$("#tmpbanner").attr("tag");
+				if(banner=="new"){
+					btnInfo="确认配送";
+				}else if(banner=="wait"){
+					btnInfo="确认取货";
+					sureStr='<div name="pageInfo" item="'+val.sn+'_remark" class="sdsj"><textarea placeholder="备注（选填，20字以内）" style="width:100%;" id="'+val.sn+'_remark" ></textarea></div>';
+				}else if(banner=="sending"){
+					btnInfo="确认送达";
+				}
+				
+				sureStr=sureStr+'<div name="pageInfo" item="'+val.sn+'_remark" class="qrqh"><a href="javascript:void(0);" snRemark="'+val.sn+'_remark" orderId='+val.id+' onclick="confirmDelivery(this)">'+btnInfo+'</a></div>';
+				strhtml=strhtml+addressTime+goodstr+strInfo+sureStr;
+			});
+			var cleanEle=document.getElementsByName("pageInfo");
+			for(var j=cleanEle.length;j>=0;j--){
+				$(cleanEle[j]).remove();
+			}
+			$("#ddhead").after(strhtml);
+	  }
+  }
+
+  function dateFormat(longTypeDate){  
+	var dateType = "";  
+	var date = new Date();  
+	date.setTime(longTypeDate); 
+	dateType = date.getFullYear()+"-"+getMonth(date)+"-"+getDay(date);//yyyy-MM-dd格式日期
+	return dateType;
+} 
+//返回 01-12 的月份值   
+function getMonth(date){  
+	var month = "";  
+	month = date.getMonth() + 1; //getMonth()得到的月份是0-11  
+	if(month<10){  
+		month = "0" + month;  
+	}  
+	return month;  
+}  
+//返回01-30的日期  
+function getDay(date){  
+	var day = "";  
+	day = date.getDate();  
+	if(day<10){  
+		day = "0" + day;  
+	}  
+	return day;  
+}
+
+function goback(){
+	window.location.href=path+"myself.html";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,999 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>我的订单<!-- <a class="headright">确定</a> --></div>
+
+<ul class="ddhead" id="ddhead">
+	<a href="javascript:void(0);" class="colorl" id="allprocess" onclick="changebanner(this)">全部</a>
+	<a href="javascript:void(0);" id="payprocess" onclick="changebanner(this)">待付款</a>
+	<a href="javascript:void(0);" id="sendprocess" onclick="changebanner(this)">待配送</a>
+	<a href="javascript:void(0);" id="sendingprocess" onclick="changebanner(this)">配送中</a>
+	<a href="javascript:void(0);" id="pingjia" onclick="changebanner(this)">待评价</a>
+</ul>
+
+
+<!--
+<div class="wxts">温馨提示：订单需要在15分钟内支付，不然作废哦！</div>
+<div class="sysj">待付款<a>剩余时间<span>08:12</span></a></div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共2件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="javascript:void(0);">取消订单</a><a href="javascript:void(0);" class="zsb">去付款</a></div>
+
+
+<div class="sysj">待配送</div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+
+
+<div class="sysj">配送中</div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="javascript:void(0);">取消订单</a></div>
+
+
+<div class="sysj">待评价</div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="javascript:void(0);" onclick="gotoShouhou(this)">申请售后</a><a href="" class="zsb">评价</a></div>
+-->
+
+<input type="hidden" id="member" value="abc" />
+<input type="hidden" id="userName" value="supername"/>
+<input type="hidden" id="userImage" value="super.jpg" />
+<input type="hidden" id="member" value="abcf" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+
+<script type="text/javascript" >
+
+mui.init();
+$(document).ready(function(){
+		var curUrl=window.location.href;
+        var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+        var item=curUrl.split('?')[1].split('&')[4].replace("item=","");
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#member").val(member);
+		$("#token").val(token);
+		/*
+		if(member!="noParam"){
+           //var item="";
+			if(item=="waitpay"){
+				getMemberWaitToPayOrderList();
+			}else if(item=="waitsend"){
+				getMemberWaitToDeliveryOrderList();
+			}else if(item=="sending"){
+				getMemberBeingDeliveredOrderList();
+			}else if(item=="waitpingjia"){
+				getMemberWaitToCommentOrderList();
+			}else{
+				getMemberAllOrderList();
+			}
+		}else{
+			mui.alert("请先在主页登录");
+		}
+		*/
+        if(item=="waitpay"){
+			//改变banner
+			changeInitbanner(item);
+			getMemberWaitToPayOrderList();
+		}else if(item=="waitsend"){
+			changeInitbanner(item);
+			getMemberWaitToDeliveryOrderList();
+		}else if(item=="sending"){
+			changeInitbanner(item);
+			getMemberBeingDeliveredOrderList();
+		}else if(item=="waitpingjia"){
+			changeInitbanner(item);
+			getMemberWaitToCommentOrderList();
+		}else{
+			getMemberAllOrderList();
+		}
+	});
+function changeInitbanner(curitem){
+	 var items=$("#ddhead").find("a");
+	 for(var k=0;k<items.length;k++){
+		 $(items[k]).attr("class","");
+	 }
+	if(curitem=="waitpay"){
+        $("#payprocess").attr("class","colorl");
+	 }else if(curitem=="waitsend"){
+        $("#sendprocess").attr("class","colorl");
+	 }else if(curitem=="sending"){
+        $("#sendingprocess").attr("class","colorl");
+	 }else if(curitem=="waitpingjia"){
+         $("#pingjia").attr("class","colorl");
+	 }
+}
+function clearlistPage(){
+	if($(".wxts")!=null&&$(".wxts")!=undefined){
+			$(".wxts").remove();
+		}
+		if($(".sysj")!=null&&$(".sysj")!=undefined){
+			$(".sysj").remove();
+		}
+		if($(".zyg")!=null&&$(".zyg")!=undefined){
+			$(".zyg").remove();
+		}
+		if($(".sfks")!=null&&$(".sfks")!=undefined){
+			$(".sfks").remove();
+		}
+		if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			$(".lgdd").remove();
+		}
+}
+   //获取全部list
+   function getMemberAllOrderList()
+	{
+		var member=$("#member").val(); 
+		var TOKEN=$("#token").val(); 
+		//后台请求
+		$.ajax({
+			url:path+'app/order/getMemberAllOrderList',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				clearlistPage();
+		        setallList(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				mui.alert("加载数据失败");
+			}
+		});
+    }
+	//获取待付款
+	function getMemberWaitToPayOrderList(){
+		var TOKEN=$("#token").val();
+		$.ajax({
+			url:path+'app/order/getMemberWaitToPayOrderList',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				clearlistPage();
+				setpaylist(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				mui.alert("加载失败");
+			}
+		});
+	}
+	//待配送
+	function getMemberWaitToDeliveryOrderList(){
+		var TOKEN=$("#token").val();
+		$.ajax({
+			url:path+'app/order/getMemberWaitToDeliveryOrderList',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				clearlistPage();
+				setWaitToDeliveryOrderList(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+				mui.alert("加载失败");
+			}
+		});
+	}
+	//获取配送中
+	function getMemberBeingDeliveredOrderList(){
+		var TOKEN=$("#token").val();
+		$.ajax({
+			url:path+'app/order/getMemberBeingDeliveredOrderList',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				clearlistPage();
+				setsendinglist(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				mui.alert("加载失败");
+			}
+		});
+	}
+	//待评价
+	function getMemberWaitToCommentOrderList(){
+		var TOKEN=$("#token").val();
+       	$.ajax({
+			url:path+'app/order/getMemberWaitToCommentOrderList',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				clearlistPage();
+				setWaitToCommentOrderList(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				mui.alert("加载失败");
+			}
+		});
+	}
+//计算时间
+ function computerTime(time){
+		var endtime=time+(60*15*1000);
+		var nowtime = new Date().getTime();  //今天的日期(毫秒值)
+		var youtime = endtime-nowtime;//还有多久(毫秒值)
+		if (youtime > 0) {
+			youtime=youtime-1000;
+		    var seconds = youtime/1000;//秒
+		    var minutes = Math.floor(seconds/60);//分
+			var CMinute= minutes;
+		    var CSecond= Math.floor(seconds%60);//"%"是取余运算，可以理解为60进一后取余数，然后只要余数。
+		    var c=new Date();
+		    var millseconds=c.getMilliseconds();
+		    var Cmillseconds=Math.floor(millseconds %100);
+			if(CSecond<10){//如果秒数为单数，则前面补零
+				CSecond="0"+CSecond;
+			}
+			if(CMinute<10){ //如果分钟数为单数，则前面补零
+				CMinute="0"+CMinute;
+			}
+            //return CMinute+":"+CSecond;
+			if(Number(CMinute)<=15){
+               return CMinute;
+			}else{
+			   return "支付过期"
+			}	
+		}else{
+			//过期
+			return "支付过期"
+		} 
+ }
+
+
+
+//设置全部列表
+ function setallList(data){
+	if (data!=null&&data.code==1) {
+			//刷新页面					
+			var result=data.result;
+			var strhtml = "";
+			var strhtmlpay="";
+			var strhtmlsend="";
+			var strhtmlsending="";
+			var strhtmlpingjia="";
+			if(result.length>0){
+				$.each(result, function (index, val) { 
+					var strhead="";
+					var stritem="";
+					var strorder="";
+					var tmptime=computerTime(val.createTime);
+					var cancelOrderStr="取消订单";
+					var otype="";
+					if(val.orderStatus==-1){
+						cancelOrderStr="已取消";
+					}
+                    if(val.orderType==1){
+						otype="(代跑腿)";
+					}
+					var nopay="";
+					//待付款
+					if(val.payStatus==0 && val.payTypeStr!="货到付款"){
+						var payTime="";
+						if((tmptime+"").indexOf("过期")>=0){
+                           payTime=' 支付过期';
+						}else{
+                           payTime='剩余时间<span>'+tmptime+' 分钟</span></a>';
+						}
+						strhead='<div class="wxts" name="sn'+val.sn+'" >温馨提示：订单需要在15分钟内支付，不然作废哦！</div>\
+								 <div class="sysj" name="sn'+val.sn+'" id=del_'+val.sn+'>待付款'+otype+'<a>'+payTime+'</a></div>';
+						var items=val.orderItems;
+						var countpay=0;
+						for(var i=0;i<items.length;i++){
+							stritem=stritem+'<div class="zyg" name="sn'+val.sn+'">\
+												<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+												<div class="zyg_right">\
+													<div>'+items[i].name+'</div>\
+													<p>￥'+items[i].price+'</p>\
+												</div>\
+											</div>';
+							countpay=countpay+items[i].quantity;
+						}
+						if((""+tmptime).indexOf("过期")>=0){
+                            nopay="y";
+						}else{
+							nopay="n";
+						}
+						var tmpPay='';
+						var delTrueOrder="";
+						if(cancelOrderStr!="已取消"&&nopay=="n"){
+                           tmpPay='<a href="javascript:void(0);" id="pay'+val.sn+'" sn="'+val.sn+'" nopay='+nopay+' fee='+val.fee+' onclick="gotoPay(this)" class="zsb">去付款</a>';
+						}
+						if(val.orderStatus==-1||val.orderStatus==0||nopay=="y"){
+						   delTrueOrder='<a href="javascript:void(0);" orderStatus='+val.orderStatus+' id="del'+val.sn+'" sn="'+val.sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+						}
+						strorder='<div class="sfks" name="sn'+val.sn+'">'+countpay+'件商品&nbsp;实付款：<span>'+val.fee+'元 支付:'+val.payTypeStr+'</span></div>\
+								  <div class="lgdd" name="sn'+val.sn+'" quantity='+countpay+' price='+val.fee+'>\
+								    <a href="javascript:void(0);" sn="'+val.sn+'" onclick="delOrder(this)">'+cancelOrderStr+'</a>\
+									'+tmpPay+'\
+									'+delTrueOrder+'\
+								  </div>';
+						strhtmlpay=strhtmlpay+strhead+stritem+strorder;
+					}
+					//待配送
+					if((val.payStatus==1&&val.disStatus==0)||(val.payTypeStr=="货到付款")){
+							strhead='<div class="sysj">待配送'+otype+'</div>';
+							var items=val.orderItems;
+							var countsend=0;
+							for(var i=0;i<items.length;i++){
+							stritem=stritem+'<div class="zyg">\
+										<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+										<div class="zyg_right">\
+											<div>'+items[i].name+'</div>\
+											<p>￥'+items[i].price+'</p>\
+										</div>\
+									</div>';
+							countsend=countsend+items[i].quantity;
+							}
+							strorder='<div class="sfks">'+countsend+'件商品&nbsp;实付款：<span>'+val.fee+'元 支付:'+val.payTypeStr+'</span></div>';
+							strhtmlsend=strhtmlsend+strhead+stritem+strorder;
+					}
+					//配送中
+					if(val.payStatus==1&&val.disStatus==1){
+							strhead='<div class="sysj" name="sn'+val.sn+'">配送中'+otype+'</div>';
+							var items=val.orderItems;
+							var countsending=0;
+							for(var i=0;i<items.length;i++){
+							stritem=stritem+'<div class="zyg" name="sn'+val.sn+'">\
+												<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+												<div class="zyg_right">\
+													<div>'+items[i].name+'</div>\
+													<p>￥'+items[i].price+'</p>\
+												</div>\
+											</div>';
+							countsending=countsending+items[i].quantity;
+							}
+							var delTrueOrder="";
+							if(val.orderStatus==-1||val.orderStatus==0){
+						       delTrueOrder='<a href="javascript:void(0);" orderStatus='+val.orderStatus+' id="del'+val.sn+'" sn="'+val.sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+						    }
+							strorder='<div class="sfks" name="sn'+val.sn+'">'+countsending+'件商品&nbsp;实付款：<span>'+val.fee+'元 支付:'+val.payTypeStr+'</span></div>\
+									  <div class="lgdd" name="sn'+val.sn+'">\
+										'+delTrueOrder+'\
+									  </div>';
+							strhtmlsending=strhtmlsending+strhead+stritem+strorder;
+					}
+					//待评价 
+					if(val.payStatus==1&&val.disStatus==2&&val.evaStatus==0){
+							strhead='<div class="sysj" name="sn'+val.sn+'">待评价'+otype+'</div>';
+							var items=val.orderItems;
+							//var countpingjia=0;
+							//var goodGuid="";
+							for(var i=0;i<items.length;i++){
+								stritem='<div class="zyg" name="sn'+val.sn+'">\
+											<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+											<div class="zyg_right">\
+												<div>'+items[i].name+'</div>\
+												<p>￥'+items[i].price+'</p>\
+											</div>\
+										</div>';
+								//countpingjia=countpingjia+items[i].quantity;
+								 //if(i==0){
+									//goodGuid=items[i].goodGuid;
+								 //}else{
+									//goodGuid=goodGuid+";"+items[i].goodGuid;
+								 //}
+								var obj=new Object();
+								obj.name=items[i].name;
+								obj.image=items[i].image;
+								obj.price=items[i].price;
+								obj.goodGuid=items[i].goodGuid;
+								obj.quantity=items[i].quantity;
+								obj.sn=val.sn;
+								var showInfos=JSON.stringify(obj);
+								var delTrueOrder="";
+								if(val.orderStatus==-1||val.orderStatus==0){
+								   delTrueOrder='<a href="javascript:void(0);" orderStatus='+val.orderStatus+' id="del'+val.sn+'" sn="'+val.sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+								}
+								strorder='<div class="sfks" name="sn'+val.sn+'">'+items[i].quantity+'件商品&nbsp;实付款：<span>'+items[i].price+'元  支付:'+val.payTypeStr+'</span></div>\
+										  <div class="lgdd" name="sn'+val.sn+'">\
+											 <a href="javascript:void(0);" onclick="gotoShouhou(this)">申请售后</a>\
+											 <a href="javascript:void(0);" sn="'+val.sn+'" gid='+val.goodGuid+' class="zsb" onclick="gotoAssess(this)">评价</a>\
+											 '+delTrueOrder+'\
+											 <!--<input type="hidden" id='+items[i].id+' goodGuid="'+items[i].goodGuid+'" sn="'+val.sn+'" quantity='+items[i].quantity+' fee='+items[i].price+'  />-->\
+											 <input type="hidden" id='+items[i].id+' value=\''+showInfos+'\' />\
+										  </div>';
+								strhtmlpingjia=strhtmlpingjia+strhead+stritem+strorder;
+							}
+							/*strorder='<div class="sfks">共'+countpingjia+'件商品&nbsp;&nbsp;实付款：<span>'+val.fee+'元</span></div>\
+									<div class="lgdd">\
+									   <a href="javascript:void(0);" onclick="gotoShouhou(this)">申请售后</a>\
+									   <a href="avascript:void(0);" class="zsb">评价</a>\
+									   <input type="hidden" id='+val.id+' goodGuid="'+goodGuid+'" sn="'+val.sn+'" quantity='+countpingjia+' fee='+val.fee+'  />\
+									</div>';*/
+							//strhtmlpingjia=strhtmlpingjia+strhead+stritem+strorder;
+					}
+					
+				});
+				strhtml=strhtml+strhtmlpay+strhtmlsend+strhtmlsending+strhtmlpingjia;
+			}	
+			console.log(strhtml);
+			if($(".wxts")!=null&&$(".wxts")!=undefined){
+               $(".wxts").remove();
+			}
+			if($(".sysj")!=null&&$(".sysj")!=undefined){
+			   $(".sysj").remove();
+			}
+			if($(".zyg")!=null&&$(".zyg")!=undefined){
+			   $(".zyg").remove();
+			}
+			if($(".sfks")!=null&&$(".sfks")!=undefined){
+			   $(".sfks").remove();
+			}
+			if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			   $(".lgdd").remove();
+			}
+			
+			$("#ddhead").after(strhtml);
+		}
+ }
+//设置待支付列表
+ function setpaylist(data){
+    if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtmlpay="";
+		if(result.length>0){
+			$.each(result, function (index, val) { 
+				var strhead="";
+				var stritem="";
+				var strorder="";
+				var tmptime=computerTime(val.createTime);
+				var nopay="";
+				var cancelOrderStr="取消订单";
+				if(val.orderStatus==-1){
+					cancelOrderStr="已取消";
+				}
+				var otype="";
+				if(val.orderType==1){
+					otype="(代跑腿)";
+				}
+				var payTime="";
+				if((tmptime+"").indexOf("过期")>=0){
+					payTime=' 支付过期';
+				}else{
+					payTime='剩余时间<span>'+tmptime+' 分钟</span></a>';
+				}
+				strhead='<div class="wxts" name="sn'+val.sn+'">温馨提示：订单需要在15分钟内支付，不然作废哦！</div>\
+						<div class="sysj" name="sn'+val.sn+'" id=del_'+val.sn+'>待付款'+otype+'<a>'+payTime+'</a></div>';
+				var items=val.orderItems;
+				var countpay=0;
+				for(var i=0;i<items.length;i++){
+					stritem=stritem+'<div class="zyg" name="sn'+val.sn+'">\
+										<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+										<div class="zyg_right">\
+											<div>'+items[i].name+'</div>\
+											<p>￥'+items[i].price+'</p>\
+										</div>\
+									</div>';
+					
+					countpay=countpay+items[i].quantity;
+				}
+				if((""+tmptime).indexOf("过期")>=0){
+                    nopay="y";
+				}else{
+					nopay="n";
+				}
+				var tmpPay="";
+				if(cancelOrderStr!="已取消"&&nopay=="n"){
+					tmpPay='<a href="javascript:void(0);" id="pay'+val.sn+'" sn="'+val.sn+'" nopay='+nopay+' fee='+val.fee+' onclick="gotoPay(this)" class="zsb">去付款</a>';
+				}
+				if(items[0]!=null){
+					var delTrueOrder="";
+					if(val.orderStatus==-1||val.orderStatus==0||nopay=="y"){
+						delTrueOrder='<a href="javascript:void(0);" orderStatus='+val.orderStatus+' id="del'+val.sn+'" sn="'+val.sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+					}
+                    strorder='<div class="sfks" name="sn'+val.sn+'">'+countpay+'件商品&nbsp;实付款：<span>'+val.fee+'元  支付:'+val.payTypeStr+'</span></div>\
+							  <div class="lgdd" name="sn'+val.sn+'" quantity='+countpay+' price='+val.fee+' goodName="'+items[0].name+'" goodGuid="'+items[0].goodGuid+'">\
+								<a href="javascript:void(0);" sn="'+val.sn+'" onclick="delOrder(this)">'+cancelOrderStr+'</a>\
+								'+tmpPay+'\
+								'+delTrueOrder+'\
+							  </div>';
+				}
+				strhtmlpay=strhtmlpay+strhead+stritem+strorder;
+			});
+			console.log(strhtmlpay);
+			if($(".wxts")!=null&&$(".wxts")!=undefined){
+               $(".wxts").remove();
+			}
+			if($(".sysj")!=null&&$(".sysj")!=undefined){
+			   $(".sysj").remove();
+			}
+			if($(".zyg")!=null&&$(".zyg")!=undefined){
+			   $(".zyg").remove();
+			}
+			if($(".sfks")!=null&&$(".sfks")!=undefined){
+			   $(".sfks").remove();
+			}
+			if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			   $(".lgdd").remove();
+			}
+			$("#ddhead").after(strhtmlpay);
+		}
+	}
+ }
+ //设置配送中列表
+function setsendinglist(data){
+	  if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtmlsending="";
+		if(result.length>0){
+			$.each(result, function (index, val) { 
+				var strhead="";
+				var stritem="";
+				var strorder="";
+				var cancelOrderStr="取消订单";
+				if(val.orderStatus==-1){
+					cancelOrderStr="已取消";
+				}
+				var otype="";
+				if(val.orderType==1){
+					otype="(代跑腿)";
+				}
+				strhead='<div class="sysj" name="sn'+val.sn+'">配送中'+otype+'</div>';
+				var items=val.orderItems;
+				var countsending=0;
+				for(var i=0;i<items.length;i++){
+				stritem=stritem+'<div class="zyg" name="sn'+val.sn+'">\
+									<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+									<div class="zyg_right">\
+										<div>'+items[i].name+'</div>\
+										<p>￥'+items[i].price+'</p>\
+									</div>\
+								</div>';
+				countsending=countsending+items[i].quantity;
+				}
+				/*
+				var tmpPay="";
+				if(cancelOrderStr=="已取消"){
+					tmpPay='<a href="javascript:void(0);" id="del'+val.sn+'" sn="'+val.sn+'" fee='+val.fee+' onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+				}
+				*/
+				var delTrueOrder="";
+				if(val.orderStatus==-1||val.orderStatus==0){
+					delTrueOrder='<a href="javascript:void(0);" orderStatus='+val.orderStatus+' id="del'+val.sn+'" sn="'+val.sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+				}
+				strorder='<div class="sfks" name="sn'+val.sn+'">'+countsending+'件商品&nbsp;实付款：<span>'+val.fee+'元 支付:'+val.payTypeStr+'</span></div>\
+						  <div class="lgdd" name="sn'+val.sn+'">\
+						  	<a href="javascript:void(0);" sn="'+val.sn+'" onclick="confirmGet(this)">确认收货</a>\
+						     <!--<a href="javascript:void(0);" sn="'+val.sn+'" onclick="delOrder(this)">'+cancelOrderStr+'</a>-->\
+							 '+delTrueOrder+'\
+						  </div>'
+				strhtmlsending=strhtmlsending+strhead+stritem+strorder;
+			});
+			console.log(strhtmlsending);
+			if($(".wxts")!=null&&$(".wxts")!=undefined){
+               $(".wxts").remove();
+			}
+			if($(".sysj")!=null&&$(".sysj")!=undefined){
+			   $(".sysj").remove();
+			}
+			if($(".zyg")!=null&&$(".zyg")!=undefined){
+			   $(".zyg").remove();
+			}
+			if($(".sfks")!=null&&$(".sfks")!=undefined){
+			   $(".sfks").remove();
+			}
+			if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			   $(".lgdd").remove();
+			}
+			$("#ddhead").after(strhtmlsending);
+		}else{
+			//没有记录时，显示文字描述
+			var html = "<div class=\"sysj\" >没有查询到记录。</div>";
+			$("#ddhead").after(html);
+		}
+	}
+}
+
+function setWaitToDeliveryOrderList(data){
+	if (data!=null&&data.code==1) {
+	//刷新页面					
+		var result=data.result;
+		var strhtmlsend="";
+		if(result.length>0){
+			$.each(result, function (index, val) { 
+				var strhead="";
+				var stritem="";
+				var strorder="";
+				var otype="";
+				if(val.orderType==1){
+					otype="(代跑腿)";
+				}
+				strhead='<div class="sysj">待配送'+otype+'</div>';
+				var items=val.orderItems;
+				var countsend=0;
+				for(var i=0;i<items.length;i++){
+				    stritem=stritem+'<div class="zyg">\
+							<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+							<div class="zyg_right">\
+								<div>'+items[i].name+'</div>\
+								<p>￥'+items[i].price+'</p>\
+							</div>\
+						</div>';
+				    countsend=countsend+items[i].quantity;
+				}
+				strorder='<div class="sfks">'+countsend+'件商品&nbsp;实付款：<span>'+val.fee+'元 支付:'+val.payTypeStr+'</span></div>';
+				strhtmlsend=strhtmlsend+strhead+stritem+strorder;
+			});
+			console.log(strhtmlsend);
+			if($(".wxts")!=null&&$(".wxts")!=undefined){
+               $(".wxts").remove();
+			}
+			if($(".sysj")!=null&&$(".sysj")!=undefined){
+			   $(".sysj").remove();
+			}
+			if($(".zyg")!=null&&$(".zyg")!=undefined){
+			   $(".zyg").remove();
+			}
+			if($(".sfks")!=null&&$(".sfks")!=undefined){
+			   $(".sfks").remove();
+			}
+			if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			   $(".lgdd").remove();
+			}
+			$("#ddhead").after(strhtmlsend);
+		}else{
+			//没有记录时，显示文字描述
+			var html = "<div class=\"sysj\" >没有查询到记录。</div>";
+			$("#ddhead").after(html);
+		}
+	}
+}
+//设置等待评论列表参数绑定
+function setWaitToCommentOrderList(data){
+	if (data!=null&&data.code==1) {
+	    //刷新页面					
+		var result=data.result;
+		var strhtmlpingjia="";
+		var stritem="";
+		if(result.length>0){
+           $.each(result, function (index, val) {
+			    var items=val.orderItems;
+				var otype="";
+				if(val.orderType==1){
+					otype="(代跑腿)";
+				}
+			   strhead='<div class="sysj" name="sn'+val.sn+'">待评价'+otype+'</div>';
+				//var count=0;
+				//var goodGuid="";
+				var showInfos="";
+				//var showArray=new Array();
+				for(var i=0;i<items.length;i++){
+					stritem='<div class="zyg" name="sn'+val.sn+'">\
+								<div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+								<div class="zyg_right">\
+									<div>'+items[i].name+'</div>\
+									<p>￥'+items[i].price+'</p>\
+								</div>\
+							</div>';
+				    var obj=new Object();
+					obj.name=items[i].name;
+					obj.image=items[i].image;
+					obj.price=items[i].price;
+                    obj.goodGuid=items[i].goodGuid;
+                    obj.quantity=items[i].quantity;
+                    obj.sn=val.sn;
+                    var showInfos=JSON.stringify(obj);
+					var testobj=JSON.parse(showInfos);
+					//var showInfo=items[i].name+"-"+items[i].image+"-"+items[i].price;
+                    //if(i==0){
+                        //showInfos=showInfo;
+                    //}else{
+                       //showInfos=showInfos+";"+showInfo;
+                    //}
+					//if(i==0){
+					   //goodGuid=items[i].goodGuid;
+					//}else{
+					   //goodGuid=goodGuid+";"+items[i].goodGuid;
+					//}
+				   //count=count+items[i].quantity;
+				   /*****************/
+				   var delTrueOrder="";
+				   if(val.orderStatus==-1||val.orderStatus==0){
+					   delTrueOrder='<a href="javascript:void(0);" orderStatus='+val.orderStatus+' id="del'+val.sn+'" sn="'+val.sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+				   }
+				   strorder='<div class="sfks" name="sn'+val.sn+'">'+items[i].quantity+'件商品&nbsp;实付款：<span>'+items[i].price+'元 支付:'+val.payTypeStr+'</span></div>\
+							<div class="lgdd" name="sn'+val.sn+'">\
+								<a href="javascript:void(0);" onclick="gotoShouhou(this)">申请售后</a>\
+								<a href="javascript:void(0);" sn="'+val.sn+'" gid='+items[i].goodGuid+' class="zsb" onclick="gotoAssess(this)">评价</a>\
+								<input type="hidden" id='+items[i].id+' value=\''+showInfos+'\' />\
+								<!-- '+delTrueOrder+' -->\
+							</div>';
+					strhtmlpingjia=strhtmlpingjia+strhead+stritem+strorder;
+				}
+				/**
+				showInfos=JSON.stringify(showArray);
+				strorder='<div class="sfks">共'+count+'件商品&nbsp;&nbsp;实付款：<span>'+val.fee+'元</span></div>\
+						<div class="lgdd">\
+						   <a href="javascript:void(0);" onclick="gotoShouhou(this)">申请售后</a>\
+						   <a pid='+val.id+' href="javascript:void(0);" onclick="gotoPingjia(this)" class="zsb">评价</a>\
+						   <input type="hidden" id='+val.id+' goodGuid="'+goodGuid+'" sn="'+val.sn+'" quantity='+count+' fee='+val.fee+' value="'+showInfos+'" />\
+						</div>';
+				strhtmlpingjia=strhtmlpingjia+strhead+stritem+strorder;
+				**/
+		   });
+		   console.log(strhtmlpingjia);
+			if($(".wxts")!=null&&$(".wxts")!=undefined){
+               $(".wxts").remove();
+			}
+			if($(".sysj")!=null&&$(".sysj")!=undefined){
+			   $(".sysj").remove();
+			}
+			if($(".zyg")!=null&&$(".zyg")!=undefined){
+			   $(".zyg").remove();
+			}
+			if($(".sfks")!=null&&$(".sfks")!=undefined){
+			   $(".sfks").remove();
+			}
+			if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			   $(".lgdd").remove();
+			}	
+			$("#ddhead").after(strhtmlpingjia);
+		}else{
+			//没有记录时，显示文字描述
+			var html = "<div class=\"sysj\" >没有查询到记录。</div>";
+			$("#ddhead").after(html);
+		}
+	}
+}
+//改变选中项颜色，同时刷新页面 allprocess  payprocess  sendprocess sendingprocess pingjia
+function changebanner(e){
+	var tmpid=$(e).attr("id");
+	//var member=$("#member").val();
+     //var item=$("#ddhead").find("a[class='colorl']")[0];
+	 //$(item).attr("class","");
+	 var items=$("#ddhead").find("a");
+	 for(var k=0;k<items.length;k++){
+		 $(items[k]).attr("class","");
+	 }
+	$(e).attr("class","colorl");
+	 if(tmpid=="allprocess"){
+         getMemberAllOrderList();
+	 }else if(tmpid=="payprocess"){
+        getMemberWaitToPayOrderList();
+	 }else if(tmpid=="sendprocess"){
+        getMemberWaitToDeliveryOrderList();
+	 }else if(tmpid=="sendingprocess"){
+        getMemberBeingDeliveredOrderList();
+	 }else if(tmpid=="pingjia"){
+         getMemberWaitToCommentOrderList();
+	 }
+}
+
+function delOrder(e){
+	var ostatus=$(e).html();
+	if(ostatus!="已取消"){
+       	var sn=$(e).attr("sn");
+		var TOKEN=$("#token").val();
+		var btnArray = ['确认', '取消'];
+		mui.confirm('确认取消订单？',btnArray, function(ele) {
+		if (ele.index==1) {
+			$.ajax({
+				url:path+'app/purchase/cancelOrder',
+				//url:'http://127.0.0.1:8087/app/purchase/cancelOrder',
+				type: "GET",
+				data:{TOKEN:TOKEN,sn:sn},
+				dataType: "JSON",
+				cache: false,
+				async: false,
+				success: function (data) {
+					if(data!=null&&data.code==1){
+						//alert("取消完成");
+						mui.alert("取消完成");
+						//var rnames=document.getElementsByName("sn"+sn);
+						//var count=rnames.length;
+						//for(var k=count;k>=0;k--){
+							//$(rnames[k]).remove();
+						//}
+						$(e).html("已取消");
+						$($(e).next()).remove();
+						//var delTrueOrder='<a href="javascript:void(0);" orderStatus=-1 id="del'+sn+'" sn="'+sn+'" onclick="delThoroughOrder(this)" class="zsb">删除订单</a>';
+						//$(e).after(delTrueOrder);
+						$("#del_"+sn).remove();
+					}else{
+						mui.alert("取消失败");
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					//alert("取消完成");
+					mui.alert("取消失败");
+				}
+			 });
+		   }
+	   });
+	}
+}
+
+function delThoroughOrder(e){
+    var TOKEN=$("#token").val();
+	var sn=$(e).attr("sn");
+	var btnArray = ['确认', '取消'];
+	mui.confirm('确认删除此订单？',btnArray, function(ele) {
+	if (ele.index==1) {
+		$.ajax({
+			url:path+'app/purchase/deleteOrder',
+			//url:'http://127.0.0.1:8087/app/purchase/deleteOrder',
+			type: "GET",
+			data:{TOKEN:TOKEN,sn:sn},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				if(data!=null&&data.code==1){
+					var rnames=document.getElementsByName("sn"+sn);
+					var count=rnames.length;
+					for(var k=count;k>=0;k--){
+						$(rnames[k]).remove();
+					}
+				}else{
+					mui.alert("取消失败");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert("取消完成");
+				mui.alert("取消失败");
+			}
+			});
+		}
+	});
+}
+
+function gotoAssess(e){
+    var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var goodGuid=$(e).attr("gid");
+	var token=$("#token").val();
+	var sn=$(e).attr("sn");
+	window.location.href="pingjia.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&goodGuid="+goodGuid+"&sn="+sn;
+}
+//申请售后
+function gotoShouhou(e){
+    var info=$($(e).parent()).find("input")[0];
+    //var goodGuid=$(info).attr("goodGuid");
+    //var quantity=$(info).attr("quantity");
+    //var sn=$(info).attr("sn");
+    //var fee=$(info).attr("fee");
+	var showInfos=$(info).val();
+    var member=$("#member").val();
+    var userName=$("#userName").val();
+    var userImage=$("#userImage").val();
+	var token=$("#token").val();
+   // window.location.href="sqsh.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&goodGuid="+goodGuid+"&quantity="+quantity+"&sn="+sn+"&fee="+fee+"&showInfos="+showInfos;
+	window.location.href="sqsh.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&showInfos="+encodeURI(showInfos);
+}
+
+function gotoPay(e){
+	//判断支付是否过期
+	var nopay=$(e).attr("nopay");
+	if(nopay=="y"){
+		mui.alert("支付过期");
+		return false;
+	}
+	var goodGuid=$($(e).parent()).attr("goodGuid");
+	var price=$($(e).parent()).attr("price");
+	var quantity=$($(e).parent()).attr("quantity");
+	var goodName=$($(e).parent()).attr("goodName");
+	var sn=$(e).attr("sn");
+	var fee=$(e).attr("fee");
+	var goods=new Array();
+	var obj=new Object();
+	obj.goodGuid=goodGuid;
+	obj.price=price;
+	obj.quantity=quantity;
+	obj.goodName=goodName;
+	obj.sn=sn;
+	goods.push(obj);
+	var goodstr=JSON.stringify(goods);
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+   // window.location.href='../shoppingCart/Confirm-order.html?member='+member+'&userName='+encodeURI(userName)+'&userImage='+encodeURI(userImage)+"&token="+token+'&goods='+'goodstr';
+	window.location.href='../shoppingCart/pay.html?member='+member+'&userName='+encodeURI(userName)+'&userImage='+encodeURI(userImage)+"&token="+token+"&sn="+sn+"&fee="+fee;
+}
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+
+
+
+//确认收货
+function confirmGet(e){
+	var TOKEN=$("#token").val();
+	var sn=$(e).attr("sn");
+	var btnArray = ['确认', '取消'];
+	mui.confirm('确认收货？',btnArray, function(ele) {
+		$.ajax({
+			url:path+'app/purchase/confirmGetGoods',
+			type: "GET",
+			data:{TOKEN:TOKEN,sn:sn},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				if(data!=null && data.code==1){
+					//getMemberWaitToDeliveryOrderList();
+					//删除当前item
+					var ritems=document.getElementsByName("sn"+sn);
+					for(var h=ritems.length-1;h>=0;h--)
+					{
+						$(ritems[h]).remove();
+					}
+				}else{
+					mui.alert("操作失败");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				mui.alert("操作失败");
+			}
+		});
+	});
+}
+</script>
+	
+</body>
+</html>

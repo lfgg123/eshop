@@ -1,0 +1,280 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/common.css" rel="stylesheet" type="text/css" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+	<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../js/dateFormatUtil.js"></script>
+	<!--<script type="text/javascript" src="../js/age.js"></script>-->
+	<!--<script type="text/javascript" src="../js/dateJs.fei.js"></script>-->
+	<script type="text/javascript" src="../js/date.js" ></script>
+    <script type="text/javascript" src="../js/iscroll.js" ></script>
+	<script type="text/javascript" src="../js/ajaxfileupload.js" ></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+	
+</head>
+<body>
+
+<div class="header"><a class="headleft"  href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" width=35px height=40px alt=""></a>个人资料<!-- <a class="headright">确定</a> --></div>
+
+<div class="grzl" style="margin-top:0.5rem" onclick="triggerImage();"><a href="javascript:void(0);" >头像：<span><img src="" id="headImage" alt=""></span></a></div>
+<div class="grzl" onclick="changeNickName(this)"><a href="javascript:void(0);"  >昵称：<span id="nickName"></span></a></div>
+<div class="grzl" onclick="changeSex(this)"><a href="javascript:void(0);" >性别：<span id="cuSex"></span></a></div>
+<div class="grzl"><a>出生日期：
+	<span id="birth" >
+	<!--<input  id="birthday" class="kbtn" align="right"/>-->
+	<input  id="birthday" style="padding-top:13px;text-align:right; vertical-align:middle;" value="" />
+	<!--<select name="" id="">
+		<option value="">1999</option>
+		<option value="">1998</option>
+		<option value="">1997</option>
+	</select>-
+	<select name="" id="">
+		<option value="">12</option>
+		<option value="">13</option>
+		<option value="">14</option>
+	</select>-
+	<select name="" id="">
+		<option value="">12</option>
+		<option value="">13</option>
+		<option value="">14</option>
+	</select>-->
+	</span>
+	</a></div>
+<div id="datePlugin"></div>
+
+<!-- <input id="img" name="img" style="display:none;" type="file" onchange="getImgURLConfirm(this)" accept="image/*"; capture="camera"/> -->
+<input id="img" name="img" style="display:none;" type="file" onchange="getImgURLConfirm(this)" accept="image/*"/>
+<!--<img src="" id="img"/>-->
+<input type="hidden"  id="member" value="abc"/>
+<input type="hidden"  id="userName" value="testname"/>
+<input type="hidden"  id="userImage" value="XXcc.jpg"/>
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+<script type="text/javascript" >
+
+mui.init();
+  $(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+		userImage=decodeURI(userImage);
+		$("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+		//加载年月日
+		$('#birthday').date();
+		//加载
+	    if(member!="noParam"){
+           getUserInfo();
+	    }else{
+		   mui.alert("请先回首页登录");
+	    }
+	});
+  
+  function changeSex(e){
+	  var sex=$(e).find('span')[0].innerText;
+	  var member=$("#member").val();
+	  var userName=$("#userName").val();
+	  var userImage=$("#userImage").val();
+	  var token=$("#token").val();
+	  var gender=0;
+	  if(sex.indexOf("男")>=0){
+		  gender=1;
+	  }
+	  window.location.href='data-sex.html?member='+member+'&userName='+encodeURI(userName)+'&userImage='+encodeURI(userImage)+"&token="+token+'&gender='+gender;
+  }
+  
+  function changeNickName(e){
+	  var sex=$(e).find('span')[0].innerText;
+	  var member=$("#member").val();
+	  var userName=$("#userName").val();
+	  var userImage=$("#userImage").val();
+	  var token=$("#token").val();
+	  var gender=0;
+	  if(sex.indexOf("男")>=0){
+		  gender=1;
+	  }
+	  window.location.href='data-name.html?member='+member+'&userName='+encodeURI(userName)+'&userImage='+encodeURI(userImage)+"&token="+token+'&gender='+gender;
+  }
+  
+  
+  function triggerImage(){
+	  $("#img").trigger("click");
+  }
+  function getUserInfo(){
+       var TOKEN=$("#token").val();
+	   //后台请求
+		$.ajax({
+			url:path+'app/member/getMemberInfo',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: true,
+			success: function (data) {
+				setUserInfo(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				mui.alert("加载用户信息失败");
+			}
+		});
+  }
+  function setUserInfo(data){
+	  if(data!=null&&data.code==1){
+		  var result=data.result;
+		  //$("#headImage").attr("src",praImg+result.img);
+		  //alert(thumbPath + result.img);
+		  $("#headImage").attr("src",thumbPath + result.img);
+          $("#nickName").html(result.nick);
+		  if(result.sex==0){
+             $("#cuSex").html("女");
+		  }else{
+			  $("#cuSex").html("男");
+		  }
+		  $("#birthday").val(result.birth);
+	  }
+  }
+
+
+  var imgurl = "";  
+
+function getImgURL(node) {   
+    
+    var imgURL = "";      
+    try{     
+        var file = null;  
+        if(node.files && node.files[0] ){  
+            file = node.files[0];   
+        }else if(node.files && node.files.item(0)) {                                  
+            file = node.files.item(0);     
+        }     
+        //Firefox 因安全性问题已无法直接通过input[file].value 获取完整的文件路径  
+        try{  
+            //Firefox7.0   
+            imgURL =  file.getAsDataURL();    
+            //alert("//Firefox7.0"+imgRUL);                           
+        }catch(e){  
+            //Firefox8.0以上                                
+            imgRUL = window.URL.createObjectURL(file);  
+            //alert("//Firefox8.0以上"+imgRUL);  
+        }  
+     }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常                   
+        //支持html5的浏览器,比如高版本的firefox、chrome、ie10  
+        if (node.files && node.files[0]) {                            
+            var reader = new FileReader();   
+            reader.onload = function (e) {                                        
+                imgURL = e.target.result;    
+            };  
+            reader.readAsDataURL(node.files[0]);   
+        }    
+     }  
+    //imgurl = imgURL;  
+	//var id=$(node).attr("id");
+    creatImg(imgRUL);  
+    return imgURL;  
+} 
+
+function getImgURLConfirm(ele){
+     var btnArray = ['确认', '取消'];
+	 mui.confirm('确定更换头像？',btnArray, function(e) {
+		if (e.index==1) {
+	        getImgURL(ele);
+		} 
+	});
+}
+
+function limitImg() {
+    var img = document.getElementById(arguments[0]); //显示图片的对象
+    var maxSize = arguments[1]; //图片的大小
+    var allowGIF = arguments[2] || false;
+    var maxWidth = arguments[3] || 0;
+    var maxHeight = arguments[4] || 0;
+    var postfix = img.getAttribute("data-type");
+    var str = "jpeg";
+    if (str.indexOf(postfix.toLowerCase()) == -1) {
+        if (allowGIF) {
+            return "图片格式不对，只能上传jpg或gif图像";
+        } else {
+            return "图片格式不对，只能上传jpg图像";
+        }
+    }
+   /*  if (img.fileSize > maxSize * 1024) {
+        return "图片大小超过限制,请限制在" + maxSize + "K以内";
+    } */
+    /* if (img.fileSize == -1) {
+        return "图片格式错误，可能是已经损坏或者更改扩展名导致，请重新选择一张图片";
+    } else {
+        if (maxWidth > 0) {
+            if (img.width > maxWidth) {
+                return "图片宽度超过限制，请保持在" + maxWidth + "像素内";
+            } 
+            if (img.height > maxHeight) {  
+                return "图片高度超过限制，请保持在" + maxHeight + "像素内";
+            } 
+　　　　　　　//万恶的需求，还没见过这么上传图片的呢
+            if(img.width%4 != 0){
+                return "图片宽度必须为4的整数倍";
+            }
+            if(img.height%4 != 0){
+                return "图片高度必须为4的整数倍";
+            }
+        }else{
+            return ""
+        } 
+    }*/
+}
+
+function creatImg(imgRUL){   //根据指定URL创建一个Img对象  
+    //var textHtml ='<img src="../images/fl_03.png" width=35px height=90px id="headImage" alt="">';  
+    //$("#headImage").attr("src",imgRUL);
+	submitpost(imgRUL);
+} 
+
+//提交
+	function submitpost(imgRUL){
+        //var data=new Object();
+		//var postId=$("#postId").val();
+		//var member=$("#member").val();
+		var TOKEN=$("#token").val();
+		var data={
+			TOKEN:TOKEN,
+		}
+		$.ajaxFileUpload({
+				url:path+"app/member/changeHeadPortrait",         //这里是关键，这里地址必须和必须和本地地址一样，不然违反同源策略，  这样写的url:"http://www.baidu.com/mobilechat"是不行的。如果确实需要跨域提交，需要加一个中间层。
+				secureuri:false,
+				type: 'POST',
+				fileElementId:['img'],
+				data:data,//参数这里不能这样写$('.registerform').serialize(), 因为我传递的是JSON格式的数据。$('#form1').serialize()传递的参数不是这样的格式。                       //文件选择框的id属性
+				dataType: 'JSON',                            //服务器返回的格式，可以是json
+				success:function(data,status){
+				console.log(data);
+				    mui.alert("修改完成");
+				    $("#headImage").attr("src","");
+					$("#headImage").attr("src",imgRUL);
+				},
+				error: function (data, status, e)//服务器响应失败处理函数
+				{
+					//alert("修改完成");
+					//$("#headImage").attr("src",imgRUL); var TOKEN=$("#token").val(); <input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+					// //var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+				}
+		});
+	}
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+</script>
+</body>
+</html>

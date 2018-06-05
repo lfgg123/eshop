@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<script type="text/javascript" src="../js/swiper.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="search">
+	<a href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png"></a>
+	<ul class="sphead" id="sphead">
+		<a href="javascript:void(0);" id="commodityBanner" onclick="gotoPage(this)">商品</a>
+		<a href="javascript:void(0);" id="detailBanner" class="zsx" >详情</a>
+		<a href="javascript:void(0);" id="contentBanner" onclick="gotoPage(this)" >评价</a>
+	</ul>
+	<div id="introduction"></div>
+	<!--
+	<a class="fxan">
+		<img src="../images/sp_03.png" alt="" style="margin-left:1.2rem">
+	</a>
+	<a class="mores">
+		<img src="../images/sp_05.png" alt="" style="margin-left:1.2rem">
+	</a>
+	-->
+</div>
+
+<ul class="navs" style="display:none;">
+	<li><a href="" class="rdtop"><img src="../images/sp_14.png" alt="">首页</a></li>
+	<li><a href=""><img src="../images/sp_17.png" alt="">搜索</a></li>
+	<li><a href=""><img src="../images/sp_19.png" alt="">我的收藏</a></li>
+	<li><a href=""  class="rdbottom"><img src="../images/sp_21.png" alt="">浏览记录</a></li>
+</ul>
+<!--<div><img src="../images/spxq_02.jpg" alt=""><img src="../images/spxq_03.jpg" alt=""></div>-->
+<!--
+<ul class="spb">
+	<li style="border-right:1px solid #eee"><a href=""><img src="../images/sp_26.png" alt=""><br/>收藏</a></li>
+	<li><a href=""><img src="../images/sp_24.png" alt=""><br/>在线客服</a></li>
+	<li class="jrgwc"><a href="">加入购物车</a></li>
+	<li class="ljgm"><a href="">立即购买</a></li>
+</ul>
+-->
+
+<!-- 已下架 -->
+<!-- <ul class="spb">
+	<li style="border-right:1px solid #eee"><a href=""><img src="../images/sp_26.png" alt=""><br/>收藏</a></li>
+	<li style="border-right:1px solid #eee"><a href=""><img src="../images/sp_24.png" alt=""><br/>在线客服</a></li>
+
+	<li class="ljgm" style="background-color:#969696;float:right"><a href="">已下架</a></li>
+</ul>-->
+<div class="footss"></div> 
+
+<!-- 分享到 -->
+<div class="zhezhao"></div>
+<div class="fxd" style="display:none;">
+	<div class="fxdhead">分享到</div>
+	<div class="fxdn">
+		<a href=""><img src="../images/fxd_06.png" alt=""><br/>微信好友</a>
+		<a href=""><img src="../images/fxd_08.png" alt=""><br/>朋友圈</a>
+		<!--<a href=""><img src="../images/fxd_10.png" alt=""><br/>QQ好友</a>
+		<a href=""><img src="../images/fxd_16.png" alt=""><br/>QQ空间</a>
+		<a href=""><img src="../images/fxd_19.png" alt=""><br/>新浪微博</a>-->
+	</div>
+	<div class="qxiao">取消</div>
+</div>
+<input type="hidden" id="member" value="abc"/>
+<input type="hidden" id="userName" value="testnick"  />
+<input type="hidden" id="userImage" value="testnick.jpg" />
+<input type="hidden" id="token" value="teger5712vfm5pg" />
+<input type="hidden" id="productGuid" value="" />
+<input type="hidden" id="initalGoodGuid" value="" gImage="" gName="" gPrice="" />
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script>
+	$(function(){
+		$('.navs').hide();
+		$('.mores').toggle(function(){
+			$('.navs').slideDown();
+		},function(){
+			$('.navs').hide();
+		});
+        $('.zhezhao').hide();
+		$('.fxd').hide();
+        /*
+		$('.zhezhao').hide();
+		$('.fxd').hide();
+		$('.fxan').click(function(){
+			$('.fxd').slideDown();
+			$('.zhezhao').show();
+		});
+		$('.qxiao').click(function(){
+			$('.fxd').hide();
+			$('.zhezhao').hide();
+		});
+        */
+
+		$('.xzdz').hide();
+		$('.song').click(function(){
+			$('.xzdz').slideDown();
+			$('.zhezhao').show();
+		});
+		$('.psz img').click(function(){
+			$('.xzdz').hide();
+			$('.zhezhao').hide();
+		});
+
+
+		$('.xzgg').hide();
+		$('.guig').click(function(){
+			$('.xzgg').slideDown();
+			$('.zhezhao').show();
+		});
+		$('.chacha img').click(function(){
+			$('.xzgg').hide();
+			$('.zhezhao').hide();
+		});
+	});
+	mui.init();
+$(document).ready(function(){ 
+	//
+	var curUrl=window.location.href;
+	var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+	userName=decodeURI(userName);
+	var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+	var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+	var productGuid=curUrl.split('?')[1].split('&')[4].replace("productGuid=","");
+	userImage=decodeURI(userImage);
+    if(curUrl.indexOf("&cost=")>=0){
+         var name=curUrl.split('?')[1].split('&')[5].replace("name=","");
+	     var cost=curUrl.split('?')[1].split('&')[6].replace("cost=","");
+	     var goodGuid=curUrl.split('?')[1].split('&')[7].replace("goodGuid=","");
+		 $("#initalGoodGuid").val(goodGuid);
+		 $("#initalGoodGuid").attr("gName",decodeURI(name));
+		 $("#initalGoodGuid").attr("gPrice",cost);
+	}
+	$("#member").val(member);
+	$("#userName").val(userName);
+	$("#userImage").val(userImage);
+	$("#productGuid").val(productGuid);
+	$("#token").val(token);
+	getDetailInfo(); //滑动到页面底部切换到评论页
+	/*
+	$(window).scroll(function(){  
+		if ($(document).scrollTop()<=0){
+          //alert("滚动条已经到达顶部为0");
+        }
+		if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+		  //alert("滚动条已经到达底部为" + $(document).scrollTop());
+		  //跳转详情页
+		   var member=$("#member").val();
+		   var userName=$("#userName").val();
+		   var userImage=$("#userImage").val();
+		   var token=$("#token").val();
+		   var productGuid=$("#productGuid").val();
+		   window.location.href="evaluate.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid;
+		}
+    });
+	*/  
+});
+function getDetailInfo(){
+	var productGuid=$("#productGuid").val();
+	var TOKEN=$("#token").val();
+    var url=path+"app/purchase/getProductInfo";
+	//var url="http://127.0.0.1:8087/app/purchase/getProductInfo";
+	$.ajax({
+		url:url,
+		type: "GET",
+		data:{TOKEN:TOKEN,productGuid:productGuid},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+			if(data!=null&&data.code==1){
+                var result=data.result;
+				if(result.introduction!=null&&result.introduction!=""){
+                    $("#introduction").html(result.introduction);
+				}else{
+					$("#introduction").html("尚无商品详情介绍");
+				}
+				
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {				 
+			mui.alert("加载详情错误");
+		}
+	});
+}
+
+function goHomePage(){
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+	window.location.href="../classification/neiye.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&homePage";
+}
+
+function gotoPage(e){
+	var id=$(e).attr("id");
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+	var productGuid=$("#productGuid").val();
+	if(id=="contentBanner"){
+        //window.location.href="evaluate.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid;
+		var initalGoodGuid=$("#initalGoodGuid").val();
+		if(initalGoodGuid!=""&&initalGoodGuid!=null){
+			var name=$("#initalGoodGuid").attr("gName");
+			var cost=$("#initalGoodGuid").attr("gPrice");
+			window.location.href="evaluate.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid+"&name="+name+"&cost="+cost+"&goodGuid="+initalGoodGuid;
+		}else{
+			window.location.href="evaluate.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid;
+		}
+	}else if(id="commodityBanner"){
+        //window.location.href="commodity.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid;
+		 var initalGoodGuid=$("#initalGoodGuid").val();
+		if(initalGoodGuid!=""&&initalGoodGuid!=null){
+			var name=$("#initalGoodGuid").attr("gName");
+			var cost=$("#initalGoodGuid").attr("gPrice");
+			window.location.href="commodity.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid+"&name="+name+"&cost="+cost+"&goodGuid="+initalGoodGuid;
+		}else{
+			window.location.href="commodity.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&productGuid="+productGuid;
+		}
+	}
+}
+</script>
+</body>
+</html>

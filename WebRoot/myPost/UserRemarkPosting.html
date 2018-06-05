@@ -1,0 +1,177 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<link href="../css/green.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+     <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+</head>
+<body style="background:#fff">
+
+<div class="header"><a href="javascript:void(0)" onclick="cancelpost()" class="headleft">取消</a>回复帖子<a href="javascript:void(0)" onclick="submitpost()" class="headright">确定</a></div>
+<!--<div class="srbt"><input type="text" id="postTitle" placeholder="请输入标题" /></div>-->
+<textarea name="" id="" cols="30" rows="10" id="postContent" placeholder="请输入帖子内容" class="tznr"></textarea>
+<div class="jiat" id="previewImg">
+    <span class="preSpan"></span>
+</div>
+<div class="jiat" id="jiat" style="display:none;">
+	<input type="file"  accept="image/*" name="file" style="display:none;" class="inputxt" id="file1" tag="yes" onchange="getImgURL(this)" />
+	<input type="file"  accept="image/*" name="file" style="display:none;" class="inputxt" id="file2" tag="yes" onchange="getImgURL(this)" />
+	<input type="file"  accept="image/*" name="file" style="display:none;" class="inputxt" id="file3" tag="yes" onchange="getImgURL(this)" />
+	<!--<img src="../images/jt_03.png" alt="" onclick="triggerFile()" id="choseImg">-->
+	<!--<img src="../images/jt_03.png" alt="" onclick="triggerFile(this)" id="choseImg2">
+	<img src="../images/jt_03.png" alt="" onclick="triggerFile(this)" id="choseImg3">-->
+</div>
+
+<input id="nowimgs" type="hidden" value="" />
+<input id="postId" type="hidden"  value=0/>
+<input id="member" type="hidden" value='abc' />
+<input id="userName" type="hidden" value="bigjian" />
+<input type="hidden" id="userImage" value="testTieZi.jpg"/>
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+
+<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script> 
+
+
+<script type="text/javascript" >
+ $(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var param=curUrl.split('?')[1];
+		var member=param.split('&')[0].replace("member=","");
+		var userName=param.split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=param.split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=param.split('&')[3].replace("token=","");
+		var postId=param.split('&')[4].replace("postId=","");
+		
+		$("#postId").val(postId);
+		$("#token").val(token);
+		$("#member").val(member);
+        $("#userName").val(userName);
+        $("#userImage").val(userImage);
+	});
+  mui.init();
+   function cancelpost(){
+		var member=$("#member").val();
+		var userName=$("#userName").val();
+		var userImage=$("#userImage").val();
+		var postId=$("#postId").val();
+		var token=$("#token").val();
+        window.location.href="wdtz.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&postId="+postId;
+	}
+
+	function triggerFile(){
+		/*var tmps=$("#nowimgs").val();
+		if(tmps.indexOf("file1")==-1){
+             $("#file1").trigger("click");
+		}else if(tmps.indexOf("file2")==-1){
+			$("#file2").trigger("click");
+		}else if(tmps.indexOf("file3")==-1){
+			$("#file3").trigger("click");
+		}*/
+		if($("#file1").attr("tag")=="yes"){
+             $("#file1").trigger("click");
+		}else if($("#file2").attr("tag")=="yes"){
+			 $("#file2").trigger("click");
+		}else if($("#file3").attr("tag")=="yes"){
+			 $("#file3").trigger("click");
+		}
+		
+	}
+
+	//提交
+	function submitpost(){
+		var postId=$("#postId").val();
+		var content=$("#postContent").val();
+		var TOKEN=$("#token").val();
+       	//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,postId:postId,content:content},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+                    mui.alert("回复成功");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+                mui.alert("回复成功");
+			}
+		});
+	}
+
+var imgurl = "";  
+  
+function getImgURL(node) {    
+    var imgURL = "";      
+    try{     
+        var file = null;  
+        if(node.files && node.files[0] ){  
+            file = node.files[0];   
+        }else if(node.files && node.files.item(0)) {                                  
+            file = node.files.item(0);     
+        }     
+        //Firefox 因安全性问题已无法直接通过input[file].value 获取完整的文件路径  
+        try{  
+            //Firefox7.0   
+            imgURL =  file.getAsDataURL();    
+            //alert("//Firefox7.0"+imgRUL);                           
+        }catch(e){  
+            //Firefox8.0以上                                
+            imgRUL = window.URL.createObjectURL(file);  
+            //alert("//Firefox8.0以上"+imgRUL);  
+        }  
+     }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常                   
+        //支持html5的浏览器,比如高版本的firefox、chrome、ie10  
+        if (node.files && node.files[0]) {                            
+            var reader = new FileReader();   
+            reader.onload = function (e) {                                        
+                imgURL = e.target.result;    
+            };  
+            reader.readAsDataURL(node.files[0]);   
+        }    
+     }  
+    //imgurl = imgURL;  
+	var id=$(node).attr("id");
+    creatImg(imgRUL,id);  
+    return imgURL;  
+}  
+         
+function creatImg(imgRUL,id){   //根据指定URL创建一个Img对象  
+    var textHtml = "<img class='imgUrl' onclick='delImge(this)' tag='"+id+"' src='"+imgRUL+"'/>";  
+    $("#choseImg").after(textHtml);
+    $(id).attr("tag","no");
+} 
+
+function delImge(e){
+    var imgeId=$(e).attr("tag");
+	$(imgeId).attr("tag","yes");
+	var file=document.getElementById(imgeId);
+	//IE，Safari，chrome
+	if(file.outerHTML){
+		file.outerHTML=file.outerHTML;
+	}
+	else{      //FF
+		file.value="";
+	}
+	$(e).remove();
+}
+</script>
+</body>
+</html>

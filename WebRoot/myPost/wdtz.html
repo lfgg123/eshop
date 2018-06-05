@@ -1,0 +1,419 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>我的帖子<!-- <a class="headright">确定</a> --></div>
+<!--
+<div class="pingl">
+	<div class="txname">
+		<div class="toux"><img src="../images/pj_12.png" alt=""></div>
+		<div class="namex" style="margin-top:1.5rem">
+		酒神</div>
+		<div class="sjtime">2017-10-11 <img src="../images/bs_05.png" alt=""></div>
+	</div>
+	<div class="plun">给大家推荐一款酒，很好喝！</div>
+	<div class="tuij">茅台酒独产于中国贵州省遵义市仁怀市茅台镇，是中国的传统特产酒。是与苏格兰威士忌、法国科涅克白兰地齐...</div>
+	<div class="shangt">
+		<img src="../images/pj_03.png" alt="">
+		<img src="../images/pj_05.png" alt="">
+		<img src="../images/pj_05.png" alt="">
+	</div>
+</div>
+<div class="dianz">
+	<span><img src="../images/srdz_05.jpg" alt=""> 120</span>
+	<span><img src="../images/srdz_07.jpg" alt=""> 20</span>
+	<span><img src="../images/srdz_09.jpg" alt=""> 120</span>
+	<span><img src="../images/srdz_11.png" alt=""></span>
+</div>
+
+<div class="pingl">
+	<div class="txname">
+		<div class="toux"><img src="../images/pj_12.png" alt=""></div>
+		<div class="namex" style="margin-top:1.5rem">
+		酒神</div>
+		<div class="sjtime">2017-10-11 <img src="../images/bs_05.png" alt=""></div>
+	</div>
+	<div class="plun">给大家推荐一款酒，很好喝！</div>
+	<div class="tuij">茅台酒独产于中国贵州省遵义市仁怀市茅台镇，是中国的传统特产酒。是与苏格兰威士忌、法国科涅克白兰地齐...</div>
+	<div class="shangt">
+		<img src="../images/pj_03.png" alt="">
+		<img src="../images/pj_05.png" alt="">
+		<img src="../images/pj_05.png" alt="">
+	</div>
+</div>
+<div class="dianz">
+	<span><img src="../images/srdz_05.jpg" alt=""> 120</span>
+	<span><img src="../images/srdz_07.jpg" alt=""> 20</span>
+	<span><img src="../images/srdz_09.jpg" alt=""> 120</span>
+	<span><img src="../images/srdz_11.png" alt=""></span>
+</div>
+-->
+
+
+<input type="hidden" id="member" value='abc'/>
+<input type="hidden" id="userName" value="testname"  />
+<input type="hidden" id="userImage" value="testTieZi.jpg"/>
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+<script type="text/javascript" >
+mui.init();
+	$(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+		$("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);  
+		if(member!="noParam"){
+            getMemberBbsList();
+		    $(".delimg").bind("click",function(event){
+				//
+				var tag=$(this).attr("tag");
+				var canceltag=document.getElementsByName(tag);
+				var cancelresult=delwdtz(this);
+				if(cancelresult=="success"){
+				for(var i=canceltag.length;i>=0;i--){
+					$(canceltag[i]).remove();
+				}
+				}
+				event.preventDefault();  //阻止默认行为 ( 表单提交 )
+				return false;
+           });
+	   }else{
+		  mui.alert("请先回首页登录");
+	   }
+	});
+
+	function getMemberBbsList(){
+		var member=$("#member").val();
+		var TOKEN=$("#token").val();
+		var url=path+"app/member/getMemberBbsList";
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN},
+			cache: false,
+			async: false,
+			success: function (data) {
+				 setTieziInfo(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				mui.alert("加载失败");
+			}
+		});
+	}
+   function delwdtz(e){
+	    var id=$(e).attr("tag");
+		var TOKEN=$("#token").val();
+		var url=path+"app/member/deleteMemberPost";
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,id:id},
+			cache: false,
+			async: false,
+			success: function (data) {
+				if(data.code==1){
+                   mui.alert("删除成功");
+                   getMemberBbsList();
+				   return "success";
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+		        mui.alert("删除失败");
+				return "error";
+			}
+		});
+   }
+	function setTieziInfo(data){
+		var userName=$("#userName").val();
+		var userImage=$("#userImage").val();
+        var strhtml='';
+		if (data!=null&&data.code==1) {
+			var result=data.result;
+			if(result!=null&&result.length>0){
+				$.each(result, function (index, val) {
+		    	   var str='';
+				   var createTime;
+				   if(val.createTime==null){
+					   createTime=dateFormat(Date.now());
+				   }
+				   else{
+					   createTime=dateFormat(val.createTime);
+				   }
+				   var imgs=val.imgs;
+				   var strImgs='';
+				   var imglist=imgs.split(";");
+				   if(imglist!=null&&imglist.length>0){
+					   //strImgs=strImgs+'<img src="'+pruImg+imgs[k]+'" alt="">';
+					   for(var h=0;h<imglist.length;h++){
+						   if(imglist[h]!=""){
+							strImgs=strImgs+'<img src="'+communityPath+imglist[h]+'" alt="">';
+						   }
+					   }
+				    }
+				    var gnum=0;
+					var rnum=0;
+					var cnum=0;
+					if(val.gnum!=null){
+						gnum=val.gnum;
+					}
+					if(val.rnum!=null){
+						rnum=val.rnum;
+					}
+					if(val.cnum!=null){
+						cnum=val.cnum;
+					}
+				   str='<div class="pingl" postId='+val.id+' onclick="gotoPost(this)" name='+val.id+'>\
+							<div class="txname">\
+								<div class="toux" ><img  src="'+thumbPath+userImage+'" alt=""></div>\
+								<div class="namex" style="margin-top:1.5rem">\
+								'+userName+'</div>\
+								<div class="sjtime">'+createTime+' <img src="../images/bs_05.png" class="delimg" tag='+val.id+' alt=""></div>\
+							</div>\
+							<div class="plun">'+val.title+'</div>\
+							<div class="tuij">'+val.content+'</div>\
+							<div class="shangt">\
+							'+strImgs+'\
+							</div>\
+						</div>\
+						<div class="dianz" name='+val.id+'>\
+							<span><img src="../images/srdz_05.jpg" alt="" collGuid="'+val.guid+'" postId="'+val.id+'" onclick="dianz(this)" > '+gnum+'</span>\
+							<!--<span><img src="../images/srdz_07.jpg" alt="" postId="'+val.id+'" onclick="remark(this)"> '+rnum+'</span>-->\
+							<span><img src="../images/srdz_09.jpg" alt="" collGuid="'+val.guid+'" postId="'+val.id+'" onclick="collect(this)"> '+cnum+'</span>\
+							<!--<span><img src="../images/srdz_11.png" alt="" postId="'+val.id+'" onclick="share(this)"></span>-->\
+						</div>';
+				  strhtml=strhtml+str;
+				});
+				if($(".pingl")!=null&&$(".pingl")!=undefined){
+                    $(".pingl").remove();
+				}
+				if($(".dianz")!=null&&$(".dianz")!=undefined){
+                    $(".dianz").remove();
+				}
+	            $("#header").after(strhtml);
+			}
+		}
+	}
+
+	function dateFormat(longTypeDate){  
+		var dateType = "";  
+		var date = new Date();  
+		date.setTime(longTypeDate); 
+		dateType = date.getFullYear()+"-"+getMonth(date)+"-"+getDay(date);//yyyy-MM-dd格式日期
+		return dateType;
+    } 
+	//返回 01-12 的月份值   
+	function getMonth(date){  
+		var month = "";  
+		month = date.getMonth() + 1; //getMonth()得到的月份是0-11  
+		if(month<10){  
+			month = "0" + month;  
+		}  
+		return month;  
+	}  
+	//返回01-30的日期  
+	function getDay(date){  
+		var day = "";  
+		day = date.getDate();  
+		if(day<10){  
+			day = "0" + day;  
+		}  
+		return day;  
+	}
+
+	//跳转回复帖子
+	function remark(e){
+	  	var postId=$(e).attr("postId");
+        var member=$("#member").val();
+        var userName=$("#userName").val();
+        var userImage=$("#userImage").val();
+		var token=$("#token").val();
+        window.location.href="UserRemarkPosting.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&postId="+postId;
+	}
+	//收藏
+	function collect(e){
+		var tmpimg=$(e).attr("src");
+		if(tmpimg.indexOf("hf_04")>=0||tmpimg.indexOf("srdz_09_red")>=0){
+			//return false;
+			cancelColl(e);//取消收藏
+		}else{
+            var url=path+"app/member/collectPost";
+			var postId=$(e).attr("postId");
+			var TOKEN=$("#token").val();
+			//后台请求
+			$.ajax({
+				url:url,
+				type: "GET",
+				dataType: "JSON",
+				data:{TOKEN:TOKEN,postId:postId},
+				cache: false,
+				async: false,
+				success: function (data) {
+					if (data!=null&&data.code==1) {
+						//刷新收藏数量
+						var guid=$(e).attr("collGuid");
+						var collnum=Number($(e).parent().text().trim())+1;
+						var img='<img src="../images/srdz_09_red.jpg" alt="" collGuid="'+guid+'" onclick="collect(this)" postId='+postId+'>';
+						var tmp=img+collnum;
+						$(e).parent().html(tmp);
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					//alert(XMLHttpRequest.status);
+					//alert(XMLHttpRequest.readyState);
+					//alert(textStatus);
+					//刷新收藏数量
+					mui.alert("收藏失败");
+				}
+			});
+		}
+	}
+    //点赞
+	function dianz(e){
+		var dianzflag=$(e).attr("src");
+		if(dianzflag.indexOf("hf")<0){
+            var url=path+"app/member/upvotePost";
+			var postId=$(e).attr("postId");
+			var TOKEN=$("#token").val();
+			//后台请求
+			$.ajax({
+				url:url,
+				type: "GET",
+				dataType: "JSON",
+				data:{TOKEN:TOKEN,postId:postId},
+				cache: false,
+				async: false,
+				success: function (data) {
+					if (data!=null&&data.code==1) {
+						//刷新点赞数量
+						var dianznum=Number($(e).parent().text().trim())+1;
+						var img='<img src="../images/hf_09.png" alt="" onclick="dianz(this)" postId='+postId+'>';
+						var tmp=img+dianznum;
+						$(e).parent().html(tmp);
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					//alert(XMLHttpRequest.status);
+					//alert(XMLHttpRequest.readyState);
+					//alert(textStatus);
+					//刷新点赞数量
+					mui.alert("点赞出错");
+				}
+			});
+		}else{
+           	cancelDianZan(e);
+		}
+
+	}
+	//分享
+	function share(e){
+
+	}
+	//删除我的帖子额
+	function delTiezi(e){
+        console.log('test');
+		return false;
+	}
+
+	//跳转详情页面
+    function gotoPost(e){
+        var postId=$(e).attr("postId");
+        var member=$("#member").val();
+        var userName=$("#userName").val();
+        var userImage=$("#userImage").val();
+		var token=$("#token").val();
+        window.location.href="Post.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+userImage+"&token="+token+"&postId="+postId;
+    }
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+
+//取消收藏
+function cancelColl(e){
+	var collGuid=$(e).attr("collGuid");
+	var TOKEN=$("#token").val();
+    var postId=$(e).attr("postId");
+	var url=path+"app/member/cancelMemberCollection";
+	//var url="http://127.0.0.1:8087/app/member/cancelMemberCollection";
+	$.ajax({
+		url:url,
+		type: "GET",
+		dataType: "JSON",
+		data:{TOKEN:TOKEN,collGuid:collGuid},
+		cache: false,
+		async: false,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+				//刷新点赞数量
+				//alert("取消成功");
+                var guid=$(e).attr("collGuid");
+                 //刷新收藏数量
+                var collnum=Number($(e).parent().text().trim())-1;
+                var img='<img src="../images/srdz_09.jpg" alt="" collGuid="'+guid+'" onclick="collect(this)" postId='+postId+'>';
+                var tmp=img+collnum;
+                $(e).parent().html(tmp);
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			mui.alert("取消收藏失败");
+		}
+	});
+}
+//取消点赞
+function cancelDianZan(e){
+   //取消点赞
+	var url=path+"app/member/downvotePost";
+	var postId=$(e).attr("postId");
+	var TOKEN=$("#token").val();
+	//后台请求
+	$.ajax({
+		url:url,
+		type: "GET",
+		dataType: "JSON",
+		data:{TOKEN:TOKEN,postId:postId},
+		cache: false,
+		async: false,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+					//刷新点赞数量
+				var postId=$(e).attr("postId");
+				var dianznum=Number($(e).parent().text().trim())-1;
+				var img='<img src="../images/srdz_05.jpg" alt="" onclick="dianz(this)" postId='+postId+'>';
+				var tmp=img+dianznum;
+				$(e).parent().html(tmp);
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+				mui.alert("点赞失败");
+		}
+	});
+}
+</script>
+</body>
+</html>

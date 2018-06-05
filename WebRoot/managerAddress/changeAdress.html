@@ -1,0 +1,330 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<!--  <link href="../css/swiper.css" type="text/css" rel="stylesheet" /> -->
+	<link href="../css/green.css" type="text/css" rel="stylesheet" /> 
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/icheck.js"></script> 
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>定位附近门店</div>
+<div style="margin-bottom:5px;margin-top:10px;" id="curLocation">当前定位地址:<span id="currentLocation"></span></div>
+<!--<div style="margin-bottom:5px;margin-top:10px;" id="myAddress">我的收货地址</div>-->
+<!--
+<div class="xzsh">
+	<div class="dzshr">收货人：<span>173937493333</span></div>
+	<p class="dzdz">上海市松江区城区广富林路1000弄1000号1000室上海市松江区100室</p>
+</div>
+<ul class="skin skin-square moren" name="addressUl">
+    <li class="mr">
+      <span><input tabindex="11" onclick="setDefaultAddress(this)" type="radio" name="square-radio"></span>
+      <label>默认地址</label>
+    </li>
+    <li class="bj"><img src="../images/bs_03.png" alt=""  onclick="editAddress(this)"> 编辑</li>
+    <li class="sc"><img src="../images/bs_05.png" alt="" onclick="delAddress(this)"> 删除</li>
+</ul>
+
+<div class="xzsh">
+	<div class="dzshr">收货人：<span>173937493333</span></div>
+	<p class="dzdz">上海市松江区城区广富林路1000弄1000号1000室上海市松江区100室</p>
+</div>
+<ul class="skin skin-square moren" name="addressUl">
+    <li class="mr">
+      <span><input tabindex="11" type="radio" onclick="setDefaultAddress()" checked="checked" name="square-radio"></span>
+      <label>默认地址</label>
+    </li>
+    <li class="bj"><img src="../images/bs_03.png" alt="" onclick="editAddress()"> 编辑</li>
+    <li class="sc"><img src="../images/bs_05.png" alt="" onclick="delAddress()"> 删除</li>
+</ul>
+-->
+<!--<div class="xjdz" id="xjdz"><a href="javascript:void(0);" onclick="addAddress()"><img src="../images/dzw_07.png" alt="">新建地址</a></div>-->
+
+<input type="hidden" id="member" value=""/>
+<input type="hidden" id="userName" value=""/>
+<input type="hidden" id="userImage" value=""/>
+<input type="hidden" id="token" value=""/>
+
+<input type="hidden" id="coordinate-x" value=""/>
+<input type="hidden" id="coordinate-y" value=""/>
+<script type="text/javascript">
+
+    mui.init();
+      $(document).ready(function(){
+          var curUrl=window.location.href;
+          var param=curUrl.split('?')[1];
+		  var member=param.split('&')[0].replace("member=","");
+		  var userName=param.split('&')[1].replace("userName=","");
+          userName=decodeURI(userName);
+		  var userImage=param.split('&')[2].replace("userImage=","");
+          userImage=decodeURI(userImage);
+          var token=param.split('&')[3].replace("token=","");
+          var currentLocation=param.split('&')[4].replace("currentLocation=","");
+          try {
+             //coordinate=param.split('&')[5].replace("coordinate=","");
+            var lng = getUrlParam("lng");
+            var lat = getUrlParam("lat");
+             //var lng=param.split('&')[5].replace("lng=","");
+             //var lat=param.split('&')[6].replace("lat=","");
+             alert(lng);
+             $("#coordinate-x").val(lng);
+             $("#coordinate-y").val(lat);
+        　} catch(err) {
+             mui.alert("经纬度定位失败");
+        　}
+          //var coordinate_x=coordinate.split("-")[0];//经度
+          //var coordinate_y=coordinate.split("-")[1];//维度
+          $("#member").val(member);
+          $("#userName").val(userName);
+          $("#userImage").val(userImage);
+          $("#token").val(token);
+          $("#currentLocation").html(decodeURI(currentLocation));
+          /*
+          if(member!="noParam"){
+                getAddressList();
+                $('.skin-square input').iCheck({
+                        checkboxClass: 'icheckbox_square-green',
+                        radioClass: 'iradio_square-green',
+                        increaseArea: '20%'
+                });
+          }else{
+			 mui.alert("请先在主页登录");
+		  }
+          */
+          /*
+          if(member=="noParam"){
+              $("#xjdz").css("display","none");
+          }
+          getAddressList();
+          */
+          //获取附近门店
+          getStoreListByCoordiate();
+      });
+function getStoreListByCoordiate(){
+     var url=path+"app/systemconfig/get919StoreByLatAndLon";
+     var lat=$("#coordinate-y").val();
+     var lon=$("#coordinate-x").val();
+     alert(lat + ":" + lon);
+     //后台请求
+     $.ajax({
+        url:url,
+        type: "GET",
+        data:{lat:lat,lon:lon},
+        dataType: "JSON",
+        cache: false,
+        async: false,
+        success: function (data) {
+            if (data!=null&&data.code==1) {
+                //刷新页面
+                var result=data.result;
+                var strhtml = "";
+                if(result!=null&&result.length>0){
+                   //$.each(result, function (index, val) {
+                        var str='<div class="store">\
+                                    <div><img src="'+storeImg+result.image+'" alt=""></div>\
+                                    <p style="font-size:1.4rem">'+result.name+'</p>\
+                                    <p>'+result.address+'</p>\
+                                    <p>负责人:'+result.fzr+'- 联系电话:'+result.phone+'</p>\
+                                </div>';
+                        strhtml=strhtml+str;
+					//});
+                   if($(".store")!=null&&$(".store")!=undefined){
+                        $(".store").remove();
+					}
+                    $("#curLocation").after(strhtml);
+                }else{
+                    mui.alert("附近未定位到门店");
+                }  
+            }else{
+                mui.alert("附近未定位到门店");
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+           //alert(XMLHttpRequest.status);
+           //alert(XMLHttpRequest.readyState);
+            mui.alert("获取附近门店失败");
+        }
+    });
+}
+
+//工具方法， 从url里获取参数
+function getUrlParam(key){
+	var url = window.location.href;
+	var params = url.split("?")[1].split("&");
+	for(var i=0; i< params.length; i++){
+		if(key == params[i].split("=")[0]){
+			return params[i].split("=")[1];
+		}
+	}
+	//没找到此参数
+	return "";
+}
+      //设置默认地址
+      function setDefaultAddress(e){
+          var aid=$(e).attr("aid");
+          var address=$(e).parent().parent().parent().parent().find("#address");
+          var consignee=$(e).parent().parent().parent().parent().find("#consignee");
+          var phone=$(e).parent().parent().parent().parent().find("#phone");
+          var TOKEN=$("#token").val();
+          var province=$("#"+guid).attr("province");
+          var city=$("#"+guid).attr("city");
+          var area=$("#"+guid).attr("area");
+          var isuse=$(e).attr("isuse");
+          var obj=new object();
+          obj.address=address;
+          obj.consignee=consignee;
+          obj.phone=phone;
+          obj.province=$("#province").val();
+          obj.city=$("#city").val();
+          obj.area=$("#city").val();
+          obj.id=$("#aid").val();
+          obj.isuse=$("#isuse").val();
+          var url=path+"app/member/modifyAddress";
+          //后台请求
+          $.ajax({
+              url:url,
+              type: "POST",
+              //data:{TOKEN:TOKEN,obj:obj},
+              data:{TOKEN:TOKEN,id:aid,consignee:consignee,city:city,area:area,province:province,address:address,phone:phone,isuse:isuse},
+              dataType: "JSON",
+              cache: false,
+              async: false,
+              success: function (data) {
+                  if (data!=null&&data.code==1) {
+                    //刷新页面					
+                    //alert("修改成功");
+                    mui.alert("修改成功");
+                  }
+              },
+              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //alert(XMLHttpRequest.status);
+                //alert(XMLHttpRequest.readyState);
+                //刷新页面					
+                  //alert("修改失败");
+                  mui.alert("修改失败");
+              }
+          });
+      }
+      //删除地址
+       function delAddress(e){
+           var guid=$(e).parent().attr("tag");
+           var aid=$(e).parent().attr("aid");
+           if(confirm("确定删除")==true){
+
+           }
+       }
+      //编辑地址
+      function editAddress(e){
+          var guid=$(e).parent().attr("tag");//地址guid
+          var member=$("#member").val();
+          var userName=$("#userName").val();
+          var userImage=$("#userImage").val();
+          var token=$("#token").val();
+          var obj=new Object();
+
+          obj.aid=$(e).parent().attr("aid");
+          obj.address=$(e).parent().attr("address");
+          obj.consignee=$(e).parent().attr("consignee");
+          obj.phone=$(e).parent().attr("phone");
+          obj.isuse=$("#"+guid).attr("isuse");
+
+          obj.province=$("#"+guid).attr("province");
+          obj.city=$("#"+guid).attr("city");
+          obj.area=$("#"+guid).attr("area");
+          var tmpJson=JSON.stringify(obj);
+          //$("#aid").val(Number(obj.aid)); 
+		//$("#address").val(obj.address);
+		//$("#consignee").val(obj.consignee);
+		//$("#phone").val(obj.phone);
+        //$("#isuse").val(Number(obj.isuse));
+          window.location.href="bj-adress.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token+"&tmpJson="+tmpJson;
+      }
+      function getAddressList(){
+            var member=$("#member").val();
+            var TOKEN=$("#token").val();
+            var url=path+"app/member/getAddressList";
+            //后台请求
+            $.ajax({
+              url:url,
+              type: "GET",
+              data:{TOKEN:TOKEN,member:member},
+              dataType: "JSON",
+              cache: false,
+              async: false,
+              success: function (data) {
+                  if (data!=null&&data.code==1) {
+                    //刷新页面					
+                      var result=data.result;
+                      var strhtml = "";
+                      if(result!=null&&result.length>0){
+                            $.each(result, function (index, val) {
+                                var ck;
+                                if(val.isuse==1){
+                                    ck="checked";
+                                }
+                                var str='<div class="xzsh">\
+                                          <div class="dzshr">收货人：'+val.consignee+'<span>'+val.phone+'</span></div>\
+                                          <p class="dzdz">'+val.area+'</p>\
+                                        </div>\
+                                        <ul class="skin skin-square moren" name="addressUl" >\
+                                              <li class="mr"  tag='+val.guid+'>\
+                                                <span><input tabindex="11" aid='+val.id+' isuse='+val.isuse+' type="radio" checked='+ck+' onclick="setDefaultAddress(this)" name="square-radio"></span>\
+                                                <label>默认地址</label>\
+                                              </li>\
+                                              <li class="bj" aid='+val.id+' tag="'+val.guid+'" address="'+val.address+'" consignee="'+val.consignee+'" phone="'+val.phone+'" ><img src="../images/bs_03.png" alt="" onclick="editAddress(this)"><span onclick="editAddress(this)"> 编辑</span></li>\
+                                              <li class="sc" aid='+val.id+' tag="'+val.guid+'" address="'+val.address+'" consignee="'+val.consignee+'" phone="'+val.phone+'"><img src="../images/bs_05.png" alt="" onclick="delAddress(this)"><span onclick="delAddress(this)"> 删除</span></li>\
+                                          </ul>';
+                                  strhtml=strhtml+str;
+                                   var addressStr='<input type="hidden" ck='+ck+' isuse='+val.isuse+' class="addressClass" id="'+val.guid+'" province="'+val.province+'" city="'+val.city+'" area="'+val.area+'" />';
+                                   $("#member").after(addressStr);
+                            });
+                            //拼接
+                            $(".xzsh").remove();
+                            var addressUls=document.getElementsByName("addressUl");
+                            for(var i=addressUls.length-1;i>=0;i--){
+                               $(addressUls[i]).remove();
+                            }
+                            $("#myAddress").after(strhtml);
+                        }  
+                    }
+              },
+              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  //alert(XMLHttpRequest.status);
+                  //alert(XMLHttpRequest.readyState);
+                  //刷新页面					
+                  mui.alert("加载地址列表失败");
+              }
+          });
+      }
+
+    function addAddress(){
+        /*
+        var member=$("#member").val();
+        if(member=="noParam"){
+            mui.alert("请先在主页登录");
+            return false;
+        }
+        */
+        var userName=$("#userName").val();
+        var userImage=$("#userImage").val();
+        var token=$("#token").val();
+        window.location.href="addAdress.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token;
+    }
+
+function goHomePage(){
+	window.location.href=path+"homePage.html";
+}
+
+  </script>
+</body>
+</html>

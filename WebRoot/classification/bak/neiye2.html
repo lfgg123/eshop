@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery.js"></script>
+     <script type="text/javascript" src="../js/swiper.js"></script>
+	<script type="text/javascript" src="../../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="search">
+	<a href=""><img src="../images/fl_03.png"></a><input type="text" id="productName" placeholder="搜索商品"><a href=""><img src="../images/fl_05.png" style="margin-left:1.2rem"></a><a href=""><img src="../images/fl_07.png" style="margin-left:1.2rem"></a>
+</div>
+<ul class="paix">
+	<li class="zongh" id="zonghsort">综合排序 <img src="../images/fl_13.png"></li>
+	<li id="jiagesort">价格</li>
+	<li id="salesort">销量</li>
+	<li class="shai" id='shaixuan'>筛选 <img src="../images/fl_16.png"></li>
+</ul>
+
+<div class="jiuh">
+	<dl>
+		<dt><img src="../images/fl_28.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><img src="../images/fl_21.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><img src="../images/fl_21.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><img src="../images/fl_28.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+</div>
+
+
+<!-- 隐藏区域 -->
+<div class="bzhezhao"></div>
+<ul class="zhpx">
+	<li class="zhpjc" id='zhpjc'>综合评价<img src="../images/dui_03.png"></li>
+	<li id='pjbest'>评价最好</li>
+	<li id='newest'>最新商品</li>
+</ul>
+
+<div class="screen">
+	<div class="screen_head"><span class="quxiao qxs" onclick="clearChose()" >取消</span>筛选<span class="queding" onclick="getProductbyContion()">确定</span></div>
+	<ul class="sxs">
+		<li>商品 <span class="zhuse" id="shangpinli">全部<img src="../images/you_03.png"></span></li>
+		<li>品牌 <span class="zhuse" id="pinpaili">全部<img src="../images/you_03.png"></span></li>
+		<li>国家 <span class="zhuse" id="guojiali">全部<img src="../images/you_03.png"></span></li>
+		<li class="jiage">价格 <span class="zhuse" id="jiageli">全部<img src="../images/you_03.png"></span></li>
+	</ul>
+	<div class="clear" onclick="clearChose()">清除筛选条件</div>
+</div>
+
+<div class="screens" id="shangpindiv">
+	<div class="screen_heads"><span class="quxiaos qxss" tag="shangpinli" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>商品<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id='shangpinul' tag="">
+		<li class="zhuse" onclick="changeClass(this)" parentClass="" tag="全部" >全部 <span class=""><img class="parentClassli" src="../images/dui_03.png"></span></li>
+		<!--<li>白酒 <span class="zhuse"></span></li>
+		<li>红酒 <span class="zhuse"></span></li>
+		<li>洋酒 <span class="zhuse"></span></li>
+		<li>滋补品 <span class="zhuse"></span></li>
+		<li>茶礼 <span class="zhuse"></span></li>-->
+	</ul>
+</div>
+
+
+<div class="screens" id="pinpaidiv">
+	<div class="screen_heads"><span class="quxiaos qxss" tag="pinpaili" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>品牌<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id='pinpaiul' tag="" >
+		<li class="zhuse" onclick="changeBrand(this)" productGuid="" >全部 <span class="zhuse"><img class="productli" src="../images/dui_03.png"></span></li>
+		<!--<li>白酒 <span class="zhuse"></span></li>
+		<li>红酒 <span class="zhuse"></span></li>
+		<li>洋酒 <span class="zhuse"></span></li>
+		<li>滋补品 <span class="zhuse"></span></li>
+		<li>茶礼 <span class="zhuse"></span></li>-->
+	</ul> 
+</div>
+
+<div class="screens" id="guojiadiv">
+	<div class="screen_heads"><span class="quxiaos qxss" tag="guojiali" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>国家<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id='guojiaul' tag="">
+		<li class="zhuse" onclick="changeNation(this)" productGuid="">全部 <span class="zhuse"><img class="nationli" src="../images/dui_03.png"></span></li>
+		<!--<li>白酒 <span class="zhuse"></span></li>
+		<li>红酒 <span class="zhuse"></span></li>
+		<li>洋酒 <span class="zhuse"></span></li>
+		<li>滋补品 <span class="zhuse"></span></li>
+		<li>茶礼 <span class="zhuse"></span></li>-->
+	</ul>
+</div>
+
+<div class="screenz">
+	<div class="screen_heads"><span class="quxiaos qxsz" tag="jiageli" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>价格<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id="jiage" tag="">
+		<li class="zhuse">全部 </li>
+		<li>价格区间：<input type="text" id="priceOne"> - <input type="text" id="priceTwo"><span class="zhuse"><img src="../images/dui_03.png"></span></li>
+	</ul>
+</div>
+<!-- 隐藏区域 -->
+<!-- 隐藏区域 -->
+<input id="parentClass" type="hidden" value=3 tmpname="" />
+<input id="productGuid" type="hidden"  value="" tmpname=""/>
+<input id="choseNation" type="hidden" value="" tmpname=""/>
+<input id="chosePrice" type="hidden" value="" tmpname="" /> 
+
+
+<input id="userId" type="hidden" value=48 />
+<input id="userName" type="hidden" value="apeic" />
+<input id="userImage" type="hidden" value="apeic.jpg" />
+
+<div class="zhezhao"></div>
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript">
+var testdata1={"code":1,"message":"操作成功","result":[{"name":"红酒","parent":"","id":1,"modifyTime":1508910641000,"createTime":1508347113000,"guid":"ifwptiqtireptiqete","grade":1,"pic":"6ea3de83432e4b93b562461ba410879b.png"},{"name":"洋酒","parent":"","id":4,"modifyTime":1508910453000,"createTime":1508859358000,"guid":"tttttttttttttttttttttttttttttt","grade":1,"pic":"25a7db51de7a4196bf0caa79f8208700.png"},{"name":"白酒","parent":"","id":5,"modifyTime":null,"createTime":1508910425000,"guid":"ec1b53847c0348d1824f0bcead68252b","grade":1,"pic":"a3ad19fdeb334544bb1fd9f99578100d.png"}]}
+var testdata2={
+    "code": 1,
+    "message": "操作成功",
+    "result": [
+        {
+            "products": [
+                {
+                    "name": "天之蓝",
+                    "id": 1,
+                    "guid": "1",
+                    "img1": null,
+                    "priceArea": null,
+                    "img2": null,
+                    "img3": null,
+                    "img4": null,
+                    "proClass": "lfjaskfjsa",
+                    "createTime": null,
+                    "modifyTime": null,
+                    "image": null,
+                    "salenum": null
+                },{
+                    "name": "茅台",
+                    "id": 1,
+                    "guid": "1",
+                    "img1": null,
+                    "priceArea": null,
+                    "img2": null,
+                    "img3": null,
+                    "img4": null,
+                    "proClass": "lfjaskfjsa",
+                    "createTime": null,
+                    "modifyTime": null,
+                    "image": null,
+                    "salenum": null
+                },{
+                    "name": "人头马",
+                    "id": 1,
+                    "guid": "1",
+                    "img1": null,
+                    "priceArea": null,
+                    "img2": null,
+                    "img3": null,
+                    "img4": null,
+                    "proClass": "lfjaskfjsa",
+                    "createTime": null,
+                    "modifyTime": null,
+                    "image": null,
+                    "salenum": null
+                }
+            ],
+            "name": "品牌",
+            "parent": "ifwptiqtireptiqete",
+            "id": 3,
+            "guid": "lfjaskfjsa",
+            "createTime": 1508347188000,
+            "modifyTime": 1508915769000,
+            "grade": 2,
+            "pic": "18967a6e21444436951fc1bc0176be1c.png"
+        },{
+			"products": [
+                {
+                    "name": "法国",
+                    "id": 1,
+                    "guid": "1",
+                    "img1": null,
+                    "priceArea": null,
+                    "img2": null,
+                    "img3": null,
+                    "img4": null,
+                    "proClass": "lfjaskfjsa",
+                    "createTime": null,
+                    "modifyTime": null,
+                    "image": null,
+                    "salenum": null
+                },{
+                    "name": "智力",
+                    "id": 1,
+                    "guid": "1",
+                    "img1": null,
+                    "priceArea": null,
+                    "img2": null,
+                    "img3": null,
+                    "img4": null,
+                    "proClass": "lfjaskfjsa",
+                    "createTime": null,
+                    "modifyTime": null,
+                    "image": null,
+                    "salenum": null
+                },{
+                    "name": "哥伦比亚",
+                    "id": 1,
+                    "guid": "1",
+                    "img1": null,
+                    "priceArea": null,
+                    "img2": null,
+                    "img3": null,
+                    "img4": null,
+                    "proClass": "lfjaskfjsa",
+                    "createTime": null,
+                    "modifyTime": null,
+                    "image": null,
+                    "salenum": null
+                }
+            ],
+            "name": "国家",
+            "parent": "wefwefw",
+            "id": 3,
+            "guid": "lfjaskfjsa",
+            "createTime": 1508347188000,
+            "modifyTime": 1508915769000,
+            "grade": 2,
+            "pic": "18967a6e21444436951fc1bc0176be1c.png"
+		}
+    ]
+};
+
+var testdata3={
+    "code": 1,
+    "message": "操作成功",
+    "result": [
+        {
+            "name": "天之蓝",
+            "id": 1,
+            "guid": "1",
+            "price": 800,
+            "createTime": null,
+            "image": null,
+            "modifyTime": null,
+            "remark": null,
+            "proGuid": "1",
+            "stock": 1000,
+            "salenum": null,
+            "isHot": 0,
+            "isGround": 0,
+            "seoDescription": null,
+            "seoKeywords": null,
+            "seoTitle": null
+        },{
+            "name": "茅台经典",
+            "id": 1,
+            "guid": "1",
+            "price": 800,
+            "createTime": null,
+            "image": null,
+            "modifyTime": null,
+            "remark": null,
+            "proGuid": "1",
+            "stock": 1000,
+            "salenum": null,
+            "isHot": 0,
+            "isGround": 0,
+            "seoDescription": null,
+            "seoKeywords": null,
+            "seoTitle": null
+        }
+    ]
+};
+//绑定数据
+	$(document).ready(function(){ 
+		 var curUrl=window.location.href;
+         //var userId=curUrl.split('?')[1].split('&')[0].replace("userId=","");  
+		//var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		//userName=decodeURI(userName);
+		//var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		//userImage=decodeURI(userImage);
+		//$("#userName").val(userName);
+		//$("#userId").val(userId);
+		//$("#userImage").val(userImage);
+		//var productGuid=curUrl.split('?')[1].split('&')[3].replace("pro=","");
+		//var productName=curUrl.split('?')[1].split('&')[4].replace("productName=","");
+		
+		getAllProClass();
+		 //初始化加载列表(先根据货品产品名称超找，再根据产品标识符查找)
+		 //if(productName!=""||productName!=undefined||productName!=null){
+			 //goodsfindProductListByName(productName)
+		//}else{
+            //loadDataByPro(productGuid);
+		//}
+		
+		$("#productName").on('keypress',function(e) {  
+		var keycode = e.keyCode;  
+		var productName = $(this).val();  
+		if(keycode=='13') {  
+			e.preventDefault();    
+			//请求搜索接口  
+			goodsfindProductListByName(productName);
+		}  
+    }); 
+});
+	$(function(){
+		$('.bzhezhao').hide();
+		$('.zhpx').hide();
+		$('.zongh').click(function(){
+			$('.bzhezhao').show();
+			$('.zhpx').show();
+		});
+		$('.zhpx li').click(function(){
+			$('.bzhezhao').hide();
+			$('.zhpx').hide();
+		});
+
+
+		$('.zhezhao').hide();
+		$('.screen').hide();
+		$('.shai').click(function(){
+			//获取所有分类，并打钩当前默认分类
+            ////getAllProClass();
+			$('.zhezhao').show();
+			$('.screen').show();
+		});
+
+		$('.qxs').click(function(){
+			$('.screen').hide();
+			$('.zhezhao').hide();
+		});
+
+		$('.screens').hide();
+		//展示商品类别列表
+		$('.sxs li:nth-child(1)').click(function(){
+			//$('.screens').show();
+			$("#shangpindiv").show();
+		});
+        //展示品牌列表
+		$('.sxs li:nth-child(2)').click(function(){
+			//根据分类获取品牌
+			getGoodsByparentClassBrand();
+			////$('#pinpaidiv').show();			
+		});
+		//展示国家列表
+		$('.sxs li:nth-child(3)').click(function(){
+			//$('#guojiadiv').show();
+			getGoodsByparentClassNation();
+		});
+
+		$('.qxss').click(function(){
+			$('.screens').hide();
+		});
+
+
+		$('.screenz').hide();
+		$('.jiage').click(function(){
+			$('.screenz').show();
+		});
+		$('.qxsz').click(function(){
+			$('.screenz').hide();
+		});
+
+	});
+//获取所有分类
+function getAllProClass()
+{
+	//后台请求
+	$.ajax({
+		url:path+'app/goods/getFirstGradeGoodsClass',
+		type: "GET",
+		dataType: "JSON",
+		//dataType: "jsonp", 
+		//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+		//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+		cache: false,
+		async: true,
+		//processData: false,
+		//timeout: 2000,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+				//刷新页面					
+				var result=data.result;
+				var strhtml = "";
+				if(result.length>0){
+					$.each(result, function (index, val) {
+						var str="";
+						str=str+'<li onclick="changeClass(this)" tag="'+val.name+'" parentClass='+val.guid+'>'+val.name+' <span class="zhuse"><img class="classimg" style="display:none;" src="../images/dui_03.png"></span></li>';
+						strhtml=strhtml+str;
+					});
+				}
+				var allhtml=$("#shangpinul").html();
+				console.log(allhtml+strhtml);
+				//alert(allhtml+strhtml);
+				$("#shangpinul").html(allhtml+strhtml);
+				
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+			var strhtml="";
+			var result=testdata1.result;
+			$.each(result, function (index, val) {
+				var str="";
+				
+				str=str+'<li onclick="changeClass(this)" tag="'+val.name+'" parentClass='+val.guid+'>'+val.name+' <span class="zhuse"><img class="classimg" style="display:none;" src="../images/dui_03.png"></span></li>';
+				strhtml=strhtml+str;
+			});
+			var allhtml=$("#shangpinul").html();
+			$("#shangpinul").html(allhtml+strhtml);
+		}
+	});
+
+}
+//获取选中酒类
+function changeClass(e){
+	//$("."+etype).attr("class",etype);
+	//$($(e).find("span")[0]).attr("class","zhuse "+etype); 
+	var allspan=$(e).parent().find("span");  
+	for(var j=0;j<allspan.length;j++){
+		$($(allspan[j]).find("img")[0]).css("display","none");
+	}
+	$($($(e).find("span")[0]).find("img")[0]).css("display","");
+	
+	//记录选中商品(种类)
+	var tmpname=$(e).attr("tag");
+	var guid=$(e).attr("parentClass");
+	$("#parentClass").val(guid);
+	$("#parentClass").attr("tmpname",tmpname);
+}
+ //选中商品品牌(就不能选国家)
+ function changeBrand(e){
+	 $(".productli").css("display","none");
+     $($(e).find("img")[0]).css("display","");
+	 //记录选中商品(种类)
+	 var tmpname=$(e).attr("tag");
+	 $("#productGuid").val($(e).attr("productGuid"));
+	 $("#productGuid").attr("tmpname",tmpname);
+	 //清除国家
+	 $(".cleanNation").remove();
+	 $("#choseNation").val("");
+	 $("#choseNation").attr("tmpname","");
+	 $("#guojiali").html('全部<img src="../images/you_03.png"></span>');
+ }
+ //选中国家
+ function changeNation(e){
+     $(".nationli").css("display","none");
+     $($(e).find("img")[0]).css("display","");
+	 //记录选中商品(种类)
+	 var tmpname=$(e).attr("tag");
+	 $("#choseNation").val($(e).attr("productGuid"));
+	 $("#choseNation").attr("tmpname",tmpname);
+	 //清除品牌
+	 $(".cleanBrand").remove();
+	  $("#productGuid").val("");
+	 $("#productGuid").attr("tmpname","");
+	 $("#pinpaili").html('全部<img src="../images/you_03.png"></span>');
+ }
+//回退按钮
+function backmenu(e){
+	//获取上一级的id
+	var id=$(e).attr("tag");
+	var tmp='<img src="../images/you_03.png">';
+	//再上一级中记录选中项目
+	var tmpname="";
+	if(id=="shangpinli"){
+		tmpname=$("#parentClass").attr("tmpname");
+	}
+	if(id=="pinpaili"){
+		tmpname=$("#productGuid").attr("tmpname");
+	}
+	if(id=="guojiali"){
+		tmpname=$("#choseNation").attr("tmpname");
+	}
+	if(id=="jiageli"){
+		tmpname=$("#priceOne").val()+"-"+$("#priceTwo").val();
+		//记录价格
+		$("#chosePrice").val(tmpname);
+	}
+	tmp=tmpname+tmp;
+	$("#"+id).html(tmp);
+}
+//取消清除所选
+function clearChose(){
+	//商品种类
+    $(".classimg").css("display","none");
+    $(".parentClassli").css("display","");
+	//品牌
+    $(".cleanBrand").remove();
+    $(".productli").css("display","none");
+	//国家
+    $(".cleanNation").remove();
+	$(".nationli").css("display","none");
+	//
+	$("#parentClass").val("");
+	$("#productGuid").val("");
+	$("#choseNation").val("");
+	$("#chosePrice").val("");
+
+	$("#parentClass").attr("tmpname","");
+	$("#productGuid").attr("tmpname","");
+	$("#choseNation").attr("tmpname","");
+	$("#chosePrice").attr("tmpname","");
+
+	$("#shangpinli").html('全部 <img src="../images/you_03.png">');
+	$("#pinpaili").html('全部 <img src="../images/you_03.png">');
+	$("#guojiali").html('全部 <img src="../images/you_03.png">');
+	$("#jiageli").html('全部 <img src="../images/you_03.png">');
+}
+
+  function handleResponse(data) {
+        console.log("搜索商品");
+    }
+
+   //根据酒类标识获取商品(品牌)列表//根据parent获取三级分类(品牌)
+   function getGoodsByparentClassBrand(){
+	   var parentClass=$("#parentClass").val();
+	   if(parentClass==""||parentClass==undefined||parentClass==null){
+		   alert("请您先选择商品");
+		   return false;
+	   }
+       	//后台请求
+		$.ajax({
+			url:path+'app/goods/getProductClassByParent',
+			type: "GET",
+			data:{parentClass:parentClass},
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				setProductClassByParent(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				var data=testdata2;
+	            setProductClassByParent(data);
+		 }
+	 });
+	 $('#pinpaidiv').show();	
+ }
+  //根据酒类标识获取商品(品牌)列表//根据parent获取三级分类(国家)
+ function getGoodsByparentClassNation(){
+	   var parentClass=$("#parentClass").val();
+	   if(parentClass==""||parentClass==undefined||parentClass==null){
+		   alert("请您先选择商品");
+		   return false;
+	   }
+       	//后台请求
+		$.ajax({
+			url:path+'app/goods/getProductClassByParent',
+			type: "GET",
+			data:{parentClass:parentClass},
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				setProductClassByParent(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				var data=testdata2;
+	            setProductClassByParent(data);
+		 }
+	 });
+	 $('#guojiadiv').show();	
+ }
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	 //根据品牌加载产品列表(初始化)
+	function loadDataByPro(productGuid)
+	{
+		var url=path+"app/goods/getGoodsByProClass";
+		
+		if(productGuid==null||productGuid==undefined||productGuid=="")
+		{
+			alert("货品加载出错");
+            return false;
+		}
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			data: {proClass:productGuid},
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							var salenum;
+							if(val.salenum==null){
+								salenum=0;
+							}else{
+								salenum=val.salenum;
+							}
+							str=str+'<dl>\
+										<dt><img src="'+val.image+'" alt=""></dt>\
+										<dd>\
+											<div>'+val.name+'</div>\
+											<span>销量：'+salenum+'</span>\
+											<p>￥'+val.price+' <a href="javascript:void(0);" guid="'+val.guid+'" ><img src="../images/fl_24.png" alt=""></a></p>\
+										</dd>\
+									</dl>';
+							strhtml=strhtml+str;
+						});
+					}
+					$("#jiuh").html(strhtml);	
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				var data=testdata3;
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							var salenum;
+							if(val.salenum==null){
+								salenum=0;
+							}else{
+								salenum=val.salenum;
+							}
+							str=str+'<dl>\
+										<dt><img src="'+val.image+'" alt=""></dt>\
+										<dd>\
+											<div>'+val.name+'</div>\
+											<span>销量：'+salenum+'</span>\
+											<p>￥'+val.price+' <a href="javascript:void(0);" guid="'+val.guid+'" ><img src="../images/fl_24.png" alt=""></a></p>\
+										</dd>\
+									</dl>';
+							strhtml=strhtml+str;
+						});
+					}
+					$("#jiuh").html(strhtml);	
+				}
+			}
+		});
+	}
+
+	function goodsfindProductListByName(productName){
+		var url=path+"app/goodsfindProductListByName";
+		if(productName==null||productName==undefined||productName=="")
+		{
+			alert("请输入品牌名称");
+            return false;
+		}
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			data: {productName:productName},
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							str=str+'<dl>\
+									<dt><img src="'+val.image+'" alt=""></dt>\
+									<dd>\
+										<div>'+val.name+'</div>\
+										<span>销量：'+val.salenum+'</span>\
+										<p>￥'+val.price+' <a href="javascript:void(0);" guid="'+val.guid+'" ><img src="../images/fl_24.png" alt=""></a></p>\
+									</dd>\
+								</dl>';
+							strhtml=strhtml+str;
+						})
+					}
+					$("#jiuh").html(strhtml)	
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				var data=testdata2;
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							str=str+'<dl>\
+									<dt><img src="'+val.image+'" alt=""></dt>\
+									<dd>\
+										<div>'+val.name+'</div>\
+										<span>销量：'+val.salenum+'</span>\
+										<p>￥'+val.price+' <a href="javascript:void(0);" guid="'+val.guid+'" ><img src="../images/fl_24.png" alt=""></a></p>\
+									</dd>\
+								</dl>';
+							strhtml=strhtml+str;
+						})
+					}
+					$("#jiuh").html(strhtml)	
+				}
+			}
+		});
+	}
+	//添加购物车
+	function goodToCart(e){
+	   var goodGuid=$(e).attr("guid");
+	   var userId=$("#userId").val();
+	   
+	   var url=path+"app/purchase/goodToCart";
+	   	//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{userId:userId,goodGuid:goodGuid,quantity:1},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+			        //刷新点赞数量
+                    alert("添加成功");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新点赞数量
+				alert("添加成功");
+			}
+		});
+	}
+	//设置根据父类获取三级品牌或者国家返回参数
+function setProductClassByParent(data){
+		if (data!=null&&data.code==1) {
+			//刷新页面先刷新品牌
+			var all=data.result;
+			var products;
+			var nations;
+			for(var k=0;k<all.length;k++){
+				if(all[k].name=="品牌"){
+					products=all[k].products;
+				}
+				if(all[k].name=="国家"){
+					nations=all[k].products;
+				}
+			}
+			var strhtml1 = "";
+			if(products.length>0){
+				$.each(products, function (index, val) {
+					var str="";
+					str=str+'<li onclick="changeBrand(this)" class="cleanBrand" tag="'+val.name+'" productGuid="'+val.guid+'">'+val.name+' <span class="zhuse"><img style="display:none;" src="../images/dui_03.png"></span></li>';
+					strhtml1=strhtml1+str;
+				});
+			}
+			var strhtml2="";
+			if(nations.length>0){
+				$.each(nations, function (index, val) {
+					var str="";
+					str=str+'<li onclick="changeNation(this)" class="cleanNation" tag="'+val.name+'" productGuid="'+val.guid+'">'+val.name+' <span class="zhuse"><img style="display:none;" src="../images/dui_03.png"></span></li>';
+					strhtml2=strhtml2+str;
+				});
+			}
+		}
+		//刷新品牌
+		var tmp1='<li class="zhuse" onclick="changeBrand(this)" productGuid="" >全部 <span class="zhuse"><img class="productli" src="../images/dui_03.png"></span></li>';
+		strhtml1=tmp1+strhtml1;
+		$("#pinpaiul").html(strhtml1);
+		//刷新国家
+		var tmp2='<li class="zhuse" onclick="changeNation(this)" productGuid="">全部 <span class="zhuse"><img class="nationli" src="../images/dui_03.png"></span></li>';
+		strhtml2=tmp2+strhtml2;
+		$("#guojiaul").html(strhtml2);
+}
+
+function getProductbyContion(){
+
+}
+</script>
+</body>
+</html>

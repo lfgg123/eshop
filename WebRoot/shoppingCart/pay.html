@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<link href="../css/green.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/icheck.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goMyOrder()"><img src="../images/fl_03.png"></a>支付方式<a class="headright"></a></div>
+
+<div class="xzf">需支付：<span id="payFee">￥</span></div>
+<div class="zffs">选择支付方式</div>
+<ul class="skin skin-square zhifu">
+    <li>
+        <label for="square-radio-1" onclick="recordPay(this)"><img src="../images/zf_03.png" alt=""> 微信支付</label>
+        <span><input tabindex="11" id="wxpay" type="radio" id="square-radio-1" name="square-radio"></span>
+    </li>
+    <li>
+        <label for="square-radio-2" onclick="recordPay(this)"><img src="../images/zf_06.png" alt=""> 支付宝支付</label>
+        <span><input tabindex="11" id="zfbpay" type="radio" id="square-radio-2" name="square-radio"></span>
+    </li>
+    <li>
+        <label for="square-radio-3" onclick="recordPay(this)"><img src="../images/zf_08.png" alt=""> 货到付款</label>
+        <span><input tabindex="11" id="curpay"  type="radio" id="square-radio-3" name="square-radio"></span>
+    </li>
+</ul>
+<div class="wxzf"><a href="javascript:void(0);" onclick="goPay()" id="paybtn">请选择支付方式</a></div>             
+            
+<input type="hidden" id="userName" value="testnick"/>
+<input type="hidden" id="userImage" value="testnick.jpg"/>
+<input type="hidden" id="token" value="abfefregrec"/>
+<input type="hidden" id="member" value="abc"/>
+<input type="hidden" id="sn" value="23"/>
+<input type="hidden" id="payForm" value=""/>
+<input type="hidden" id="fee" value=""/>
+
+<script type="text/javascript">
+    mui.init();
+    $(document).ready(function(){
+        $('.skin-square input').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+            increaseArea: '20%'
+        });
+
+        $('.skin-square input').on('ifChecked', function(event){ //ifCreated 事件应该在插件初始化之前绑定 
+            recordPay(this);
+        }); 
+        var curUrl=window.location.href;
+
+         var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+        var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+        //判断是否是支付后的回掉
+        if(curUrl.indexOf("payResult")>=0){
+             var payResult=curUrl.split('?')[1].split('&')[4].replace("payResult=","");
+             alert("payResult="+payResult);
+             if(payResult=="success"){
+                 mui.alert("支付完成");
+             }else{
+                 mui.alert("支付发生错误，请联系客服");
+             }
+              //window.location.href=path+"homePage.html";
+              ///eshop/myOrder/order.html?member=xxx&userName=xxx&userImage=xxx&token=xxx&item=waitsend
+              window.location.href = path + "/myOrder/order.html?member="+ member +"&userName="+ userName +"&userImage="+ userImage +"&token="+ token +"&item=waitsend";
+              
+        }else{
+           var sn=curUrl.split('?')[1].split('&')[4].replace("sn=","");
+           var fee=curUrl.split('?')[1].split('&')[5].replace("fee=","");
+           $("#token").val(token);
+           $("#member").val(member);
+           $("#userName").val(userName);
+           $("#userImage").val(userImage);
+           $("#sn").val(sn);
+           $("#fee").val(fee);
+           $("#payFee").html("￥"+fee);
+        }
+        
+    });
+    
+   function recordPay(e){
+       var payForm=$(e).attr("id");
+       var fee=$("#payFee").html().replace("￥","");
+       $("#payForm").val(payForm);
+       if(payForm=="wxpay"){
+           $("#paybtn").html("微信支付:  "+fee + "元");
+       }else if(payForm=="zfbpay"){
+           $("#paybtn").html("支付宝支付:  "+fee+ "元");
+       }else if(payForm=="curpay"){
+           $("#paybtn").html("货到付款:  "+fee+ "元");
+       }
+   } 
+   function goPay(){
+       var sn=$("#sn").val();
+       var member=$("#member").val();
+       var fee=$("#fee").val();
+       var body="919名酒订购";
+       var subject="___919名酒订购，订单编号:"+sn;
+       var payForm=$("#payForm").val();
+       //alert(payForm);
+       if(payForm=="zfbpay"){
+           window.location.href = path+"toPay.html?sn="+sn+"&total_amount="+fee+"&subject="+subject+"&body="+body+"&platform=zfb";
+       }else if(payForm=="wxpay"){
+           window.location.href=path+"toPay.html?sn="+sn+"&total_fee="+fee+"&platform=wx";
+       }else if(payForm=="curpay"){
+           	var TOKEN=$("#token").val();
+            $.ajax({
+                url:path+'pay/cod',
+                type: "GET",
+                data:{TOKEN:TOKEN,sn:sn},
+                dataType: "JSON",
+                cache: false,
+                async: false,
+                success: function (data) {
+                    if(data!=null&&data.code==1){
+                        mui.alert("已接受订单，客服会进行确认");
+                        setTimeout("goMyOrder();",2300);
+                    }else{
+                        mui.alert("提交失败，请联系客服");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    mui.alert("提交失败，请联系客服");
+                }
+            });
+       }
+       
+   }
+   function goMyOrder(){
+       var member=$("#member").val();
+		var userName=$("#userName").val();
+		var userImage=$("#userImage").val();
+		var token=$("#token").val();
+       window.location.href="../myOrder/order.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&item=all";
+   }
+</script>
+</body>
+</html>

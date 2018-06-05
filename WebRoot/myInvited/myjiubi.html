@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	  <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/icheck.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+	
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);"  onclick="goback()"><img src="../images/fl_03.png" alt=""></a>我的酒币<!-- <a href="shuom.html" class="headright">使用说明</a> --></div>
+
+<div class="jiub"> <span id="myjiubi"></span>元</div>
+<div class="szmx">收支明细</div>
+<!-- 
+<div class="mx">
+	<div class="mxleft">
+		<div>商品评价奖励酒币</div>
+		<p>2012-12-23</p>
+	</div>
+	<div class="mxright">+20</div>
+</div>
+<div class="mx">
+	<div class="mxleft">
+		<div>登录奖励酒币</div>
+		<p>2012-12-23</p>
+	</div>
+	<div class="mxright">+10</div>
+</div>
+<div class="mx">
+	<div class="mxleft">
+		<div>商品评价奖励酒币</div>
+		<p>2012-12-23</p>
+	</div>
+	<div class="mxright">+20</div>
+</div>
+<div class="mx">
+	<div class="mxleft">
+		<div>登录奖励酒币</div>
+		<p>2012-12-23</p>
+	</div>
+	<div class="mxright">+10</div>
+</div>
+ -->
+<!-- <script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script>  -->
+
+<script type="text/javascript" >
+mui.init();
+    $(document).ready(function(){
+ 
+        var curUrl=window.location.href;
+        var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+        var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		$("#member").val(member);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+        
+    });
+function getmyyqInfo(){
+	var member=$("#member").val(); 
+	var TOKEN=$("#token").val(); 
+	//后台请求
+	$.ajax({
+		url:path+'app/purchase/inviteMemberList',
+		type: "GET",
+		data:{TOKEN:TOKEN},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		//processData: false,
+		//timeout: 2000,
+		success: function (data) {
+		    
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+			mui.alert("加载数据失败");
+			//var data=testdata1;
+			//setallList(data);
+		}
+	});
+}
+ function goback(){
+	 window.location.href=path+"myself.html";
+ }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/dateFormatUtil.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/> 
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>退款/售后<!-- <a class="headright">确定</a> --></div>
+
+<ul class="ddhead" id="ddhead">
+	<a href="javascript:void(0);" class="colorl" style="width:34%" id="afterSalebanner" onclick="changebanner(this)">售后申请</a>
+	<a href="javascript:void(0);" style="width:33%" id="changebanner" onclick="changebanner(this)">换货申请记录</a>
+    <a href="javascript:void(0);" style="width:33%" id="rebackbanner" onclick="changebanner(this)">退货申请记录</a>
+</ul>
+<!--
+<div class="sysj" style="font-size:1.2rem">订单号：47242945305 下单时间：2017-12-12 10:09</a></div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="" class="zsb">申请售后</a></div>
+
+<div class="sysj" style="font-size:1.2rem">订单号：47242945305 下单时间：2017-12-12 10:09</a></div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="" class="zsb">申请售后</a></div>
+
+<div class="sysj" style="font-size:1.2rem">订单号：47242945305 下单时间：2017-12-12 10:09</a></div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="" class="zsb">申请售后</a></div>
+
+<div class="sysj" style="font-size:1.2rem">订单号：47242945305 下单时间：2017-12-12 10:09</a></div>
+<div class="zyg">
+	<div class="zyg_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div>茅台品牌经典原浆</div>
+		<p>￥1000</p>
+	</div>
+</div>
+<div class="sfks">共1件商品&nbsp;&nbsp;实付款：<span>10000元</span></div>
+<div class="lgdd"><a href="" class="zsb">申请售后</a></div>
+-->
+<input id="member" type="hidden" value="abc" />
+<input id="userName" type="hidden" value="bigjian" />
+<input id="userImage" type="hidden" value="superman.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+
+<script type="text/javascript" >
+
+mui.init();
+$(document).ready(function(){ 
+	var curUrl=window.location.href;
+	var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+    userName=decodeURI(userName);
+    var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+    userImage=decodeURI(userImage);
+    var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+	$("#member").val(member);
+	$("#userName").val(userName);
+    $("#userImage").val(userImage);
+    $("#token").val(token);
+	
+	getMemberAfterSaleOrderList();
+});
+
+function getMemberAfterSaleOrderList()
+{
+    var member=$("#member").val();
+    var TOKEN=$("#token").val();
+	//后台请求
+	$.ajax({
+		url:path+'app/order/getMemberAfterSaleOrderList',
+		type: "GET",
+		data:{TOKEN:TOKEN},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		//processData: false,
+		//timeout: 2000,
+		success: function (data) {
+			setAfterSaleOrderList(data);
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+			mui.alert("加载数据错误");
+		}
+	});
+}
+
+function setAfterSaleOrderList(data){
+        if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtml="";
+		if(result.length>0){
+			$.each(result, function (index, val) { 
+				var strhead="";
+                //var goodGuid="";
+		        var ordertime=getSmpFormatDateByLong(val.createTime,true);
+				strhead='<div class="sysj" style="font-size:1.2rem">订单号：'+val.sn+' 下单时间：'+ordertime+'</a></div>';
+				var items=val.orderItems;
+				//var count=0;
+				for(var i=0;i<items.length;i++){
+					var stritem='<div class="zyg">\
+                                <div class="zyg_left"><img src="'+proImg+items[i].image+'" alt=""></div>\
+                                <div class="zyg_right">\
+                                    <div>'+items[i].name+'</div>\
+                                    <p>￥'+items[i].price+'</p>\
+                                </div>\
+                            </div>';
+                    var obj=new Object();
+					obj.name=items[i].name;
+					obj.image=items[i].image;
+					obj.price=items[i].price;
+                    obj.goodGuid=items[i].goodGuid;
+                    obj.quantity=items[i].quantity;
+                    obj.sn=val.sn;
+                    var showInfos=JSON.stringify(obj);
+				    var strorder='<div class="sfks">共'+items[i].quantity+'件商品&nbsp;&nbsp;实付款：<span>'+items[i].price+'元</span></div>\
+                          <div class="lgdd">\
+                             <a href="javascript:void(0);" onclick="gotoShouhou(this)" class="zsb">申请售后</a>\
+                             <!--<input type="hidden" id='+items[i].id+' goodGuid="'+items[i].goodGuid+'" sn="'+val.sn+'" quantity='+items[i].quantity+' fee='+items[i].price+' value=\''+showInfos+'\' />-->\
+                             <input type="hidden" id='+items[i].id+' value=\''+showInfos+'\' />\
+                          </div>';
+				    var itemhtml=strhead+stritem+strorder;
+                    strhtml=strhtml+itemhtml;
+				}
+                
+                /*showInfos=JSON.stringify(obj);
+				strorder='<div class="sfks">共'+count+'件商品&nbsp;&nbsp;实付款：<span>'+val.fee+'元</span></div>\
+                          <div class="lgdd">\
+                             <a href="javascript:void(0);" onclick="gotoShouhou(this)" class="zsb">申请售后</a>\
+                             <input type="hidden" id='+val.id+' goodGuid="'+goodGuid+'" sn="'+val.sn+'" quantity='+count+' fee='+val.fee+' value="'+showInfos+'" />\
+                          </div>';
+				strhtml=strhtml+strhead+stritem+strorder;*/
+			});
+			console.log(strhtml);
+			//
+			if($(".sysj")!=null&&$(".sysj")!=undefined){
+			   $(".sysj").remove();
+			}
+			if($(".zyg")!=null&&$(".zyg")!=undefined){
+			   $(".zyg").remove();
+			}
+			if($(".sfks")!=null&&$(".sfks")!=undefined){
+			   $(".sfks").remove();
+			}
+			if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+			   $(".lgdd").remove();
+			}
+			$("#ddhead").after(strhtml);
+		}
+	}
+}
+
+function changebanner(e){
+    var member=$("#member").val();
+     //清除列表
+     if($(".sysj")!=null&&$(".sysj")!=undefined){
+        $(".sysj").remove();
+     }
+     if($(".zyg")!=null&&$(".zyg")!=undefined){
+        $(".zyg").remove();
+     }
+     if($(".sfks")!=null&&$(".sfks")!=undefined){
+        $(".sfks").remove();
+     }
+     if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+        $(".lgdd").remove();
+     }
+    if($(e).attr("id")=="afterSalebanner"){
+       $(e).attr("class","colorl");
+	   $("#changebanner").attr("class","");
+       $("#rebackbanner").attr("class","");
+        //获取售后申请
+	   getMemberAfterSaleOrderList(member);
+	}else if($(e).attr("id")=="changebanner"){
+       $(e).attr("class","colorl");
+	   $("#afterSalebanner").attr("class","");
+       $("#rebackbanner").attr("class","");
+        //获取售后换货申请记录
+        getOrderReturnSuccessListByType(member,2);
+	}else if($(e).attr("id")=="rebackbanner"){
+       $(e).attr("class","colorl");
+	   $("#afterSalebanner").attr("class","");
+       $("#changebanner").attr("class","");
+        //获取售后退货申请记录
+        getOrderReturnSuccessListByType(member,1);
+	}
+}
+//获取售后申请记录
+function getOrderReturnSuccessListByType(member,type){
+    var member=$("#member").val();
+    var TOKEN=$("#token").val();
+	//后台请求
+	$.ajax({
+		url:path+'app/order/getOrderReturnSuccessListByType',
+		type: "GET",
+		data:{TOKEN:TOKEN,type:type},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		//processData: false,
+		//timeout: 2000,
+		success: function (data) {
+			setOrderReturnSuccessList(data);
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+            mui.alert("获取售后申请记录失败")
+		}
+	});
+}
+
+  function setOrderReturnSuccessList(data){
+        if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtml="";
+		if(result.length>0){
+			$.each(result, function (index, val) { 
+				var strhead="";
+		        var ordertime=getSmpFormatDateByLong(val.goods.createTime,true);
+				strhead='<div class="sysj" style="font-size:1.2rem">下单时间：'+ordertime+'</a></div>';
+                var stritem='<div class="zyg">\
+                                    <div class="zyg_left"><img src="'+proImg+val.goods.image+'" alt=""></div>\
+                                    <div class="zyg_right">\
+                                        <div>'+val.goods.name+'</div>\
+                                        <div>说明:'+val.goods.remark+'</div>\
+                                        <p>￥'+val.price+'</p>\
+                                    </div>\
+                                </div>';
+                var strorder='<div class="sfks">共'+val.quantity+'件商品&nbsp;&nbsp;实付款：<span>'+val.price+'元</span></div>';
+                var itemhtml=strhead+stritem+strorder;
+                strhtml=strhtml+itemhtml;	
+			});
+			console.log(strhtml);
+			//
+	        if($(".sysj")!=null&&$(".sysj")!=undefined){
+            $(".sysj").remove();
+            }
+            if($(".zyg")!=null&&$(".zyg")!=undefined){
+                $(".zyg").remove();
+            }
+            if($(".sfks")!=null&&$(".sfks")!=undefined){
+                $(".sfks").remove();
+            }
+            if($(".lgdd")!=null&&$(".lgddwxts")!=undefined){
+                $(".lgdd").remove();
+            }
+			$("#ddhead").after(strhtml);
+		}
+	}
+}
+
+function gotoShouhou(e){
+    var info=$($(e).parent()).find("input")[0];
+    //var goodGuid=$(info).attr("goodGuid");
+    //var quantity=$(info).attr("quantity");
+    //var sn=$(info).attr("sn");
+    //var fee=$(info).attr("fee");
+    var token=$("#token").val();
+    var showInfos=$(info).val();
+    var member=$("#member").val();
+    var userName=$("#userName").val();
+    var userImage=$("#userImage").val();
+    window.location.href="sqsh.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&showInfos="+encodeURI(showInfos);
+}
+
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+
+function goback(){
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+    window.location.href='order.html?member='+member+'&userName='+encodeURI(userName)+'&userImage='+encodeURI(userImage)+"&token="+token+"&item=all"
+}
+</script>
+
+</body>
+</html>

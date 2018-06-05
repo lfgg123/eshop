@@ -1,0 +1,165 @@
+@CHARSET "UTF-8";
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+}
+body {
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", "FontAwesome", sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;
+}
+
+
+.navbar-default {
+  background: #3448a1 url(../image/top-bar.jpg) no-repeat;
+  border-bottom:3px solid #1790ed
+}
+.navbar-default .navbar-brand {
+  color: #eeeeee;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+
+.navbar-default .navbar-nav > li > a {
+  color: #eeeeee;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #fff;
+  background-color: rgba(0,0,0,0.1);
+}
+
+
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+  color: #fff;
+  background-color: rgba(0,0,0,0.1);
+}
+
+
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #eeeeee;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: /*#333*/#fff;
+    background-color: transparent;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #555;
+    background-color: #e7e7e7;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+    color: #ccc;
+    background-color: transparent;
+  }
+}
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus{ background-color:#00559d; font-size: 18px;  padding:30px 15px;}
+.nav-sidebar li a i{ margin-right: 10px }
+.nav-sidebar > li > a{ padding:15px 15px; color: #fff }
+.nav-sidebar > li > a:hover,
+.nav-sidebar > li > a:focus {
+  text-decoration: none;
+  background-color: #1790ed;
+  color: #fff
+}
+.nav-sidebar > li.focus > a {
+  text-decoration: none;
+  background-color: #4da5ef;
+
+}
+@charset "utf-8";
+body { padding-top: 0px; width: auto; background-color: #F9F9F9; }
+
+
+
+body::-webkit-scrollbar { width: 4px; height:4px; background-color: #F5F5F5; border-radius: 10px; }
+body::-webkit-scrollbar-track { background-color: #F5F5F5; border-radius: 10px; }
+body::-webkit-scrollbar-thumb { background-color: #CCC; border-radius: 10px; }
+
+a { color: #666; text-decoration: none; }
+
+.J-form-line {}
+.J-form-line .form-group { margin:5px; }
+.J-form-line .input-group { margin:5px; }
+.J-form-line .form-group .control-label { font-weight: normal; }
+.J-form-line .form-group .form-control {  }
+
+.J-navbar-default { background-color:transparent; border-left:none; border-top:none; border-right:none; }
+
+.panel-heading,
+.panel-footer { /*min-height:30px;*/ }
+.panel-heading .J-title,
+.panel-footer .J-title { position: relative; display: inline-block; vertical-align: middle;line-height:30px; margin-right:25px; }
+.panel-heading .pagination-sm,
+.panel-footer .pagination-sm { position: relative; display: inline-block; vertical-align: middle;line-height:30px; }
+
+.J-table1 { margin-bottom:0px; }
+.J-table1 th { vertical-align:middle !important; text-align:none; }
+.J-table1 td { vertical-align:middle !important; }
+.J-table1 td.null_information { height:120px; color:#999; vertical-align:middle !important; }
+
+
+
+.pagination>li>a,
+.pagination>li>span { color: #666; }
+
+@media (min-width: 480px){
+  .form-inline .form-group {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+.J-pagination { line-height: 1.5em; font-size: 12px; list-style-image: none; list-style-type: none; }
+.J-pagination li { display: inline-block; margin-left: 5px; }
+.J-pagination li .form-control { text-align: center; width: auto; margin-top: 0px; margin-right: 3px; margin-bottom: 0px; margin-left: 3px; padding-right: 5px; padding-left: 5px; }
+.J-pagination li a { border-radius: 3px; display: inline-block; border: 1px solid #CCC; padding-right: 10px; padding-left: 10px; padding-top: 5px; padding-bottom: 5px; text-decoration: none; background-color: #FFFFFF; }
+.J-pagination li a:hover { color: #333; background-color: #e6e6e6; border-color: #adadad; }
+
+
+
+
+.J-breadcrumb { box-shadow:0 0 5px #CCC; clear: both; margin-bottom: 15px; color: #999999; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #DDDDDD; background-color: #FFFFFF; width: 100%; top: 0px; left: 0px; right: 0px; z-index: 1000; }
+.J-breadcrumb-body { clear: both; height: 45px; line-height: 45px; font-size: 12px; color: #999999; padding: 0px; margin-top: 0px; margin-right: 15px; margin-bottom: 0px; margin-left: 15px; }
+.J-breadcrumb-body .title { font-size: 14px; color: #333333; padding: 0px; float: left; margin-top: 0px; margin-right: 35px; margin-bottom: 0px; margin-left: 15px; line-height: 45px; }
+.J-breadcrumb-body .bread { color: #666; margin: 0px; padding: 0px; }
+.J-breadcrumb-body .bread span { color: #DDD; margin-right: 5px; margin-left: 5px; }
+.J-breadcrumb { 
+background-color: #FFF;
+background-image: -moz-linear-gradient(top, #FFFFFF, #F7F7F7);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFF), color-stop(1, #F7F7F7));
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F7F7F7', GradientType='0');
+-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F7F7F7');
+background-image: linear-gradient(to bottom, #FFFFFF 0, #F7F7F7 100%);
+}
+.J-breadcrumb-fixed { position:fixed; left:0px; top:0px; right:0px; }
+
+.pagination{margin:0px}
+.padding_t_5{margin-bottom:5px}
+
+.img_upload .row{font-size: 12px}
+.img_upload .exam{margin-top: 20px}

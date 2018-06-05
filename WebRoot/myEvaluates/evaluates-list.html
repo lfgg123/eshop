@@ -1,0 +1,167 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png" alt=""></a>我的评价<!-- <a class="headright">确定</a> --></div>
+<!--
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="shu_right">
+		<div>茅台品牌经典原浆</div>
+		<section><a href="">查看评价</a><a href="" class="zjpan">追加评价</a></section>
+	</div>
+</div>
+
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="shu_right">
+		<div>茅台品牌经典原浆</div>
+		<section><a href="">查看评价</a><a href="" class="zjpan">追加评价</a></section>
+	</div>
+</div>
+
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_21.png" alt=""></div>
+	<div class="shu_right">
+		<div>茅台品牌经典原浆</div>
+		<section><a href="">查看评价</a><a href="" class="zjpan">追加评价</a></section>
+	</div>
+</div>
+-->
+
+
+<input type="hidden" id="member" value="abc" />
+<input type="hidden" id="userName" value="testnick" />
+<input type="hidden" id="userImage" value="testnick.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+<!-- <script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script>  -->
+<script type="text/javascript">
+
+mui.init();
+  $(document).ready(function(){ 
+       var curUrl=window.location.href;
+       var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	   var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+	   userName=encodeURI(userName);
+	   var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+	   userImage=encodeURI(userImage);
+	   var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+
+       $("#member").val(member);
+	   $("#userName").val(username);
+	   $("#userImage").val(userImage);
+	   $("#token").val(token);
+       /*
+	   if(member!="noParam"){
+          getMemberGoodsComment();
+	   }else{
+		  mui.alert("请先回首页登录");
+	   }
+	   */
+	   getMemberGoodsComment();
+  });
+
+	function getMemberGoodsComment(){
+		//var member=$("#member").val();
+		var TOKEN=$("#token").val();
+		//后台请求
+		$.ajax({
+			url:path+'app/goods/getMemberGoodsComment',
+			type: "GET",
+			data:{TOKEN:TOKEN},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				setGoodsComments(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				mui.alert("获取评论出错");
+			}
+		});
+	}
+
+	function setGoodsComments(data){
+		if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtml="";
+		if(result!=null&&result.length>0){
+			$.each(result, function (index, val) { 
+				var str="";
+				var good=val.goods;
+				var image="";
+				var name="";
+				if(good!=null&&good!=undefined){
+                     image=good.image;
+					 name=good.name;
+				}
+				str='<div class="shuj">\
+							<div class="shuj_left"><img src="'+proImg+image+'" alt=""></div>\
+							<div class="shu_right">\
+								<div>'+name+'</div>\
+								<section><a href="javascript:void(0);" id='+val.id+' onclick="detailcomment(this)">查看评价</a>\
+								<a href="javascript:void(0);" id='+val.id+' tagname="'+name+'" tagimg="'+image+'" onclick="addcomment(this)" class="zjpan">追加评价</a></section>\
+							</div>\
+						</div>'
+				strhtml=strhtml+str;
+			});
+			console.log(strhtml);
+			//
+			if($(".shuj")!=null&&$(".shuj")!=undefined){
+                $(".shuj").remove();
+			}
+			$("#header").after(strhtml);
+		 }
+	 }
+  }
+  function detailcomment(e){
+	  var commentId=$(e).attr("id");
+	  var member=$("#member").val();
+	  var userName=$("#userName").val();
+	  var userImage=$("#userImage").val();
+	   var token=$("#token").val();
+	  //window.location.href="evaluates.html?commentId="+commentId;
+	  window.location.href="evaluates.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&commentId="+commentId;
+  }
+
+  function addcomment(e){
+	  var member=$("#member").val();
+	  var userName=$("#userName").val();
+	  var userImage=$("#userImage").val();
+	  var token=$("#token").val();
+      var commentId=$(e).attr("id");
+	  var goodName=$(e).attr("tagname");
+	  var goodImage=$(e).attr("tagimg");
+	  goodName=encodeURI(goodName);
+	  window.location.href="wdpj.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&commentId="+commentId+"&goodName="+encodeURI(goodName)+"&goodImage="+encodeURI(goodImage);
+	  //window.location.href="wdpj.html?commentId="+commentId+"&goodName="+goodName+"&goodImage="+goodImage;
+  }
+
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+</script> 
+</body>
+</html>

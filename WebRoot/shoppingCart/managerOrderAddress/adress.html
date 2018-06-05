@@ -1,0 +1,303 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../../css/style.css" type="text/css" rel="stylesheet" />
+	<!--  <link href="../css/swiper.css" type="text/css" rel="stylesheet" /> -->
+	 	<link href="../../css/green.css" type="text/css" rel="stylesheet" /> 
+       <!--<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>-->
+       <script type="text/javascript" src="../../js/jquery.js"></script>
+	   <script type="text/javascript" src="../../js/WeixinApi.js"></script>
+       <link href="../../css/mui.min.css" type="text/css" rel="stylesheet"/>
+       <script type="text/javascript" src="../../js/mui.min.js"></script>
+       <script type="text/javascript" src="../../js/path.js?a=222"></script>
+       <script type="text/javascript" src="../../js/swiper.js"></script>
+       <script type="text/javascript" src="../../js/icheck.js"></script> 
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../../images/fl_03.png" alt=""></a>收货地址<!-- <a class="headright">确定</a> --></div>
+<!--
+<div class="xzsh">
+	<div class="dzshr">收货人：<span>tel:173937493333</span></div>
+	<p class="dzdz"></p>
+</div>
+<ul class="skin skin-square moren" name="addressUl">
+    <li class="mr">
+      <span><input tabindex="11" onclick="setDefaultAddress(this,1)" type="radio" name="square-radio"></span>
+      <label>默认地址</label>
+    </li>
+    <li class="bj"><img src="../images/bs_03.png" alt=""  onclick="editAddress(this)"> 编辑</li>
+    <li class="sc"><img src="../images/bs_05.png" alt="" onclick="delAddress(this)"> 删除</li>
+</ul>
+
+
+<div class="xzsh">
+	<div class="dzshr">收货人：<span>173937493333</span></div>
+	<p class="dzdz">上海市松江区城区广富林路1000弄1000号1000室上海市松江区100室</p>
+</div>
+<ul class="skin skin-square moren" name="addressUl">
+    <li class="mr">
+      <span><input tabindex="11" type="radio" onclick="setDefaultAddress(this,1)" checked="checked" name="square-radio"></span>
+      <label>默认地址</label>
+    </li>
+    <li class="bj"><img src="../images/bs_03.png" alt="" onclick="editAddress(this)"> 编辑</li>
+    <li class="sc"><img src="../images/bs_05.png" alt="" onclick="delAddress(this)"> 删除</li>
+</ul>
+-->
+
+<div class="xjdz"><a href="javascript:void(0);" onclick="addAddress()"><img src="../../images/dzw_07.png" alt="">新建地址</a></div>
+
+<input type="hidden" id="member" value="abc" />
+<input type="hidden" id="userName" value=""/>
+<input type="hidden" id="userImage" value=""/>
+<input type="hidden"  id="token" value=""/>
+<input type="hidden"  id="backConfirmOrder" value=""/>
+<input type="hidden" id="currentLocation" value=""/>
+
+<script type="text/javascript">
+
+mui.init();
+      $(document).ready(function(){
+          var curUrl=window.location.href;
+          var param=curUrl.split('?')[1];
+		  var member=param.split('&')[0].replace("member=","");
+		  var userName=param.split('&')[1].replace("userName=","");
+          userName=decodeURI(userName);
+		  var userImage=param.split('&')[2].replace("userImage=","");
+          var token=param.split('&')[3].replace("token=","");
+          userImage=decodeURI(userImage);
+          $("#member").val(member);
+          $("#userName").val(userName);
+          $("#userImage").val(userImage);
+          $("#token").val(token);
+          $("#backConfirmOrder").val("../Confirm-order.html?"+curUrl.split("?")[1]);
+          /*
+          if(member!="noParam"){
+              getAddressList();
+              $('.skin-square input').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                    increaseArea: '20%'
+               });
+               $('.skin-square input').on('ifChecked', function(event){ //ifCreated 事件应该在插件初始化之前绑定 
+                    setDefaultAddress(this,1);
+               }); 
+          }else{
+			 mui.alert("请先在主页登录");
+		  }
+          */
+           getAddressList();
+           $('.skin-square input').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green',
+               increaseArea: '20%'
+           });
+           $('.skin-square input').on('ifChecked', function(event){ //ifCreated 事件应该在插件初始化之前绑定 
+               setDefaultAddress(this,1);
+           }); 
+      });
+      //设置默认地址
+      function setDefaultAddress(e,op){
+          if(op==1){
+              var aid=$(e).attr("aid");
+             var TOKEN=$("#token").val();
+             var guid=$(e).parent().parent().parent().attr("tag");//地址guid
+             var address=$(e).parent().parent().parent().attr("address");
+             var consignee=$(e).parent().parent().parent().attr("consignee");
+             var phone=$(e).parent().parent().parent().attr("phone");
+             var province=$("#"+guid).attr("province");
+             var city=$("#"+guid).attr("city");
+             var area=$("#"+guid).attr("area");
+             var isuse=$(e).attr("isuse");
+             var obj=new Object();
+             obj.address=address;
+             obj.consignee=consignee;
+             obj.phone=phone;
+             obj.province=$("#province").val();
+             obj.city=$("#city").val();
+             obj.area=$("#area").val();
+             obj.id=$("#aid").val();
+             obj.isuse=$("#isuse").val();
+             var url=path+"app/member/modifyAddress";
+             //var url="http://127.0.0.1:8087/app/member/modifyAddress";
+            $.ajax({
+                url:url,
+                type: "POST",
+                //data:{TOKEN:TOKEN,obj:obj},
+                data:{TOKEN:TOKEN,id:aid,consignee:consignee,city:city,area:area,province:province,address:address,phone:phone,isuse:isuse},
+                dataType: "JSON",
+                cache: false,
+                async: false,
+                success: function (data) {
+                    if (data!=null&&data.code==1) {
+                        //刷新页面	
+                        mui.alert("修改默认地址成功");				
+                        //alert("修改成功");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //alert(XMLHttpRequest.status);
+                    //alert(XMLHttpRequest.readyState);
+                    //刷新页面					
+                    //alert("修改成功");
+                    mui.alert("修改默认地址失败");
+                }
+            });
+            
+          }
+      }
+      //删除地址
+       function delAddress(el){
+           var guid=$(el).parent().attr("tag");
+           var aid=$(el).parent().attr("aid");
+           var btnArray = ['确认', '取消'];
+           mui.confirm('确定删除？',btnArray, function(e) {
+				if (e.index==1) {
+					//li.parentNode.removeChild(li);
+                    //cancelColl(elem);
+                    var cancelresult=delAddressFunc(aid);
+                    if(cancelresult=="success"){
+                        var tt=$(el).parent().parent();
+                        $(el).parent().parent().remove();
+                        $(document.getElementsByName(guid)[0]).remove();
+                        $("#"+guid).remove();
+                    }
+				} 
+			});
+       }
+
+  function delAddressFunc(id){
+        var url=path+"app/member/deleteAddress";
+            //var url="http://127.0.0.1:8087/app/member/deleteAddress";
+        $.ajax({
+            url:url,
+            type: "GET",
+            //data:{TOKEN:TOKEN,obj:obj},
+            data:{TOKEN:TOKEN,id:id},
+            dataType: "JSON",
+            cache: false,
+            async: false,
+            success: function (data) {
+                if (data!=null&&data.code==1) {
+                    //刷新页面	
+                    mui.alert("删除成功");				
+                    return "success";
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //alert(XMLHttpRequest.status);
+                //alert(XMLHttpRequest.readyState);
+                //刷新页面					
+                //alert("修改成功");
+                mui.alert("删除失败");
+                return "error";
+            }
+        });
+  }
+      //编辑地址
+      function editAddress(e){
+          var guid=$(e).parent().attr("tag");//地址guid
+          //var token=$("#token").val();
+          //var member=$("#member").val();
+          //var userName=$("#userName").val();
+          //var userImage=$("#userImage").val();
+
+          var obj=new Object();
+          obj.aid=$(e).parent().attr("aid");
+          obj.address=$(e).parent().attr("address");
+          obj.consignee=$(e).parent().attr("consignee");
+          obj.phone=$(e).parent().attr("phone");
+          obj.province=$("#"+guid).attr("province");
+          obj.city=$("#"+guid).attr("city");
+          obj.area=$("#"+guid).attr("area");
+          obj.isuse=$("#"+guid).attr("isuse");
+          var tmpJson=encodeURI(JSON.stringify(obj));
+          var urlParam=window.location.href.split("?")[1];
+          window.location.href="bj-adress.html?"+urlParam+"&tmpJson="+tmpJson;
+          //window.location.href="bj-adress.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&aid="+aid+"&address="+address+"&consignee="+consignee+"&phone="+phone+"&provice="+province+"&city="+city+"&area="+area+"&isuse="+isuse;
+          //window.location.href="bj-adress.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&tmpJson="+tmpJson;
+      }
+      function getAddressList(){
+            //var member=$("#member").val();
+            var TOKEN=$("#token").val();
+            var url=path+"app/member/getAddressList";
+            //后台请求
+            $.ajax({
+              url:url,
+              type: "GET",
+              data:{TOKEN:TOKEN},
+              dataType: "JSON",
+              cache: false,
+              async: false,
+              success: function (data) {
+                  if (data!=null&&data.code==1) {
+                    //刷新页面					
+                      var result=data.result;
+                      var strhtml = "";
+                      if(result!=null&&result.length>0){
+                            $.each(result, function (index, val) {
+                                var ck="unchecked";
+                                if(val.isuse==1){
+                                    ck="checked";
+                                }
+                                var str='<div class="xzsh" name='+val.guid+'>\
+                                          <div class="dzshr">收货人：'+val.consignee+'<span>'+val.phone+'</span></div>\
+                                          <p class="dzdz">'+val.address+'</p>\
+                                        </div>\
+                                        <ul class="skin skin-square moren" name="addressUl" >\
+                                              <li class="mr"  tag='+val.guid+' address="'+val.address+'" consignee="'+val.consignee+'" phone="'+val.phone+'">\
+                                                <span><input tabindex="11" aid='+val.id+' isuse='+val.isuse+' type="radio" checked='+ck+' onclick="setDefaultAddress(this,0)" name="square-radio"></span>\
+                                                <label>默认地址</label>\
+                                              </li>\
+                                              <li class="bj" aid='+val.id+' tag="'+val.guid+'" address="'+val.address+'" consignee="'+val.consignee+'" phone="'+val.phone+'" ><img src="../../images/bs_03.png" alt="" onclick="editAddress(this)"><span onclick="editAddress(this)"> 编辑</span></li>\
+                                              <li class="sc" aid='+val.id+' tag="'+val.guid+'" address="'+val.address+'" consignee="'+val.consignee+'" phone="'+val.phone+'"><img src="../../images/bs_05.png" alt="" onclick="delAddress(this)"><span onclick="delAddress(this)"> 删除</span></li>\
+                                          </ul>';
+                                  strhtml=strhtml+str;
+                                   var addressStr='<input type="hidden" ck='+ck+' isuse='+val.isuse+' class="addressClass" id="'+val.guid+'" province="'+val.province+'" city="'+val.city+'" area="'+val.area+'" />';
+                                   $("#member").after(addressStr);
+                                  
+                            });
+                            //拼接
+                            $(".xzsh").remove();
+                            var addressUls=document.getElementsByName("addressUl");
+                            for(var i=addressUls.length-1;i>=0;i--){
+                               $(addressUls[i]).remove();
+                            }
+                            $("#header").after(strhtml);
+                            //选中默认项
+                            var radios=document.getElementsByName("square-radio");
+                            for(var k=0;k<radios.length;k++){
+                                var jck=$(radios[k]).attr("checked");
+                                if(jck=="checked"){
+                                    $(radios[k]).trigger("click");
+                                }
+                            }
+                        }  
+                    }
+              },
+              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  //alert(XMLHttpRequest.status);
+                  //alert(XMLHttpRequest.readyState);
+                  //刷新页面					
+                  mui.alert("加载地址列表失败");
+                }
+          });
+    }
+  function addAddress(){
+        //var member=$("#member").val();
+        //var userName=$("#userName").val();
+        //var userImage=$("#userImage").val();
+        //var token=$("#token").val();
+        var urlParam=window.location.href.split("?")[1];
+        window.location.href="addAdress.html?"+urlParam;
+  }
+function goHomePage(){
+	window.location.href=$("#backConfirmOrder").val();
+}
+  </script>
+</body>
+</html>

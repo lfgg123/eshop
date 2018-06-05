@@ -1,0 +1,206 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<!--  <link href="../css/swiper.css" type="text/css" rel="stylesheet" /> -->
+	<link href="../css/green.css" type="text/css" rel="stylesheet" /> 
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../js/WeixinApi.js"></script>
+    <script type="text/javascript" src="../js/citylist.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.1&key=e8496e8ac4b0f01100b98da5bde96597&plugin=AMap.Geocoder"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="gotoAddress()"><img src="../images/fl_03.png" alt=""></a>收货地址<!--<a class="headright" href="javascript:void(0)" onclick="delAddress()">删除</a>--></div>
+
+<div class="bjshr" style="margin-top:0.5rem">收货人：<input type="text" id="consignee" value=""></div>
+<div class="bjshr">联系方式：<input type="text" id="phone" value=""></div>
+
+<div class="bjshr">所在城区：
+	<select name="" id="province">
+		<!--<option value="">山东省</option>
+		<option value="">广东省</option>
+		<option value="">四川省</option>-->
+	</select>
+	<select name="" id="city">
+		<!--<option value="">临沂市</option>
+		<option value="">莱芜市</option>
+		<option value="">青岛市</option>-->
+	</select>
+	<select name="" id="area">
+		<!--<option value="">兰陵县</option>
+		<option value="">郯城县</option>
+		<option value="">河东区</option>-->
+	</select>
+</div>
+<div class="bjshr" >详细地址：<input type="text" id="address" value=""></div>
+<div class="bjshr" >是否为默认地址：<select name="" id="isuse">
+		<option value=1>是</option>
+		<option value=0>否</option>
+	</select></div>
+
+<div class="xjdz"><a href="javascript:void(0)" onclick="addAddress()">保存</a></div>
+<div style="height: 4.5rem;"></div>
+<input type="hidden" id="member" value="" />
+<input type="hidden" id="userName" value="" />
+<input type="hidden" id="userImage" value="" />
+<input type="hidden"  id="token" value=""/>
+<input type="hidden"  id="lng" value=""/>
+<input type="hidden"  id="lat" value=""/>
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script> 
+<script type="text/javascript">
+mui.init();
+	var geocoder;
+    AMap.service('AMap.Geocoder',function(){//回调函数
+        //实例化Geocoder
+        geocoder = new AMap.Geocoder();
+        //TODO: 使用geocoder 对象完成相关功能
+    });
+	$(document).ready(function(){
+		/*$('.skin-square input').iCheck({
+		checkboxClass: 'icheckbox_square-green',
+		radioClass: 'iradio_square-green',
+		increaseArea: '20%'
+		});*/
+		var curUrl=window.location.href;
+        var param=curUrl.split('?')[1];
+		var member=param.split('&')[0].replace("member=","");
+		var userName=param.split('&')[1].replace("userName=","");
+        userName=decodeURI(userName);
+		var userImage=param.split('&')[2].replace("userImage=","");   
+        var token=param.split('&')[3].replace("token=","");  
+        userImage=decodeURI(userImage); 
+        $("#member").val(member);
+        $("#userName").val(userName);
+        $("#userImage").val(userImage);
+        $("#token").val(token);
+        //初始化省市区
+        setInitialAddress(province,city,area);
+        try {
+            var lat=param.split('&')[4].replace("lat=",""); 
+            var lng=param.split('&')[5].replace("lng=","");   
+            $("#lng").val(lng);
+            $("#lat").val(lat);
+            getAddr();
+        } catch (error) {
+            mui.alert("请确认开启手机定位");
+            //getAddr();
+        }
+	});
+    function getAddr(){
+        var latitude = document.getElementById("lat").value;
+        var longitude = document.getElementById("lng").value;
+        var lnglatXY=[longitude,latitude];//地图上所标点的坐标
+        geocoder.getAddress(lnglatXY, function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+                var address = result.regeocode.formattedAddress;
+                var province=result.regeocode.addressComponent.province.replace("市","").replace("省","");
+                var city=result.regeocode.addressComponent.city.replace("市","");
+                if(city==""){
+                    city=province;
+                }
+                var district=result.regeocode.addressComponent.district;
+                //document.getElementById("result").innerHTML=address;
+                //$('#province option[text="'+province+'"]').attr("selected",true);
+                //$("#yyt option:contains('5')").attr("selected", true);
+                $("#province").val(province);
+                $("#province").trigger("change");
+                $("#city").val(city);
+                $("#city").trigger("change");
+                $("#area").val(district);
+                $("#address").val(address);
+            }else{
+                //获取地址失败
+                mui.alert("经纬度坐标定位失败");
+            }
+        }); 
+    }
+
+    function setInitialAddress(province,city,area){
+   
+        $("#province").find("option[value='"+province+"']").attr("selected","selected");
+        $("#province").trigger("change");
+        $("#city").find("option[value='"+city+"']").attr("selected","selected");
+        $("#city").trigger("change");
+        $("#area").find("option[value='"+area+"']").attr("selected","selected");
+    }
+	function addAddress(){
+        var TOKEN=$("#token").val();
+        var member=$("#member").val();
+        var address=$("#address").val();
+		var consignee=$("#consignee").val();
+		var phone=$("#phone").val();
+        var isuse=$("#isuse").val();
+        var obj=new Object();
+        obj.address=address;
+        obj.consignee=consignee;
+        obj.phone=phone;
+        obj.province=$("#province").val();
+        obj.city=$("#city").val();
+        obj.area=$("#area").val();
+        obj.member=member;
+         obj.isuse=Number(isuse);
+        //判断城区
+        if(obj.province==null||obj.province==""||obj.province==undefined){
+            mui.alert("请添加省份");
+            return false;
+        }
+         if(obj.city==null||obj.city==""||obj.city==undefined){
+            mui.alert("请添加城市");
+            return false;
+        }
+         if(obj.area==null||obj.area==""||obj.area==undefined){
+            mui.alert("请添加县区");
+            return false;
+        }
+        var url=path+"app/member/addAddress";
+        //后台请求
+        $.ajax({
+            url:url,
+            type: "POST",
+            data:{TOKEN:TOKEN,consignee:obj.consignee,address:obj.address,phone:obj.phone,province:obj.province,city:obj.city,area:obj.area,member:obj.member,isuse:obj.isuse},
+            dataType: "JSON",
+            cache: false,
+            async: false,
+            success: function (data) {	
+                if (data!=null&&data.code==1) {
+                  //刷新页面					
+                  //alert("添加成功");
+                  mui.alert("添加成功");
+                  gotoAddress();
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //alert(XMLHttpRequest.status);
+                //alert(XMLHttpRequest.readyState);
+                //刷新页面					
+                //alert("添加成功");
+                mui.alert("添加失败");
+            }
+        });
+	}
+
+     function gotoAddress(){
+          var member=$("#member").val();
+          var userName=$("#userName").val();
+          var userImage=$("#userImage").val();
+          var token=$("#token").val();
+          window.location.href="adress.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token;
+    }
+ </script>
+  <style>
+    .bjshr select{ border: 1px solid rgba(0, 0, 0, .2); padding:0 15px;line-height:40px;   height: 40px;}
+    #cl-toolbar{display:none}
+    </style>
+</body>
+</html>

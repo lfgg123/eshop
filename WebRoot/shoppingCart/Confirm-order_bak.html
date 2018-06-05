@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.1&key=e8496e8ac4b0f01100b98da5bde96597&plugin=AMap.Geocoder"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png"></a>确认订单<a class="headright"></a></div>
+<div class="shdz">
+	<div class="dwei" id="dwei">
+		<div>收货人：<span>电话:</span></div>
+		<p>地址:</p>
+	</div>
+</div>
+<div class="tiao" id="tiao"></div>
+
+<!--<div class="sdsj xzsj">送达时间 <span style="color:#333;width:130px;margin-top:5px" id="sendTime"><input type="text" onchange=timeChange(); style=" border: 0px;" name="start_date" id="start_date"  v-model="message" placeholder="选择配送时间" readonly="readonly"></span></div>-->
+<div class="sdsj xzsj">送达时间 <span style="color:#333" id="start_time">立即送达 （30分钟内）</span></div>
+<div class="wxts">温馨提示：订单需要在15分钟内支付，不然作废哦~</div>
+<div class="sdsj" style="background:none;background-color:#fff">配送费 <span id="freight">￥</span></div>
+<div class="sdsj">满减优惠 <span id="discount">￥</span></div>
+<div class="liuy"><textarea placeholder="给商家留言（选填，20字以内）" style="width:100%;" id="custmorMessage" ></textarea></div>
+<div class="sdsj" style="background:none;background-color:#fff">可用酒币抵 <a style="color:#f12222" id="jiubiCash">￥6.00</a><span style="margin:0" id="isdikou" tag=1 onclick="changeIsdikou(this)"><img src="../images/qr_15.png" ></span><span id="jiubi"></span></div>
+<div class="sdsj" style="background:none;background-color:#fff">匿名购买<span style="margin:0" id="isnee" tag=1 onclick="changeIsnee(this)"><img src="../images/qr_15.png"></span></div>
+
+<!--<div class="sfk">实付款：<span id="fee">￥</span><button type="button" style="display: inline-block;" onclick="confirmOrder()">确认订单</button></div>-->
+<div class="sfk">实付款：<span id="fee">￥</span><a href="javascript:void(0);" style="display:inline-block;" onclick="judgeConfirmOrder()">确认订单</a></div>
+<div class="foots"></div>
+
+<div class="xzdz">
+	<div class="psz" id="psz">配送至<img src="../images/cha_03.png" alt=""></div>
+	<!--<div class="psz" onclick="managerAddress()">管理收货地址<img src="../images/cha_03.png" alt=""></div>-->
+	<div class="psz" onclick="managerAddress()">管理收货地址</div>
+</div>
+<div class="sdtk">
+	<div>送达时间(今天) <span class="cha"><img src="../images/cha_03.png"></span></div>
+	<div class="date">
+		<!--
+		<ul class="date_left">
+			<li class="zhuse">今天</li>
+			<li>09.30</li>
+			<li>10.30</li>
+			<li>11.30</li>
+			<li>12.01</li>
+			<li>12.02</li>
+			<li>12.03</li>
+			<li>12.04</li>
+		</ul>
+		-->
+		<ul class="date_left" style="width:100%">
+			<li class="zhuse">30分钟内</li>
+			<li>08:30-09:00</li>
+			<li>09:00-09:30</li>
+			<li>09:30-10:00</li>
+			<li>10:00-10:30</li>
+			<li>10:30-11:00</li>
+			<li>11:00-11:30</li>
+			<li>11:30-12:00</li>
+			<li>12:00-12:30</li>
+			<li>12:30-13:00</li>
+			<li>13:00-13:30</li>
+			<li>13:30-14:00</li>
+			<li>14:00-14:30</li>
+			<li>14:30-15:00</li>
+			<li>15:00-15:30</li>
+			<li>15:30-16:00</li>
+			<li>16:00-16:30</li>
+			<li>16:30-17:00</li>
+			<li>17:00-17:30</li>
+			<li>17:30-18:00</li>
+			<li>18:00-18:30</li>
+			<li>18:30-19:00</li>
+			<li>19:00-19:30</li>
+			<li>19:30-20:00</li>
+			<li>20:00-20:30</li>
+			<li>20:30-21:00</li>
+		</ul>
+	</div>
+	<div class="quer"><a href="">确认</a></div>
+</div>
+<div class="zhezhao"></div>	
+
+<!-- 不在配送范围内 -->
+<!-- <div class="bzps">
+	<div>地址不在配送范围内</div>
+	<p>地址不在配送范围内，请选择其他在配送范围内的地址!</p>
+	<a href="">确定</a>
+</div>
+<div class="zhezhao"></div> -->
+<!-- 不在配送范围内{"member":"fasf","province":"fwefwef","wine":30}   [{"goodGuid":"jtyjt","price":4232,"quantity":3}] -->
+<input type="hidden" id="userName" value=""/>
+<input type="hidden" id="userImage" value=""/>
+<input type="hidden" id="token" value=""/>
+<input type="hidden" id="member" value="abc"/>
+<input type="hidden" id="cartItems" value=""/>
+<input type="hidden" id="goodGuid" value=""/>
+<input type="hidden" id="quantity" value=1/>
+<!--<input type="hidden" id="orderInfo" value='{"province":"吉林省","city":"吉林市","area":"通化县","address":"吉林市通化县南阳大街40号","consignee":"测试员","phone":"18526378467"}'/>-->
+<input type="hidden" id="orderInfo" value=''/>
+<input type="hidden" id="goods" value=''/>
+<!--<input type="hidden" id="goods" value='[{"goodGuid":"fewr8934fre","price":458,"quantity":2,"goodName":"茅台测试1","id":23},{"goodGuid":"fewr8934fre","price":356,"quantity":2,"goodName":"茅台测试2","id":29}]'/>-->
+<!--<input type="hidden" id="sendTime" value=""/>-->
+<input type="hidden" id="province" value=""/>
+<input type="hidden" id="city" value=""/>
+<input type="hidden" id="area" value=""/>
+
+<!-- 隐藏文本 -->
+<input type="hidden" id="address" value="">
+<input type="hidden" id="consignee" value="">
+<input type="hidden" id="phone" value="">
+
+<script type="text/javascript">
+var geocoder;
+AMap.service('AMap.Geocoder',function(){//回调函数
+	//实例化Geocoder
+	geocoder = new AMap.Geocoder();
+	//TODO: 使用geocoder 对象完成相关功能
+});
+mui.init();
+$(document).ready(function(){ 
+
+	$('.xzdz').hide();
+	$('.shdz').click(function(){
+		$('.xzdz').slideDown();
+		$('.zhezhao').show();
+	});
+	$('#psz img').click(function(){
+		$('.xzdz').hide();
+		$('.zhezhao').hide();
+	});
+
+	var curUrl=window.location.href;
+	var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+	userName=decodeURI(userName);
+	var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+	userImage=decodeURI(userImage);
+	var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+	
+	$("#token").val(token);
+	$("#member").val(member);
+	$("#userName").val(userName);
+	$("#userImage").val(userImage);
+	
+	if(curUrl.indexOf("cartItems")>=0){
+		var cartItems=curUrl.split('?')[1].split('&')[4].replace("cartItems=","");
+		$("#cartItems").val(decodeURI(cartItems));
+		//绑定默认的收货地址和收件人
+		getDefaultAddress();
+		//绑定满减金额,酒币,配送费,以及货品列表
+		confirmOrderGoods();
+	}else{
+		//商品立即购买
+		var goodGuid=curUrl.split('?')[1].split('&')[4].replace("goodGuid=","");
+		var quantity=curUrl.split('?')[1].split('&')[5].replace("quantity=","");
+		var address=curUrl.split('?')[1].split('&')[6].replace("address=","");
+		address=decodeURI(address);
+		$("#goodGuid").val(goodGuid);
+		$("#quantity").val(quantity);
+		//if(address!=null&&address!=""){
+			//$("#address").html("地址:"+address);
+		//}
+		getDefaultAddress();
+		buyNow();
+	}
+	$(".date_left li").click(function(){
+         var test=$(this).html();
+		 $("#start_time").html(test);
+		 $('.zhezhao').hide();
+		 $('.sdtk').hide();
+	});
+});
+	
+	$(function(){
+		/*
+		$('.zhezhao').hide();
+		$('.sdtk').hide();
+		$('.xzsj').click(function(){
+			$("#start_date").click();
+		});
+		
+		$(".lcalendar_finish").click(function(){
+			var ymd = $("#start_date").val();
+			alert(ymd);
+		});
+		*/
+		$('.zhezhao').hide();
+		$('.sdtk').hide();
+		$('.xzsj').click(function(){
+			$('.zhezhao').show();
+			$('.sdtk').slideDown();
+		});
+		$('.cha').click(function(){
+			$('.zhezhao').hide();
+			$('.sdtk').hide();
+		});
+	});
+ //获取配送的经纬度
+ function getLocation(){
+        var addr=$("#address").val();
+		//addr="上海市松江区广富林路600弄9号楼";
+        geocoder.getLocation(addr, function(status, result) {
+			if (status === 'complete' && result.info === 'OK') {
+				var curlat=result.geocodes[0].location.lat;
+				var curlng=result.geocodes[0].location.lng;
+				//TODO:获得了有效经纬度，可以做一些展示工作
+				//比如在获得的经纬度上打上一个Marker
+				judgeSendCondition(curlat,curlng)
+			}else{
+				//获取经纬度失败
+				mui.alert("获取经纬度失败");
+			}
+		}); 
+    }
+	
+  function setInitSerliazeCartData(data){
+       if (data!=null&&data.code==1) {
+			var result=data.result;
+			var goods=new Array();
+			if(result.orderGoods.length==undefined){//立即购买
+				var objtmp=new Object();
+				objtmp.price=result.orderGoods.price;
+				objtmp.quantity=result.orderGoods.quantity;
+				objtmp.goodGuid=result.orderGoods.guid;
+				objtmp.goodName=result.orderGoods.name;
+				objtmp.image=result.orderGoods.image;
+				goods.push(objtmp);
+			}else{
+				var orderGoods=result.orderGoods;
+                for(var j=0;j<orderGoods.length;j++){//购物车购买
+					var objtmp=new Object();
+					objtmp.price=orderGoods[j].price;
+					objtmp.quantity=orderGoods[j].quantity;
+					objtmp.goodGuid=orderGoods[j].goodGuid;
+					objtmp.goodName=orderGoods[j].goodName;
+					objtmp.image=orderGoods[j].image;
+					goods.push(objtmp);
+				}
+			}
+			var strdata=JSON.stringify(goods);	
+			$("#goods").val(strdata);
+		}
+  }
+  //初始化绑定数据
+  function initialBingData(data){
+        //getUserInfo();
+		//序列化orderInfo数据
+        serlizeDataOrderInfo();
+		setInitSerliazeCartData(data);
+  }
+//确认提交订单
+function judgeConfirmOrder(){
+	getLocation();
+}
+//根据经纬度判断配送条件
+function judgeSendCondition(curlat,curlng){
+	var TOKEN=$("#token").val();
+	var lat=curlat+"";
+	var lon=curlng+"";
+	var url=path+"app/systemconfig/get919StoresInDeliveryArea";
+	$.ajax({
+		url:url,
+		type: "POST",
+		data:{TOKEN:TOKEN,lat:lat,lon:lon},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+		   if (data!=null&&data.code==1) {
+	           var result=data.result;
+			   if(result!=null&&result.length>0){
+				   //确认提交订单
+				   confirmOrder();
+			   }
+		   }else{
+			   mui.alert("很抱歉，订单超出门店配送范围");
+		   }
+	},
+	error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//刷新页面	
+			mui.alert("配送范围定位失败");	
+		 } 
+	});
+}
+
+function confirmOrder(){
+    //验证
+	if($("#orderInfo").val()==""||$("#goods").val()==""){
+		mui.alert("抱歉货品失效");
+		return false;
+	}
+    if($("#start_time").html()==""){
+		//alert("请确认送货时间");
+		mui.alert("请确认送货时间");
+		return false;
+	}
+	var orderInfo=new Object();
+     var orderInfoStr=$("#orderInfo").val();
+	 var goodsStr=$("#goods").val();
+     var TOKEN=$("#token").val();
+     var order=JSON.parse(orderInfoStr);   
+	 orderInfo.member=$("#member").val();
+	 orderInfo.province=order.province;
+	 orderInfo.area=order.area;
+	 orderInfo.city=order.city;
+	 orderInfo.address=order.address;
+	 orderInfo.consignee=order.consignee;
+	 orderInfo.fee=Number($("#fee").html().replace("￥",""));
+     orderInfo.freight=Number($("#freight").html().replace("￥",""));
+	 orderInfo.delivery_time=$("#start_time").html();
+	 orderInfo.cut=Number($("#discount").html().replace("￥",""));
+	 orderInfo.full_cut_deals=Number($("#discount").html().replace("￥",""));
+	 if($("#isdikou").attr("tag")==1){
+        orderInfo.wine=Number($("#jiubi").html());
+		//抵扣支付
+        //orderInfo.wine=Number($("#fee").html().replace("￥",""))-(wine/100);
+	 }else{
+		orderInfo.wine=0;
+	 }
+     orderInfo.isnee=$("#isnee").attr("tag");
+     orderInfo.phone=order.phone;
+	 
+	 var orderInfoStr=JSON.stringify(orderInfo);
+	 if(order.address==null||order.address.trim().replace("地址:","")==""){
+		var btnArray = ['确认', '取消'];
+		mui.confirm('请先添加您的收货地址',btnArray, function(e) {
+			if (e.index==1) {
+				var member=$("#member").val();
+				var userName=$("#userName").val();
+				var userImage=$("#userImage").val();
+				var token=$("#token").val();
+				window.location.href="../managerAddress/adress.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token;
+			}
+		});
+	 }else{
+         creatNewOrder(TOKEN,orderInfoStr,goodsStr);
+	 }
+}
+function creatNewOrder(TOKEN,orderInfoStr,goodsStr){
+    var url=path+"app/purchase/newOrder";
+	 //var url="http://127.0.0.1:8087/app/purchase/newOrder";
+	//后台请求
+	$.ajax({
+		url:url,
+		type: "POST",
+		data:{TOKEN:TOKEN,orderInfo:orderInfoStr,goods:goodsStr},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+		   if (data!=null&&data.code==1&&data.message!="库存不够") {
+	          //alert("提交订单完成");
+			  mui.alert("提交订单完成");
+			  var sn=data.result;
+			  //拿到返回订单编号,跳转到立即付款
+			  var member=$("#member").val();
+			  var userImage=$("#userImage").val();
+			  var userName=$("#userName").val();
+			  var token=$("#token").val();
+			  var fee=Number($("#fee").html().replace("￥",""));
+			  //var testurl="pay.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token+"&sn="+sn+"&fee="+fee;
+              window.location.href="pay.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token+"&sn="+sn+"&fee="+fee;
+		   }else{
+			   mui.alert("库存不够");
+		   }
+	},
+	error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//刷新页面	
+			mui.alert("提交订单失败");	
+		 } 
+	});
+}
+//确认送货时间
+/*
+function confirmTime(e){
+	var ymd = $("#start_time").html();
+	$("#sendTime").html(ymd);
+	$('.zhezhao').hide();
+	$('.sdtk').hide();
+}
+*/
+
+function choseTime(e){
+	var liTime=$(e).parent().find("li");
+	for(var k=0;k<liTime.length;k++){
+		$(liTime).attr("class","");
+	}
+	$(e).attr("class","zhuse");
+}
+//获取默认的收货地址信息
+function getDefaultAddress(){
+	var member=$("#member").val();
+	var TOKEN=$("#token").val();
+	var url=path+"app/member/getAddressList";
+	//后台请求
+	$.ajax({
+		url:url,
+		type: "GET",
+		data:{TOKEN:TOKEN},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+			//刷新页面					
+				var result=data.result;
+				var defaultstr="";
+				var strAddress="";
+				if(result!=null&&result.length>0){
+					$.each(result, function (index, val) {
+						//默认地址和收件人
+			             if(val.isuse==1){
+							$("#province").val(val.province);
+							$("#city").val(val.city);
+							$("#area").val(val.area);
+							
+							//<div>收货人：酒神<span>18877664589</span></div>
+							//	<p>上海市松江区城区广富林路1000弄1000号1000室上海市松江区1000室</p>
+							$("#dwei").html("<div>收货人："+ val.consignee +"<span>"+ val.phone +"</span></div><p>"+ val.address +"</p>");
+							
+                            $("#address").val(val.address);
+							$("#consignee").val(" 收货人: "+val.consignee);
+							$("#phone").val(val.phone);
+							defaultstr='<div class="diz" style="color:#c4a582" phone='+val.phone+' consignee='+val.consignee+'  onclick="changeChoseAddress(this)">'+val.address+'</div>';
+						 }else{
+						    strAddress=strAddress+'<div class="diz" phone='+val.phone+' consignee='+val.consignee+' onclick="changeChoseAddress(this)">'+val.address+'</div>';
+							var curAddress=$("#address").val().replace("地址:","");
+							
+							if(curAddress==""){
+								$("#province").val(val.province);
+								$("#city").val(val.city);
+								$("#area").val(val.area);
+								//储存到隐藏文本
+								$("#address").val(val.address);
+								$("#consignee").val(" 收货人: "+val.consignee);
+								$("#phone").val(val.phone);
+								
+								$("#dwei").html("<div>收货人："+ val.consignee +"<span>"+ val.phone +"</span></div><p>"+ val.address +"</p>");
+							}
+
+						 }
+					});
+					$("#psz").after(defaultstr+strAddress);
+				}  
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//刷新页面					
+	        mui.alert("获取用户地址错误"); 
+	      } 
+	});
+}
+
+//确认订单页面的商品列表,满减金额,酒币,配送费
+function confirmOrderGoods(){
+	var cartItems=$("#cartItems").val();
+	var TOKEN=$("#token").val();
+	var url=path+"app/purchase/confirmOrderGoods";
+	var tt=url;
+	//var url="http://127.0.0.1:8087/app/purchase/confirmOrderGoods";
+	//后台请求
+	$.ajax({
+		url:url,
+		type: "POST",
+		data:{TOKEN:TOKEN,cartItems:cartItems},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+			//刷新页面					
+				var result=data.result;
+				if(result!=null){
+				     $("#freight").html("￥"+result.payForDeliver);
+				    $("#discount").html("￥"+result.cut);
+					$("#jiubi").html(result.wine);
+					var jiubiCash=(Number(result.wine))/100;
+					//jiubiCash=Math.floor(jiubiCashTmp);
+					$("#jiubiCash").html("￥"+jiubiCash);
+					//绑定购买货品列表
+                    var strhtml='';
+					var fee=0;
+					var goods=result.orderGoods;
+					$.each(goods, function (index, val) {
+						//获取倒计时时间
+						var str='<div class="shuj" style="margin-bottom:1px">\
+									<div class="shuj_left" style="width:20%"><img src="'+proImg+val.image+'" alt=""></div>\
+									<div class="shuj_right" style="width:75%">\
+										<div>'+val.goodName+'</div>\
+										<p><span>￥'+val.price+'</span><a style="color:#999;font-size:1.1rem">数量:'+val.quantity+'</a></p>\
+									</div>\
+								</div>';
+						strhtml=strhtml+str;
+						fee=fee+(val.price*val.quantity);
+					});	
+					$("#tiao").after(strhtml);
+					$("#fee").html("￥"+fee);
+                    initialBingData(data);
+				}  
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			 mui.alert("加载失败"); 
+		 } 
+	});
+}
+function changeIsnee(e){
+    var tag=$(e).attr("tag");
+	//当前状态yes,改为no状态
+	if(tag==1){
+       var tag=$(e).attr("tag",0);
+	   //改变配图
+	   $($(e).find("img")[0]).attr("src","../images/qr_16.png");
+	}else{
+		var tag=$(e).attr("tag",1);
+	    $($(e).find("img")[0]).attr("src","../images/qr_15.png");
+	}
+	
+}
+
+function changeIsdikou(e){
+	var tag=$(e).attr("tag");
+	//当前状态yes,改为no状态
+	if(tag==1){
+       var tag=$(e).attr("tag",0);
+	   $($(e).find("img")[0]).attr("src","../images/qr_16.png");
+	   $("#jiubiCash").html("￥ 0");
+	}else{
+		var tag=$(e).attr("tag",1);
+		$($(e).find("img")[0]).attr("src","../images/qr_15.png");
+		 var wine=Number($("#jiubi").html());
+		//抵扣支付
+        var discount=wine/100;
+		$("#jiubiCash").html("￥"+discount);
+	}
+	//改变配图
+	
+}
+//获取用户信息
+function getUserInfo(){
+	var member=$("#member").val();
+	var TOKEN=$("#token").val();
+	var url=path+"app/member/getMemberInfoById";
+	//后台请求
+	$.ajax({
+		url:url,
+		type: "GET",
+		data:{TOKEN:TOKEN,guid:member},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+			//刷新页面					
+				var result=data.result;
+				if(result!=null){
+				     $("#member").val(result.guid);
+					 $("#phone").val(result.phone);
+				}  
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//刷新页面	
+			mui.alert("获取用户电话错误");				
+		 } 
+	});
+}
+//序列化用户订单信息
+function serlizeDataOrderInfo(){
+	var orderInfo=new Object();
+	orderInfo.address=$("#address").val();
+	orderInfo.province=$("#province").val();
+	orderInfo.city=$("#city").val();
+    orderInfo.area=$("#area").val();
+	orderInfo.member=$("#member").val();
+	orderInfo.consignee=$("#consignee").val().replace("收货人:","").trim();
+	orderInfo.phone=$("#phone").val().trim();
+	var orderInfostr=JSON.stringify(orderInfo);
+	$("#orderInfo").val(orderInfostr);
+}
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+
+
+function buyNow(){
+	var goodGuid=$("#goodGuid").val();
+	var quantity=$("#quantity").val();
+
+	var TOKEN=$("#token").val();
+	var url=path+"app/purchase/buyNow";
+	//var url="http://127.0.0.1:8087/app/purchase/buyNow";
+	//后台请求
+	$.ajax({
+		url:url,
+		type: "POST",
+		data:{TOKEN:TOKEN,goodGuid:goodGuid,quantity:quantity},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+			if (data!=null&&data.code==1) {
+			//刷新页面					
+				var result=data.result;
+				if(result!=null){
+				     $("#freight").html("￥"+result.payForDeliver);
+				    $("#discount").html("￥"+result.cut);
+					$("#jiubi").html(result.wine);
+					var jiubiCash=(Number(result.wine))/100;
+					//jiubiCash=Math.floor(jiubiCashTmp);
+					$("#jiubiCash").html("￥"+jiubiCash);
+					//绑定购买货品列表
+                    var strhtml='';
+					var fee=0;
+					var goods=result.orderGoods;
+					var strhtml='<div class="shuj" style="margin-bottom:1px">\
+									<div class="shuj_left" style="width:20%"><img src="'+proImg+goods.image+'" alt=""></div>\
+									<div class="shuj_right" style="width:75%">\
+										<div>'+goods.name+'</div>\
+										<p><span>￥'+goods.price+'</span><a style="color:#999;font-size:1.1rem">数量:'+goods.quantity+'</a></p>\
+									</div>\
+								</div>';
+					fee=fee+(goods.price*goods.quantity);
+					$("#tiao").after(strhtml);
+					$("#fee").html("￥"+fee);
+                    initialBingData(data);
+				}  
+			}else{
+				 mui.alert("抱歉该货品失效"); 
+			}
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			 mui.alert("加载失败"); 
+		 } 
+	});
+}
+
+function changeChoseAddress(e){
+    var choseAddress=$(e).html();
+	var consignee=$(e).attr("consignee");
+	var phone=$(e).attr("phone");
+	var showSendInfo='<div>收货人：'+consignee+'<span>'+phone+'</span></div>\
+		              <p>'+choseAddress+'</p>'
+	$("#dwei").html(showSendInfo);
+	//$("#address").val("地址:"+choseAddress);
+	//$("#consignee").val("收货人:"+consignee);
+	$("#address").val(choseAddress);
+	$("#consignee").val(consignee);
+	$("#phone").val(phone);
+	$("#psz img").trigger("click");
+}
+function managerAddress(e){
+	//var member=$("#member").val();
+	//var userName=$("#userName").val();
+	//var userImage=$("#userImage").val();
+	//var token=$("#token").val();
+	var urlParam=window.location.href.split("?")[1];
+	window.location.href="managerOrderAddress/adress.html?"+urlParam;
+}
+
+</script>
+<!--
+<script type="text/javascript" src="http://www.17sucai.com/preview/1/2017-01-15/LCalendar/LCalendar/js/LCalendar.js"></script>
+<link href="http://www.17sucai.com/preview/1/2017-01-15/LCalendar/LCalendar/css/LCalendar.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+       $(function(){
+		    var calendar = new LCalendar();
+			calendar.init({
+				'trigger': '#start_date', //标签id
+				'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+				'minDate': (new Date().getFullYear()-0) + '-' + 1 + '-' + 1, //最小日期
+				'maxDate': (new Date().getFullYear()+1) + '-' + 12 + '-' + 31 //最大日期
+			});
+		
+	           //var str = getFormatDate();  
+ 		      //$("#start_date").val(str);
+	   });
+         
+         
+      function getFormatDate(){    
+		    var nowDate = new Date();     
+		    var year = nowDate.getFullYear();    
+		    var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;    
+		    var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();    
+		    var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();    
+		    var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();    
+		    var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();    
+		    return year + "-" + month + "-" + date;    
+        }  
+
+		
+	</script>
+	-->
+</body>
+</html>

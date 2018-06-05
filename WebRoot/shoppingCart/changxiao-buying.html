@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png"></a>919畅销<a class="headright"><img src="../images/fl_05.png" alt=""></a></div>
+
+<ul class="fenl" id="fenlul">
+	<a href="javascript:void(0)" guid="" class="zhus" onclick="changeChose(this)">白酒</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)">红酒</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)" >洋酒</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)" >滋补品</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)" >茶礼</a>
+</ul>
+<div style="display:none" id="fenldiv"></div>
+<!--
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_28.png" alt=""></div>
+	<div class="shuj_right">
+		<div style="margin:0">茅台经典原浆</div>
+		<div class="jssj">距离抢购结束还有</div>
+		<div class="djs"><span>01</span> : <span>20</span> : <span>56</span></div>
+		<div class="djs" id="demotime">
+			<span>01</span> : <span>20</span> : <span>56</span>
+			<span class="hour">-</span> : 
+	       <span class="minute">-</span> : 
+	       <span class="second">-</span>
+		</div>
+		<p style="margin-top:0.3rem"><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a></p>
+	</div>
+</div>
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_28.png" alt=""></div>
+	<div class="shuj_right">
+		<div style="margin:0">茅台经典原浆</div>
+		<div class="jssj">距离抢购结束还有</div>
+		<div class="djs"><span>01</span> : <span>20</span> : <span>56</span></div>
+		<p style="margin-top:0.3rem"><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a></p>
+	</div>
+</div>
+-->
+<input type="hidden" id="member" value="abc" />
+<input type="hidden" id="userName" value="nick" />
+<input type="hidden" id="userImage" value="nick.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+<script type="text/javascript">
+mui.init();
+	$(document).ready(function(){ 
+		var curUrl=window.location.href;
+	    var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	    var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+	    $("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+		//初始化加载分类
+        getAllProClass();
+		//加载默认选中分类产品
+		//获取默认选中分类
+		var initGuid=getInitialProClass();
+		//加载产品
+        get919HotGoodsListByFirstClass(initGuid);
+	});
+	function getInitialProClass(){
+		var guid="";
+		$('.fenl a').each(function(){
+	　　　　  var classVal= $(this).attr("class");
+	　　　　  if(classVal=="zhus"){
+				guid=$(this).attr("guid");
+			 }
+　　     });
+        return guid;
+	}
+    function get919HotGoodsListByFirstClass(guid){
+        var url=path+"app/goods/get919HotGoodsListByFirstClass?guid="+guid;
+
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var results=data.result;
+					var strhtml = "";
+					if(results.length>0){
+						$.each(results, function (index, val) {
+                           //获取倒计时时间
+							var str='<div class="shuj"><div class="shuj_left"><img src="'+val.image+'" alt=""></div>\
+	                                   <div class="shuj_right">\
+		                                 <div style="margin:0">'+val.name+'</div>\
+		                                 <p style="margin-top:0.3rem"><span>￥'+val.price+'</span><span>销量：'+val.salenum+'</span><a href="javascript:void(0);" guid="'+val.goodGuid+'" onclick="addCart(this)" ><img src="../images/fl_24.png" alt=""></a></p>\
+	                                   </div>\
+                                     </div>';
+							strhtml=strhtml+str;
+						});
+					}	
+					console.log(strhtml);
+					//var allhtml=$("#shangpinul").html();
+					//删除原来的列表元素
+					if($(".shuj")!=null&&$(".shuj")!=undefined){
+                         $(".shuj").remove();
+					}
+				    $("#fenldiv").after(strhtml);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+		        mui.alert("获取畅销购物车列表失败");
+			}
+		});
+	}
+    //获取所有分类
+	function getAllProClass()
+	{
+		//后台请求
+		$.ajax({
+			url:path+'app/goods/getFirstGradeGoodsClass',
+			type: "GET",
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							if(index==0){
+                               str=str+'<a href="javascript:void(0);" class="zhus" onclick="changeChose(this)" guid="'+val.guid+'" id="'+val.id+'">'+val.name+'</a>';
+							}else{
+						       str=str+'<a href="javascript:void(0);" onclick="changeChose(this)" guid="'+val.guid+'" id="'+val.id+'">'+val.name+'</a>';
+					        }
+							strhtml=strhtml+str;
+						});
+					}	
+					console.log(strhtml);
+					//var allhtml=$("#shangpinul").html();
+				    $("#fenlul").html(strhtml);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			    mui.alert("获取分类失败");
+			}
+		});
+
+	}
+
+    //切换banner
+	function changeChose(e){
+        var guid=$(e).attr("guid");
+         //查询 
+		 get919HotGoodsListByFirstClass(guid);
+		 //变色
+		 var choseOne=$(".zhus");
+		 for(var k=0;k<choseOne.length;k++){
+			 $(choseOne).attr("class","");
+		 }
+		 $(e).attr("class","zhus");
+         //
+	}
+		//添加购物车
+	function addCart(e){
+	   var goodGuid=$(e).attr("guid");
+	   var member=$("#member").val();
+	   if(member=="noParam"){
+		   mui.alert("请先回首页登录");
+		   return false;
+	   }
+	   var TOKEN=$("#token").val();
+	   var url=path+"app/purchase/goodToCart";
+	   	//后台请求
+		$.ajax({
+			url:url,
+			type: "POST",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,goodGuid:goodGuid,quantity:1,prdType:0},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+			        //刷新点赞数量
+                    mui.alert("添加成功");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新点赞数量
+				mui.alert("添加失败");
+			}
+		});
+	}
+function goHomePage(){
+	window.location.href=path+"shoppingCart.html";
+}
+</script>
+</body>
+</html>

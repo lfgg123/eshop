@@ -1,0 +1,85 @@
+
+
+.sl-alert-ts{ display: block; border: #ccc dashed 2px; padding: 10px 0; position: relative; margin: 20px 0 50px 0}
+.sl-alert-ts-tag{ position: absolute; width: 220px; height: 40px; line-height: 40px; text-align: center; display: block; top:-20px; left: 360px; z-index: 10; font-size: 14px}
+.sl-fenye-panle-panlefoot{ color: #333;}
+.am-pagination{margin: 5px 0}
+.null_information{height: 120px; color: #988fd8; vertical-align: middle !important;}
+.sl-menue-active {
+    background-color: #fff;
+    color: #000 !important;
+}
+.sl-menue-normal{  }
+
+
+
+/*===============菜单栏叠加样式==============*/
+
+.admin-main{ background: #3448A1;}
+.am-list {
+	padding : 8px 3px 5px 5px;
+}
+.am-list>li{ 
+	 background-color: #3448A1 !important; border:none;
+	 filter:alpha(opacity=80);  
+      -moz-opacity:0.8;  
+      -khtml-opacity: 0.8;  
+      opacity: 0.8;  
+      font-size:1.5rem;
+}
+.admin-sidebar-list li a{ color: #fff;}
+.admin-sidebar-sub li:first-child {
+    border-top: none;
+}
+.admin-sidebar-sub li a{ color: #fff}
+
+.admin-sidebar-sub li{ padding-left:20px;}
+.admin-sidebar-list a span { padding-right: 10px;}/*
+.am-topbar-inverse{ background-color: #3dbccf; color: #fff}*/
+.am-topbar-brand{ /*height: 80px; line-height: 80px; font-size: 2.5rem; */padding: 0 25px}
+/*.admin-main{padding-top: 81px;}
+.am-topbar-btn{ margin-top:20px }
+
+.am-topbar-right{
+	margin-top: 20px;
+}
+.am-btn-success{color: #3dbccf;
+    background-color: #fff;
+    border: none;}
+.am-btn-success:focus, .am-btn-success:hover{
+	background-color:#eeeeee;
+}
+.am-btn-success.am-active, .am-btn-success:active, .am-btn-success:focus, .am-btn-success:hover, .am-dropdown.am-active .am-btn-success.am-dropdown-toggle{ border: none; color: #3dbccf}*/
+/*=====================右边叠加样式========================*/
+.admin-content{background:#f3f7fd;}
+.sula-right-title{ background-color: #fff; height: 120px;padding: 20px 2%;line-height: 80px;}
+.sula-right-content{ width: 96%; margin: 20px auto; background-color: #fff; padding:30px 10px; border-radius:10px}
+.title-text{ font-size: 2.0rem}
+.am-btn-sula {color: #9fadd7; background-color: #ebf0ff; border-color: #c7d6f4;}
+.am-btn-sula:focus, .am-btn-sula:hover {
+   color: #8ea0d3;border-color: #c7d6f4;
+}
+.am-btn-romantic{color: #fff; background-color: #988fd8; border-color: #988fd8; }
+.am-btn-romantic:focus, .am-btn-romantic:hover {
+   background-color: #9289ca;border-color: #9289ca; color: #fff
+}
+.sula-right-content thead tr{ background-color:#fafbfe }
+.am-table-hover > tbody > tr:hover > td, .am-table-hover > tbody > tr:hover > th {
+    background-color: #eff1f9;
+}
+.am-table-striped>tbody>tr:nth-child(odd)>td, .am-table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #e9ebf4;
+}
+.am-panel-footer{ background-color: #fafbfe; border-top: #eef1fa solid 1px}
+table{ border-color:#eef1fa }
+.am-table>tbody>tr>td, .am-table>tbody>tr>th, .am-table>tfoot>tr>td, .am-table>tfoot>tr>th, .am-table>thead>tr>td, .am-table>thead>tr>th {
+    border-top: 1px solid #eef1fa;
+}
+
+
+
+
+::-webkit-scrollbar  
+{  
+    width: 2px;  
+}

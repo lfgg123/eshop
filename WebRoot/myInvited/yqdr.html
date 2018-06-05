@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/icheck.js"></script>
+	 <script type="text/javascript" src="../js/path.js?a=22"></script>
+</head>
+<body>
+<input type="hidden" id="userName" value="testnick"/>
+<input type="hidden" id="userImage" value="testnick.jpg"/>
+<input type="hidden" id="token" value="abfefregrec"/>
+<input type="hidden" id="member" value="abc"/>
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);"  onclick="goback()"><img src="../images/fl_03.png" alt=""></a>邀请的人<!-- <a class="headright">确定</a> --></div>
+<!--
+<div class="wdyqs">572929493</div>
+<div class="wdyqs">4835820423</div>
+<div class="wdyqs">53805030</div>
+-->
+<script type="text/javascript" >
+ mui.init();
+$(document).ready(function(){
+
+	var curUrl=window.location.href;
+	var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+	userName=decodeURI(userName);
+	var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+	userImage=decodeURI(userImage);
+	var member=curUrl.split('?')[1].split('&')[0].replace("member=","");	
+	var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+	$("#member").val(member);
+	$("#userName").val(userName);
+	$("#userImage").val(userImage);
+	$("#token").val(token);
+	getupCode();
+});
+
+function getupCode(){
+	var TOKEN=$("#token").val();
+			//后台请求
+	$.ajax({
+		url:path+'app/purchase/inviteMemberList',
+		type: "GET",
+		data:{TOKEN:TOKEN},
+		dataType: "JSON",
+		cache: false,
+		async: false,
+		success: function (data) {
+            var results=data.result;
+			var strhtml="";
+			if(results.length>0){
+				$.each(results, function (index, val) {
+					//获取倒计时时间
+					var str='<div class="wdyqs">'+val.up_code+'</div>';
+					strhtml=strhtml+str;
+				});
+			}
+			$("#header").after(strhtml);
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+			mui.alert("加载数据失败");
+		}
+	});
+}
+ function goback(){
+	 window.location.href="wdyq.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token;
+ }
+</script>
+</body>
+</html>

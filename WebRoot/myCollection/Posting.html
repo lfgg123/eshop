@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<link href="../css/green.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/path.js?a=222"></script>
+
+</head>
+<body style="background:#fff">
+
+<div class="header"><a class="headleft" href="javascript:void(0)" onclick="cancelpost()">取消</a>私人订制-评论<a class="headright" href="javascript:void(0)" onclick="submitpost()">确定</a></div>
+<!--<div class="srbt"><input type="text" placeholder="请输入标题" /></div>-->
+<textarea name="" id="" cols="30" rows="10" placeholder="请输入评论内容" id="pcontent" class="tznr"></textarea>
+
+<!--<div class="jiat" onclick="imgepost()">
+	<img src="../images/jt_03.png" alt="">
+	
+</div>-->
+
+
+<input id="bbsId" type="hidden"  value=0/>
+<input id="member" type="hidden" value=34 />
+<input id="userName" type="hidden" value="testnick" />
+<input id="userImage" type="hidden" value="testnick.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script type="text/javascript" src="../js/icheck.js"></script> 
+
+<script type="text/javascript" >
+ $(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var param=curUrl.split('?')[1];
+		var member=param.split('&')[0].replace("member=","");
+		var userName=param.split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=param.split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var bbsId=param.split('&')[3].replace("bbsId=","");
+		var token=param.split('&')[4].replace("token=","");
+		$("#bbsId").val(bbsId);
+		$("#member").val(member);
+		$("#userName").val(encodeURI(userName));
+		$("#userImage").val(encodeURI(userImage));
+		$("#token").val(token);
+
+	});
+
+	function cancelpost(){
+		var member=$("#member").val();
+		var userName=$("#userName").val();
+		var userImage=$("#userImage").val();
+		var token=$("#token").val();
+		var bbsId=$("#bbsId").val();
+        window.location.href="article-details.html?member="+member+"&userName="+encodeURI(userName)+"&userImage="+encodeURI(userImage)+"&token="+token+"&bbsId="+bbsId;
+	}
+    function submitpost(){
+        var url=path+"app/systemconfig/replyBbs";
+		var content=$("#pcontent").val();
+		var bbsId=$("#bbsId").val();
+		var TOKEN=$("#token").val();
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			data:{TOKEN:TOKEN,bbsId:bbsId,content:content},
+			dataType: "JSON",
+			cache: false,
+			async: false,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+				   //alert("提交成功");
+				   mui.alert("提交成功");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+							
+				//alert("提交成功");
+				mui.alert("提交失败");
+			}
+		});
+
+	}
+
+</script>
+</body>
+</html>

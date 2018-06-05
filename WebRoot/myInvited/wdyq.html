@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+    <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/swiper.js"></script>
+    <script type="text/javascript" src="../js/icheck.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);"  onclick="goback()"><img src="../images/fl_03.png" alt=""></a>我的邀请<!-- <a class="headright">确定</a> --></div>
+
+<div class="wdyq" id="wdyq" onclick="goMyinvent(this)">获取我的邀请码</div>
+<div class="wdyq" id="mywd" onclick="goMyinvent(this)">查看我的邀请</div>
+<!--<div class="wdyq" id="jiubi" onclick="goMyinvent(this)">我的酒币</div>-->
+
+
+<input type="hidden" id="userName" value="testnick"/>
+<input type="hidden" id="userImage" value="testnick.jpg"/>
+<input type="hidden" id="token" value="abfefregrec"/>
+<input type="hidden" id="member" value="abc"/>
+
+<script type="text/javascript">
+ mui.init();
+    $(document).ready(function(){
+ 
+        var curUrl=window.location.href;
+        var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+        var member=curUrl.split('?')[1].split('&')[0].replace("member=","");	
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+        $("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+    });
+ function goMyinvent(e){
+	 /*
+	var member=$("#member").val();
+	if(member=="noParam"){
+        mui.alert("请先回首页登录");
+		return false;
+	}
+	*/
+    var id=$(e).attr("id");
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+	if(id=="wdyq"){
+        window.location.href="yqm.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token;
+	}else if(id="mywd"){
+        window.location.href="yqdr.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token;
+	}else{
+       window.location.href="myjiubi.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token;
+	}
+ }
+
+ function goback(){
+	 window.location.href=path+"myself.html";
+ }
+</script>
+</body>
+</html>

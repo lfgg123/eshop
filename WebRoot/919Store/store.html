@@ -1,0 +1,97 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	 <!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/WeixinApi.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header" id="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()" id="headleft"><img src="../images/fl_03.png" alt=""></a>919门店<!-- <a class="headright">确定</a> --></div>
+
+<!--
+<div class="store">
+	<div><img src="../images/store_02.png" alt=""></div>
+	<p style="font-size:1.4rem">江学店</p>
+	<p>上海市松江区松江路1388号东明国际商城1层</p>
+</div>
+-->
+<input type="hidden" id="member" val='abc' />			
+<input type="hidden" id="userName" val="nick" />
+<input type="hidden" id="userImage" val="nick.jpg" />
+<input type="hidden"  id="token" value="XXyiewiowurwhfioe"/>
+
+<script type="text/javascript" >
+
+mui.init();
+     $(document).ready(function(){ 
+		var curUrl=window.location.href;
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+		$("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+        getNonStoreList();
+	});
+
+	function getNonStoreList(){
+		var strhtml="";
+		var TOKEN=$("#token").val();
+		$.ajax({
+			url:path+'app/systemconfig/get919StoreList',
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN},
+			cache: false,
+			async: false,
+			success: function (data) {
+				if(data!=null&&data.code==1){
+				    //window.location.href='data.html?member='+member+'&userName='+userName+'&userImage='+userImage;
+					var result=data.result;
+					if(result!=null&&result.length>0){
+						$.each(result, function (index, val) {
+							var str='<div class="store">\
+										<div><img src="'+storeImg+val.image+'" alt=""></div>\
+										<p style="font-size:1.4rem">'+val.name+'</p>\
+										<p>'+val.address+'</p>\
+										<p>负责人:'+val.fzr+'- 联系电话:'+val.phone+'</p>\
+									</div>';
+							strhtml=strhtml+str;
+						});
+					}
+					if($(".store")!=null&&$(".store")!=undefined){
+                        $(".store").remove();
+					}
+					$("#header").after(strhtml);
+				}else{
+					mui.alert("加载失败");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				mui.alert("加载失败");
+			}
+		});
+	}
+function goHomePage(){
+	window.location.href=path+"myself.html";
+}
+</script>
+</body>
+</html>

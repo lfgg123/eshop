@@ -1,0 +1,204 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	 	<link href="../css/green.css" type="text/css" rel="stylesheet" />  -->
+		 <link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/path.js?a=222"></script>
+
+</head>
+<body>
+
+<div class="header"><a class="headleft" onclick="goback()"><img src="../images/fl_03.png" alt=""></a>申请售后<!-- <a class="headright">确定</a> --></div>
+
+
+<div class="zyg" style="background:#fff;margin-top:0.5rem">
+	<div class="zyg_left"><img id="goodImage" src="../images/fl_21.png" alt=""></div>
+	<div class="zyg_right">
+		<div id="goodName">茅台品牌经典原浆</div>
+		<p style="color:#f12222" id="price">￥1000</p>
+	</div>
+</div>
+<div class="sppf">售后需求</div>
+<div class="htkf"><a href="javascript:void(0);" onclick="submitpost(this)" id="change">换货</a><a onclick="submitpost(this)" href="javascript:void(0);" id="back">退货</a><a href="tel:18516282864"><img src="../images/kf_03.png" alt=""> 联系客服</a></div>
+<div class="sppf">问题描述</div>
+<textarea name="" id="resion" cols="30" rows="10" placeholder="请您在此描述问题" class="tznr" style="background:#fff"></textarea>
+<div class="jiat" style="background:#fff">
+	<input type="file"  accept="image/*" name="img" style="display:none;" class="inputxt" id="img" tag="yes" onchange="getImgURL(this)" />
+	<img src="../images/jt_03.png" alt="" onclick="triggerFile()" id="choseImg">
+</div>
+
+
+<input id="member" type="hidden" value="" />
+<input id="userName" type="hidden" value=""/>
+<input id="userImage" type="hidden" value="" />
+<input id="goodGuid" type="hidden" value="" />
+<input id="quantity" type="hidden" value=0/>
+<input id="sn" type="hidden" value='' />
+<input type="hidden"  id="token" value=""/>
+<!--<input id="price" type="hidden" value=324 />
+<input id="goodName" type="hidden" value="茅台测试" />
+<input id="goodImage" type="hidden" value="goodImage.jpg" />-->
+<!-- <script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>-->
+<script type="text/javascript" >
+   $(document).ready(function(){
+		var curUrl=window.location.href;
+        var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	   var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+	    userName=decodeURI(userName);
+	    var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+        $("#member").val(member);
+		$("#userName").val(decodeURI(userName));
+		$("#userImage").val(decodeURI(userImage));
+		$("#token").val(token);
+	    //var goodGuid=curUrl.split('?')[1].split('&')[3].replace("goodGuid=","");
+		//var quantity=curUrl.split('?')[1].split('&')[4].replace("quantity=","");
+		//var sn=curUrl.split('?')[1].split('&')[5].replace("sn=","");
+		//var fee=curUrl.split('?')[1].split('&')[6].replace("fee=","");
+		var showInfos=curUrl.split('?')[1].split('&')[4].replace("showInfos=","");
+		showInfos=decodeURI(showInfos);
+		var data=JSON.parse(showInfos);
+
+		$("#goodGuid").val(data.goodGuid);
+		$("#quantity").val(data.quantity);
+		$("#sn").val(data.sn);
+
+		$("#price").html("￥"+data.price);
+		$("#goodName").html(data.name);
+		$("#goodImage").attr("src",proImg+data.image);
+		//
+		
+	});
+    mui.init();
+	function triggerFile(){
+        $("#img").trigger("click");	
+	}
+function getImgURL(node) {    
+    var imgURL = "";      
+    try{     
+        var file = null;  
+        if(node.files && node.files[0] ){  
+            file = node.files[0];   
+        }else if(node.files && node.files.item(0)) {                                  
+            file = node.files.item(0);     
+        }     
+        //Firefox 因安全性问题已无法直接通过input[file].value 获取完整的文件路径  
+        try{  
+            //Firefox7.0   
+            imgURL =  file.getAsDataURL();    
+            //alert("//Firefox7.0"+imgRUL);                           
+        }catch(e){  
+            //Firefox8.0以上                                
+            imgRUL = window.URL.createObjectURL(file);  
+            //alert("//Firefox8.0以上"+imgRUL);  
+        }  
+     }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常                   
+        //支持html5的浏览器,比如高版本的firefox、chrome、ie10  
+        if (node.files && node.files[0]) {                            
+            var reader = new FileReader();   
+            reader.onload = function (e) {                                        
+                imgURL = e.target.result;    
+            };  
+            reader.readAsDataURL(node.files[0]);   
+        }    
+     }  
+    //imgurl = imgURL;  
+	var id=$(node).attr("id");
+    creatImg(imgRUL,id);  
+    return imgURL;  
+}  
+         
+function creatImg(imgRUL,id){   //根据指定URL创建一个Img对象  
+    var textHtml = "<img class='imgUrl' onclick='delImge(this)' width=50px height=120px tag='"+id+"' src='"+imgRUL+"'/>";  
+    $("#choseImg").after(textHtml);
+    $(id).attr("tag","no");
+} 
+
+function delImge(e){
+    var imgeId=$(e).attr("tag");
+	$(imgeId).attr("tag","yes");
+	var file=document.getElementById(imgeId);
+	//IE，Safari，chrome
+	if(file.outerHTML){
+		file.outerHTML=file.outerHTML;
+	}
+	else{      //FF
+		file.value="";
+	}
+	$(e).remove();
+}
+//展现货品
+
+//提交
+function submitpost(e){
+	//var data=new object();
+	var goodGuid=$("#goodGuid").val();
+	if(goodGuid==""||goodGuid==null){
+		mui.alert("goodGuid货品编号失效，联系客服");
+	}
+	var quantity=$("#quantity").val();
+	var sn=$("#sn").val();
+	var TOKEN=$("#token").val();
+
+	var price=Number($("#price").html().replace("￥",""));
+	var resion=$("#resion").val();
+	//
+	var typeId=$(e).attr("id");
+	var type;
+	if(typeId=="change"){//换货
+       type=1;
+	}else if(typeId=="back"){//退货
+       type=2;
+	}
+
+	var data={
+		sn:sn,
+		type:type,
+		goodGuid:goodGuid,
+		quantity:quantity,
+		price:price,
+		resion:resion,
+		TOKEN:TOKEN
+	}
+
+	$.ajaxFileUpload({
+			//url:path+"app/order/saveOrderReturn", 
+			url:path+"app/order/saveOrderReturn",        //这里是关键，这里地址必须和必须和本地地址一样，不然违反同源策略，  这样写的url:"http://www.baidu.com/mobilechat"是不行的。如果确实需要跨域提交，需要加一个中间层。
+			secureuri:false,
+			fileElementId:['img'],
+			//fileElementId:img,
+			data:data,//参数这里不能这样写$('.registerform').serialize(), 因为我传递的是JSON格式的数据。$('#form1').serialize()传递的参数不是这样的格式。                       //文件选择框的id属性
+			dataType: 'json',                            //服务器返回的格式，可以是json
+			success:function(data,status){
+				mui.alert("提交完成");
+				//alert("提交完成");
+				//返回订单页
+				setTimeout("goback()",1700);
+			},
+			error: function (data, status, e)//服务器响应失败处理函数
+			{
+				alert("提交失败,请联系客服");
+			}
+	});
+}
+function goback(){
+	var member=$("#member").val();
+	var userName=$("#userName").val();
+	var userImage=$("#userImage").val();
+	var token=$("#token").val();
+    window.location.href='order.html?member='+member+'&userName='+encodeURI(userName)+'&userImage='+encodeURI(userImage)+"&token="+token+"&item=all"
+}
+</script>
+</body>
+</html>

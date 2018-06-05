@@ -1,0 +1,891 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery.js"></script>
+     <script type="text/javascript" src="../js/swiper.js"></script>
+	<script type="text/javascript" src="../js/fixpic.js"></script>
+	<link href="../css/popup.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/popup.js"></script>
+    <script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="search">
+	<a href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png"></a><input type="text" id="productName" placeholder="搜索商品"><a href="javascript:void(0);"><img src="../images/fl_05.png" style="margin-left:1.2rem"></a><a href="javascript:void(0);"><img src="../images/fl_07.png" style="margin-left:1.2rem"></a>
+</div>
+
+<ul class="paix">
+	<li class="zongh" id="zonghsort" >综合排序 <img style="display:none;" src="../images/fl_13.png"></li>
+	<li id="pricesort" >价格 <img style="display:none;" src="../images/fl_13.png"></li>
+	<li id="salesort" >销量 <img style="display:none;" src="../images/fl_13.png"></li>
+	<li class="shai" id='shaixuan'>筛选 <img src="../images/fl_16.png"></li>
+</ul>
+
+<div id="productList">
+	<!--<div class="shuj">
+		<div class="shuj_left" onclick='gotoDetail("fwei9765")'><img src="../images/fl_21.png" alt=""></div>
+		<div class="shuj_right">
+			<div>茅台经典原浆</div>
+			<p><span>￥1000</span><span>销量：1000</span>
+			<a><img src="../images/fl_24.png" alt=""></a>
+			</p>
+		</div>
+	</div>
+	<div class="shuj">
+		<div class="shuj_left" onclick='gotoDetail("fwei9765")'><img src="../images/fl_28.png" alt=""></div>
+		<div class="shuj_right">
+			<div>茅台经典原浆</div>
+			<p><span>￥1000</span><span>销量：1000</span>
+			<a><img src="../images/fl_24.png" alt=""></a>
+			</p>
+		</div>
+	</div>
+	<div class="shuj">
+		<div class="shuj_left" onclick='gotoDetail("fwei9765")'><img src="../images/fl_21.png" alt=""></div>
+		<div class="shuj_right">
+			<div>茅台经典原浆</div>
+			<p><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a>
+			</p>
+		</div>
+	</div>
+
+	<div class="shuj">
+		<div class="shuj_left" onclick='gotoDetail("fwei9765")'><img src="../images/fl_28.png" alt=""></div>
+		<div class="shuj_right">
+			<div>茅台经典原浆</div>
+			<p><span>￥1000</span><span>销量：1000</span>
+			<a><img src="../images/fl_24.png" alt=""></a>
+			</p>
+		</div>
+	</div>-->
+</div>
+
+<!-- 隐藏区域 -->
+<div class="bzhezhao"></div>
+<ul class="zhpx" id="zhpx">
+	<!--<li class="zhpjc" id='zhpjc' >综合评价<img src="../images/dui_03.png"></li>-->
+	<li id='zhpjc' onclick="orderById(this)">综合评价<img src="../images/dui_03.png"></li>
+	<li id='pjbest' onclick="orderById(this)">评价最好<img src="../images/dui_03.png" style="display:none;"></li>
+	<li id='newest' onclick="orderById(this)">最新商品<img src="../images/dui_03.png" style="display:none;"></li>
+</ul>
+<ul class="zhpx" id="priceUl" style="display:none;">
+	<li id='decPrice' onclick="orderById(this)">价格降序<img src="../images/dui_03.png" style="display:none;"></li>
+	<li id='ascPrice' onclick="orderById(this)">价格升序<img src="../images/dui_03.png" style="display:none;"></li>
+</ul>
+<ul class="zhpx" id="saleUl" style="display:none;">
+	<li id='decSale' onclick="orderById(this)">销量降序<img src="../images/dui_03.png" style="display:none;"></li>
+	<li id='ascSale' onclick="orderById(this)">销量升序<img src="../images/dui_03.png" style="display:none;"></li>
+</ul>
+
+<div class="screen">
+	<div class="screen_head"><span class="quxiao qxs" onclick="clearChose()" >取消</span>筛选<span class="queding" onclick="searchByConditon()">确定</span></div>
+	<ul class="sxs">
+		<li>商品 <span class="zhuse" id="shangpinli">全部<img src="../images/you_03.png"></span></li>
+		<li>品牌 <span class="zhuse" id="pinpaili">全部<img src="../images/you_03.png"></span></li>
+		<li>国家 <span class="zhuse" id="guojiali" >全部<img src="../images/you_03.png"></span></li>
+		<li class="jiage">价格 <span class="zhuse" id="jiageli">全部<img src="../images/you_03.png"></span></li>
+	</ul>
+	<div class="clear" onclick="clearChose()">清除筛选条件</div>
+</div>
+
+
+
+<div class="screens" id="shangpindiv">
+	<div class="screen_heads"><span class="quxiaos qxss" tag="shangpinli" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>商品<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id='shangpinul' tag="">
+		<li class="zhuse" onclick="changeClass(this)" parentClass="" tag="全部" >全部 <span class=""><img class="parentClassli" src="../images/dui_03.png"></span></li>
+		<!--<li>白酒 <span class="zhuse"></span></li>
+		<li>红酒 <span class="zhuse"></span></li>
+		<li>洋酒 <span class="zhuse"></span></li>
+		<li>滋补品 <span class="zhuse"></span></li>
+		<li>茶礼 <span class="zhuse"></span></li>  -->
+	</ul>
+</div>
+
+
+<div class="screens" id="pinpaidiv">
+	<div class="screen_heads"><span class="quxiaos qxss" tag="pinpaili" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>品牌<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id='pinpaiul' tag="" >
+		<li class="zhuse" onclick="changeBrand(this)" productGuid="" >全部 <span class="zhuse"><img class="productli" src="../images/dui_03.png"></span></li>
+		<!--<li>白酒 <span class="zhuse"></span></li>
+		<li>红酒 <span class="zhuse"></span></li>
+		<li>洋酒 <span class="zhuse"></span></li>
+		<li>滋补品 <span class="zhuse"></span></li>
+		<li>茶礼 <span class="zhuse"></span></li>-->
+	</ul> 
+</div>
+
+<div class="screens" id="guojiadiv">
+	<div class="screen_heads"><span class="quxiaos qxss" tag="guojiali" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>国家<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id='guojiaul' tag="">
+		<li class="zhuse" onclick="changeNation(this)" productGuid="">全部 <span class="zhuse"><img class="nationli" src="../images/dui_03.png"></span></li>
+		<!--<li>白酒 <span class="zhuse"></span></li>
+		<li>红酒 <span class="zhuse"></span></li>
+		<li>洋酒 <span class="zhuse"></span></li>
+		<li>滋补品 <span class="zhuse"></span></li>
+		<li>茶礼 <span class="zhuse"></span></li>-->
+	</ul>
+</div>
+
+<div class="screenz">
+	<div class="screen_heads"><span class="quxiaos qxsz" tag="jiageli" onclick="backmenu(this)"><img src="../images/fl_03.png"></span>价格<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" id="jiage" tag="">
+		<li class="zhuse">全部 </li>
+		<li>价格区间：<input type="text" id="priceOne" value=0> - <input type="text" id="priceTwo" value=0><span class="zhuse"><img src="../images/dui_03.png"></span></li>
+	</ul>
+</div>
+<!-- 隐藏区域 -->
+<input id="parentClass" type="hidden" value="" tmpname="全部" />
+<input id="productGuid" type="hidden"  value="" tmpname="全部"/>
+<input id="productNameSub" type="hidden"  value="" tmpname=""/>
+<input id="contionJson" type="hidden"  value="" tmpname=""/>
+<input id="choseNation" type="hidden" value="" tmpname="全部"/>
+<input id="chosePrice" type="hidden" value="" tmpname="" /> 
+
+
+<input id="member" type="hidden" value='abc' />
+<input id="userName" type="hidden" value="" />
+<input id="userImage" type="hidden" value="" />
+<input id="token" type="hidden" value="" />
+
+<input id="method" type="hidden" value="" />
+<input id="orderCondtion" type="hidden" value="" />
+<input id="iniProductGuid" type="hidden" value="" /><!--初始化三级分类查询参数记录，在搜索或者手动按照条件查询排序后会删除-->
+
+<div class="zhezhao"></div>
+
+<script type="text/javascript">
+
+//绑定数据
+  $(document).ready(function(){ 
+		var curUrl=window.location.href;
+		if(curUrl.indexOf("homePage")>0){
+			window.location.href=path+"homePage.html";
+		}
+		var member=curUrl.split('?')[1].split('&')[0].replace("member=","");  
+		var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+
+		var productGuid=curUrl.split('?')[1].split('&')[4].replace("productGuid=","");
+		var productName=curUrl.split('?')[1].split('&')[5].replace("productName=","");
+		
+		productName=decodeURI(productName);
+		$("#iniProductGuid").val(productGuid);
+
+		$("#userName").val(userName);
+		$("#token").val(token);
+		$("#member").val(member);
+		$("#userImage").val(userImage);
+		getAllProClass();
+		//初始化加载列表(先根据货品产品名称超找，再根据产品标识符查找)
+		if(productName!="noParam"){
+				goodsfindProductListByName(productName);
+				$("#productNameSub").val(productName);
+				$("#productName").val(productName);
+		}else{
+			loadDataByPro(productGuid);
+		}
+		$("#productName").on('keypress',function(e) {  
+				var keycode = e.keyCode;  
+				var productName = $(this).val();  
+				if(keycode=='13') {  
+					e.preventDefault();    
+					//请求搜索接口  
+					goodsfindProductListByName(productName);
+				}  
+		}); 
+	
+  });
+   $(function(){
+		$('.bzhezhao').hide();
+		$('#zhpx').hide();
+		//展开综合排序
+		$('#zonghsort').click(function(){
+			$('.zhpx').hide();
+            var isShow=$($("#zonghsort").find("img")[0]).css("display");
+			if(isShow=="none"){
+               //展开
+			   $('.bzhezhao').show();
+			   $('#zhpx').show();
+			   $($("#zonghsort").find("img")[0]).css("display","");
+			   $($("#pricesort").find("img")[0]).css("display","none");
+			   $($("#salesort").find("img")[0]).css("display","none");
+			}else{
+                $($("#zonghsort").find("img")[0]).css("display","none");
+				$('.bzhezhao').hide();
+			}
+			
+		});
+
+		//点击展开价格排序
+		$('#pricesort').click(function(){
+			$('.zhpx').hide();
+			var isShow=$($("#pricesort").find("img")[0]).css("display");
+			if(isShow=="none"){
+			   $('.bzhezhao').show();
+			   $('#priceUl').show();
+			   $($("#zonghsort").find("img")[0]).css("display","none");
+			   $($("#pricesort").find("img")[0]).css("display","");
+			   $($("#salesort").find("img")[0]).css("display","none");
+			}else{
+			   $($("#pricesort").find("img")[0]).css("display","none");
+			   $('.bzhezhao').hide();
+			}
+			
+		});
+		//点击展开销量排序
+		$('#salesort').click(function(){
+			$('.zhpx').hide();
+			var isShow=$($("#salesort").find("img")[0]).css("display");
+			if(isShow=="none"){
+                $('.bzhezhao').show();
+			    $('#saleUl').show();
+				$($("#zonghsort").find("img")[0]).css("display","none");
+			    $($("#pricesort").find("img")[0]).css("display","none");
+			    $($("#salesort").find("img")[0]).css("display","");
+			}else{
+                 $($("#salesort").find("img")[0]).css("display","none");
+				 $('.bzhezhao').hide();
+			}
+		});
+
+		$('.zhezhao').hide();
+		$('.screen').hide();
+		$('.shai').click(function(){
+			//获取所有分类，并打钩当前默认分类
+            ////getAllProClass();
+			$('.zhezhao').show();
+			$('.screen').show();
+		});
+
+		$('.qxs').click(function(){
+			$('.screen').hide();
+			$('.zhezhao').hide();
+		});
+
+		$('.screens').hide();
+		//展示商品类别列表
+		$('.sxs li:nth-child(1)').click(function(){
+			//$('.screens').show();
+			$("#shangpindiv").show();
+		});
+        //展示品牌列表
+		$('.sxs li:nth-child(2)').click(function(){
+			//根据分类获取品牌
+			//getGoodsByparentClassBrand();
+			////$('#pinpaidiv').show();	
+			getBrandFilterList();		
+		});
+		//展示国家列表
+		$('.sxs li:nth-child(3)').click(function(event){
+			//$('#guojiadiv').show();
+			//getGoodsByparentClassNation();
+			getCountryFilterList();
+		});
+
+		$('.qxss').click(function(){
+			$('.screens').hide();
+		});
+
+
+		$('.screenz').hide();
+		$('.jiage').click(function(){
+			$('.screenz').show();
+		});
+		$('.qxsz').click(function(){
+			$('.screenz').hide();
+		});
+
+	});
+
+	//获取所有分类
+	function getAllProClass()
+	{
+		var TOKEN=$("#token").val();
+		//后台请求
+		$.ajax({
+			url:path+'app/goods/getFirstGradeGoodsClass',
+			//url:'http://127.0.0.1:8087/app/goods/getFirstGradeGoodsClass',
+			type: "GET",
+			dataType: "JSON",
+			//data:{TOKEN:TOKEN},
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: true,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+						    var str='<li onclick="changeClass(this)" tag="'+val.name+'" parentClass='+val.guid+'>'+val.name+' <span class="zhuse"><img class="classimg" style="display:none;" src="../images/dui_03.png"></span></li>';
+							strhtml=strhtml+str;
+						});
+					}
+					var allhtml=$("#shangpinul").html();
+					console.log(allhtml+strhtml);
+					//alert(allhtml+strhtml);
+					$("#shangpinul").html(allhtml+strhtml);
+					
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//alert("加载分类失败");
+				notice('加载分类失败','提示','Ok');
+			}
+		});
+
+	}
+//获取选中酒类
+function changeClass(e){
+	//$("."+etype).attr("class",etype);
+	//$($(e).find("span")[0]).attr("class","zhuse "+etype); 
+	var allspan=$(e).parent().find("span");  
+	for(var j=0;j<allspan.length;j++){
+		$($(allspan[j]).find("img")[0]).css("display","none");
+	}
+	$($($(e).find("span")[0]).find("img")[0]).css("display","");
+	
+	//记录选中商品(种类)
+	var tmpname=$(e).attr("tag");
+	var guid=$(e).attr("parentClass");
+	$("#parentClass").val(guid);
+	$("#parentClass").attr("tmpname",tmpname);
+}
+ //选中商品品牌
+ function changeBrand(e){
+	 $(".productli").css("display","none");
+     $($(e).find("img")[0]).css("display","");
+	 //记录选中商品(种类)
+	 var tmpname=$(e).attr("tag");
+	 $("#productGuid").val($(e).attr("pid"));
+	 $("#productGuid").attr("tmpname",tmpname);
+ }
+ //选中国家
+ function changeNation(e){
+     $(".nationli").css("display","none");
+     $($(e).find("img")[0]).css("display","");
+	 //记录选中商品(种类)
+	 var tmpname=$(e).attr("tag");
+	 $("#choseNation").val($(e).attr("nid"));
+	 $("#choseNation").attr("tmpname",tmpname);
+ }
+
+//回退按钮
+function backmenu(e){
+	//获取上一级的id
+	var id=$(e).attr("tag");
+	var tmp='<img src="../images/you_03.png">';
+	//再上一级中记录选中项目
+	var tmpname="";
+	if(id=="shangpinli"){
+		tmpname=$("#parentClass").attr("tmpname");
+	}
+	if(id=="pinpaili"){
+		tmpname=$("#productGuid").attr("tmpname");
+	}
+	if(id=="guojiali"){
+		tmpname=$("#choseNation").attr("tmpname");
+	}
+	if(id=="jiageli"){
+		tmpname=$("#priceOne").val()+"-"+$("#priceTwo").val();
+		//记录价格
+		$("#chosePrice").val(tmpname);
+	}
+	tmp=tmpname+tmp;
+	$("#"+id).html(tmp);
+}
+//取消清除所选
+function clearChose(){
+	//商品种类
+    $(".classimg").css("display","none");
+    $(".parentClassli").css("display","");
+	//品牌
+    $(".cleanBrand").remove();
+    $(".productli").css("display","none");
+	//国家
+    $(".cleanNation").remove();
+	$(".nationli").css("display","none");
+	//
+	$("#parentClass").val("");
+	$("#productGuid").val("");
+	$("#choseNation").val("");
+	$("#chosePrice").val("");
+
+	$("#parentClass").attr("tmpname","");
+	$("#productGuid").attr("tmpname","");
+	$("#choseNation").attr("tmpname","");
+	$("#chosePrice").attr("tmpname","");
+
+	$("#shangpinli").html('全部 <img src="../images/you_03.png">');
+	$("#pinpaili").html('全部 <img src="../images/you_03.png">');
+	$("#guojiali").html('全部 <img src="../images/you_03.png">');
+	$("#jiageli").html('全部 <img src="../images/you_03.png">');
+}
+
+	function handleResponse(data) {
+        console.log("搜索商品");
+    }
+
+
+ //获取品牌列表
+ function getBrandFilterList(){
+	 var TOKEN=$("#token").val();
+       	//后台请求
+		$.ajax({
+			url:path+'app/goods/getBrandFilterList',
+			//url:'http://127.0.0.1:8087/app/goods/getBrandFilterList',
+			type: "GET",
+			dataType: "JSON",
+			//data:{TOKEN:TOKEN},
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				//setProductClassByParent(data);
+				setBrandFilterList(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//alert("加载品牌失败");
+				notice('加载品牌失败','提示','Ok');
+		  }
+	 });
+	 $('#pinpaidiv').show();
+ }
+  //获取国家列表
+ function getCountryFilterList(){
+	  var url=path+"app/goods/getCountryFilterList";
+	  var TOKEN=$("#token").val();
+	//var url="http://127.0.0.1:8087/app/goods/getCountryFilterList";
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			//data:{TOKEN:TOKEN},
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: true,
+			success: function (data) {
+			   setCountryFilterList(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//alert("加载国家列表失败");
+				notice('加载国家列表失败','提示','Ok');
+			}
+		});
+	 $('#guojiadiv').show();	
+ }
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	/**********************************************************************************************************/
+	//根据品牌加载产品列表(初始化)
+	function loadDataByPro(productGuid)
+	{
+		var url=path+"app/goods/getGoodsByProClass";
+		//var url="http://127.0.0.1:8087/app/goods/getGoodsByProClass";
+		var TOKEN=$("#token").val();
+		if(productGuid=="noParam")
+		{
+			//alert("货品加载出错");
+			notice('货品加载出错','提示','Ok');
+            return false;
+		}
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			//data: {TOKEN:TOKEN,proClass:productGuid},
+			data: {proClass:productGuid},
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: true,
+			success: function (data) {
+			   $("#method").val("loadDataByPro");
+			   setProductInfoList(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				$("#method").val("loadDataByPro");
+				//alert("加载失败");
+				notice('加载失败','提示','Ok');	
+			}
+		});
+	}
+	
+  //根据二级商品名称查找
+  function goodsfindProductListByName(productName){
+		var url=path+"app/goods/findProductListByName";
+		//var url="http://127.0.0.1:8087/app/goodsfindProductListByName";
+		var main=0;
+		var salesnum=0;
+		var price=0;
+		var TOKEN=$("#token").val();
+		if(productName==null||productName==undefined||productName=="")
+		{
+			//alert("请输入货品名称");
+			notice('请输入货品名称','提示','Ok');	
+            return false;
+		}
+		var orderBy=$("#orderCondtion").val();
+		if(orderBy.indexOf("main")>=0){
+           main=Number(orderBy.split(':'));
+		}else if(orderBy.indexOf("salesnum")>=0){
+           salesnum=Number(orderBy.split(':'));
+		}else if(orderBy.indexOf("price")>=0){
+           price=Number(orderBy.split(':'));
+		}
+		//后台请求
+		$.ajax({
+			url:url,
+			type: "GET",
+			//data: {TOKEN:TOKEN,productName:productName,main:main,salesnum:salesnum,price:price},
+			data: {productName:productName,main:main,salesnum:salesnum,price:price},
+			dataType: "JSON",
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							str=str+'<div class="shuj" guid="'+val.guid+'" onclick="gotoDetail(this)"><div class="shuj_left" ><img src="'+val.image+'" alt=""></div>';
+							str=str+'<div class="shuj_right">'+'<div>'+val.name+'</div>';
+							str=str+'<p><span>'+val.price+'</span><span>销量：'+val.salenum+'</span>\
+							           <!--<a href="javascript:void(0);" guid="'+val.guid+'" ><img src="../images/fl_24.png" alt=""></a>-->\
+								     </p>';
+							str=str+'</div></div>';
+							strhtml=strhtml+str;
+						})
+					}
+					$("#productList").html(strhtml)	
+				}
+				 $("#method").val("goodsfindProductListByName");
+				 $("#iniProductGuid").val(null);//擦除初始化三级分类参数
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+		        //alert("加载失败");
+				notice('加载失败','提示','Ok');	
+				$("#method").val("goodsfindProductListByName");
+				$("#iniProductGuid").val(null);//擦除初始化三级分类参数
+			}
+		});
+	}
+//设置品牌list
+function setBrandFilterList(data){
+	if (data!=null&&data.code==1) {
+		//刷新页面先刷新品牌
+		var result=data.result;
+		var flag=false;
+		var tmp1="";
+		var strhtml1 = "";
+		if(result.length>0){
+			$.each(result, function (index, val) {
+				var pid=$("#productGuid").val();
+				var choseimg='';
+				if(pid!=val.id){
+					choseimg='<img class="productli" style="display:none;" src="../images/dui_03.png">';
+				}else{
+					choseimg='<img class="productli"  src="../images/dui_03.png">';
+					flag=true;
+				}
+				var str="";
+				str=str+'<li onclick="changeBrand(this)" class="cleanBrand" tag="'+val.value+'" pid='+val.id+'>'+val.value+' <span class="zhuse">'+choseimg+'</span></li>';
+				strhtml1=strhtml1+str;
+			});
+		}
+	}
+	//刷新品牌
+	if(flag==false){
+        tmp1='<li class="zhuse" onclick="changeBrand(this)" tag="全部" pid=0 >全部 <span class="zhuse"><img class="productli" src="../images/dui_03.png"></span></li>';
+	}else{
+        tmp1='<li class="zhuse" onclick="changeBrand(this)" tag="全部" pid=0 >全部 <span class="zhuse"><img style="display:none;" class="productli" src="../images/dui_03.png"></span></li>';
+	}
+	
+	strhtml1=tmp1+strhtml1;
+	$("#pinpaiul").html(strhtml1);
+}
+//设置国家list
+function setCountryFilterList(data){
+	if (data!=null&&data.code==1) {
+		//刷新页面先刷新品牌
+		var result=data.result;
+		var strhtml2="";
+		var flag=false;
+		var tmp2;
+		if(result.length>0){
+			$.each(result, function (index, val) {
+				//判断是否已经有当前选中项
+				var nid=$("#choseNation").val();
+				var choseimg='';
+				if(nid!=val.id){
+					choseimg='<img class="nationli" style="display:none;" src="../images/dui_03.png">';
+				}else{
+					choseimg='<img class="nationli"  src="../images/dui_03.png">';
+                    flag=true;
+				}
+				var str="";
+				str=str+'<li onclick="changeNation(this)" class="cleanNation" tag="'+val.value+'" nid='+val.id+'>'+val.value+' <span class="zhuse">'+choseimg+'</span></li>';
+				strhtml2=strhtml2+str;
+			});
+		}
+	}
+	///刷新国家
+	if(flag==false){
+       tmp2='<li class="zhuse" onclick="changeNation(this)" tag="全部" nid=0 >全部 <span class="zhuse"><img class="nationli" src="../images/dui_03.png"></span></li>';
+	}else{
+       tmp2='<li class="zhuse" onclick="changeNation(this)" tag="全部" nid=0 >全部 <span class="zhuse"><img style="display:none;" class="nationli" src="../images/dui_03.png"></span></li>';
+	}
+	
+	strhtml2=tmp2+strhtml2;
+	$("#guojiaul").html(strhtml2);
+}
+//设置加载商品列表
+function setProductInfoList(data){
+	if (data!=null&&data.code==1) {
+		//刷新页面					
+		var result=data.result;
+		var strhtml = "";
+		if(result.length>0){
+			$.each(result, function (index, val) {
+				var salenum;
+				if(val.salenum==null){
+					salenum=0;
+				}else{
+					salenum=val.salenum;
+				}
+				var str="";
+				str = str+'<div class="shuj" guid="'+val.guid+'" onclick="gotoDetail(this)"><div class="shuj_left" ><img src="'+proImg+val.image+'" alt=""></div>';
+				str=str+'<div class="shuj_right">'+'<div>'+val.name+'</div>';
+				str=str+'<p><span>￥'+val.price+'</span><span>销量：'+salenum+'</span>\
+				            <!--<a href="javascript:void(0);" guid="'+val.guid+'" ><img src="../images/fl_24.png" alt=""></a>-->\
+						 </p>';
+				str=str+'</div></div>';
+				strhtml=strhtml+str;
+			})
+		}
+		$("#productList").html(strhtml);
+	}
+}
+//查询商品名称
+function searchByConditon(){
+	 //非初始化排序，去除记录的初始化条件参数
+	 $("#iniProductGuid").val(null);
+     getFilteredGoodsList(null);
+}
+
+function getFilteredGoodsList(paramJson){
+	var iniflag=false;
+	var brand=null;
+	var commodity=null;
+	var country=null;
+	var priceFrom=null;
+	var priceTo=null;
+	var TOKEN=$("#token").val();
+	var proClass=$("#iniProductGuid").val();//判断是否为初始化后排序查询
+	if(proClass!=null&&proClass!=""&&proClass!=undefined){
+	   //初始化后查询排序
+       iniflag=true;
+	}
+	var main=0;
+	var salesnum=0;
+	var price=0;
+	var param=new Object();
+	var orderBy=$("#orderCondtion").val();
+	if(orderBy.indexOf("main")>=0){
+		main=Number(orderBy.split(':')[1]);
+	}else if(orderBy.indexOf("salesnum")>=0){
+		salesnum=Number(orderBy.split(':')[1]);
+	}else if(orderBy.indexOf("price")>=0){
+		price=Number(orderBy.split(':')[1]);
+	}
+   if(paramJson!=null&&paramJson!=""&&paramJson!=undefined&&iniflag==false){//按照先前的查询条件查询
+        var obj=JSON.parse(paramJson);
+		brand=obj.brand;
+		commodity=obj.commodity;
+		country=obj.country;
+		priceFrom=Number(obj.priceFrom);
+		priceTo=Number(obj.priceTo);
+		proClass=null;
+	}else{//手动筛选条件查询
+		//proClass=null;
+        brand=$("#productGuid").val();
+		param.brand=$("#productGuid").val();
+		commodity=$("#parentClass").val();
+		param.commodity=$("#parentClass").val();
+		country=$("#choseNation").val();
+		param.country=$("#choseNation").val();
+		var chosePrice=$("#chosePrice").val();
+		if(chosePrice==""){
+           priceFrom=0;
+		   priceTo=100000
+		}else{
+           priceFrom=Number($("#chosePrice").val().split('-')[0]);
+		   param.priceFrom=priceFrom;
+		   priceTo=Number($("#chosePrice").val().split('-')[1]);
+		   param.priceTo=priceTo;
+		}
+	}
+    if(priceFrom==NaN||priceTo==NaN){
+		//alert("请填写正确的价格数字");
+		notice('请填写正确的价格数字','提示','Ok');	
+		return false;
+	}
+	//后台请求
+	$.ajax({
+		url:path+'app/goods/getFilteredGoodsList',
+		//url:'http://127.0.0.1:8087/app/goods/getFilteredGoodsList',
+		type: "GET",
+		dataType: "JSON",
+		//data:{TOKEN:TOKEN,proClass:proClass,commodity:commodity,brand:brand,country:country,priceFrom:priceFrom,priceTo:priceTo,main:main,salesnum:salesnum,price:price},
+		data:{proClass:proClass,commodity:commodity,brand:brand,country:country,priceFrom:priceFrom,priceTo:priceTo,main:main,salesnum:salesnum,price:price},
+		cache: false,
+		async: false,
+		success: function (data) {
+			//记录传值
+			setProductInfoList(data);
+			 $("#method").val("getFilteredGoodsList");
+            if(paramJson==null||paramJson==""||paramJson==undefined){
+				//记录查询条件json格式
+                var paramstr=JSON.stringify(param);
+				$("#contionJson").val(paramstr);
+			}
+			$('.screen').hide();
+			$('.zhezhao').hide();
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest.status);
+			//alert(XMLHttpRequest.readyState);
+			//alert(textStatus);
+			//记录传值
+			//alert("加载失败");
+			notice('加载失败','提示','Ok');	
+			if(paramJson==null||paramJson==""||paramJson==undefined){
+				//记录查询条件json格式
+                var paramstr=JSON.stringify(param);
+				$("#contionJson").val(paramstr);
+			}
+		}
+	});
+} 
+//排序
+
+function orderById(e){
+	$(".zongh").attr("class","");
+	var id=$(e).attr("id");
+	if(id=="zhpjc"){
+        $("#orderCondtion").val("mian:0");
+		//高亮当前排序项
+		$("#zonghsort").attr("class","zongh");
+		$($("#zonghsort").find("img")[0]).css("display","none");
+	}else if(id=="pjbest"){//评价最好
+        $("#orderCondtion").val("mian:1");
+        //高亮当前排序项
+		$("#zonghsort").attr("class","zongh");
+		$($("#zonghsort").find("img")[0]).css("display","none");
+	}else if(id=="newest"){//最新商品
+        $("#orderCondtion").val("mian:2");
+		$($("#zonghsort").find("img")[0]).css("display","none");
+       //高亮当前排序项
+		$("#zonghsort").attr("class","zongh");
+	}else if(id=="decPrice"){
+        $("#orderCondtion").val("price:-1");
+		//高亮当前排序项
+		$("#pricesort").attr("class","zongh");
+		 $($("#pricesort").find("img")[0]).css("display","none");
+	}else if(id=="ascPrice"){
+        $("#orderCondtion").val("price:1");
+		//高亮当前排序项
+		$("#pricesort").attr("class","zongh");
+		$($("#pricesort").find("img")[0]).css("display","none");
+	}else if(id=="decSale"){
+        $("#orderCondtion").val("salesnum:-2");
+		//高亮当前排序项
+		$("#salesort").attr("class","zongh");
+		$($("#salesort").find("img")[0]).css("display","none");
+	}else if(id=="ascSale"){
+        $("#orderCondtion").val("salesnum:1");
+		//高亮当前排序项
+		$("#salesort").attr("class","zongh");
+		$($("#salesort").find("img")[0]).css("display","none");
+	}
+	$($(".zhpx").find("img")).css("display","none");
+    var tmp=$(e).html()+'<img src="../images/dui_03.png">';
+	$(e).html(tmp);
+	//隐藏选项区域
+	$('.bzhezhao').hide();
+	$('.zhpx').hide();
+	//判断是哪种查询，初始化，按名称，按条件筛选 
+	var methodstr=$("#method").val();
+	if(methodstr=="loadDataByPro"){//初始化后排序
+		getFilteredGoodsList(null);
+
+	}else if(methodstr=="goodsfindProductListByName"){
+        var productName=$("#productNameSub").val();
+        goodsfindProductListByName(productName);
+
+	}else if(methodstr=="getFilteredGoodsList"){//按照先前的查询条件查询
+		var paramJson=$('#orderCondtion').val();
+        getFilteredGoodsList(paramJson);
+
+	}
+
+}
+
+function gotoDetail(e){
+	 var productGuid=$(e).attr("guid");
+     var member=$("#member").val();
+	 var userName=$("#userName").val();
+	 var userImage=$("#userImage").val();
+	 var token=$("#token").val();
+	 window.location.href="../commodity/commodity.html?member="+member+"&userName="+userName+"&userImage="+userImage+"&token="+token+"&productGuid="+productGuid;
+}
+
+function goHomePage(){
+	window.location.href=path+"homePage.html";
+}
+</script>
+</body>
+</html>

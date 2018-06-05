@@ -1,0 +1,354 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<!-- <link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<link href="../css/green.css" type="text/css" rel="stylesheet" /> -->
+	<script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/swiper.js"></script>
+	<link href="../css/mui.min.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="header"><a class="headleft" href="javascript:void(0);" onclick="goHomePage()"><img src="../images/fl_03.png"></a>限时抢购<a class="headright"><img src="../images/fl_05.png" alt=""></a></div>
+
+<ul class="fenl" id="fenlul">
+	<a href="javascript:void(0)" guid="" class="zhus" onclick="changeChose(this)">白酒</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)">红酒</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)" >洋酒</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)" >滋补品</a>
+	<a href="javascript:void(0)" guid="" onclick="changeChose(this)" >茶礼</a>
+</ul>
+<div style="display:none" id="fenldiv"></div>
+<!--
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_28.png" alt=""></div>
+	<div class="shuj_right">
+		<div style="margin:0">茅台经典原浆</div>
+		<div class="jssj">距离抢购结束还有</div>
+		<div class="djs"><span>01</span> : <span>20</span> : <span>56</span></div>
+		<div class="djs" id="demotime">
+			<span>01</span> : <span>20</span> : <span>56</span>
+			<span class="hour">-</span> : 
+	       <span class="minute">-</span> : 
+	       <span class="second">-</span>
+		</div>
+		<p style="margin-top:0.3rem"><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a></p>
+	</div>
+</div>
+<div class="shuj">
+	<div class="shuj_left"><img src="../images/fl_28.png" alt=""></div>
+	<div class="shuj_right">
+		<div style="margin:0">茅台经典原浆</div>
+		<div class="jssj">距离抢购结束还有</div>
+		<div class="djs"><span>01</span> : <span>20</span> : <span>56</span></div>
+		<p style="margin-top:0.3rem"><span>￥1000</span><span>销量：1000</span><a><img src="../images/fl_24.png" alt=""></a></p>
+	</div>
+</div>
+-->
+<input type="hidden" id="member" value="fewer"/>
+<input type="hidden" id="userName" value="testnick" />
+<input type="hidden" id="userImage" value="jkt.png"/>
+<input type="hidden" id="token" value="fewufwio" />
+
+<script type="text/javascript">
+var testdata1={"code":1,"message":"操作成功","result":[{"name":"红酒","parent":"","id":1,"modifyTime":1508910641000,"createTime":1508347113000,"guid":"ifwptiqtireptiqete","grade":1,"pic":"6ea3de83432e4b93b562461ba410879b.png"},{"name":"洋酒","parent":"","id":4,"modifyTime":1508910453000,"createTime":1508859358000,"guid":"tttttttttttttttttttttttttttttt","grade":1,"pic":"25a7db51de7a4196bf0caa79f8208700.png"},{"name":"白酒","parent":"","id":5,"modifyTime":null,"createTime":1508910425000,"guid":"ec1b53847c0348d1824f0bcead68252b","grade":1,"pic":"a3ad19fdeb334544bb1fd9f99578100d.png"}]}
+var testdata2={
+    "code": 1,
+    "message": "操作成功",
+    "result": [
+        {
+            "goodGuid": "twqtwtq",
+            "endTime": 1511440087000,
+            "isUse": 1,
+            "num": 10,
+            "goods": {
+                "name": "百年老酱台酒",
+                "id": 1,
+                "guid": "twqtwtq",
+                "createTime": 1508342898000,
+                "image": "bfd31f79118c4dd9a9baac5d40271a59.png",
+                "modifyTime": 1508342907000,
+                "remark": null,
+                "proGuid": "1",
+                "price": 1000,
+                "stock": 1000,
+                "salenum": 100,
+                "isHot": 1,
+                "isGround": 1,
+                "seoDescription": null,
+                "seoKeywords": null,
+                "seoTitle": null
+            }
+        }
+    ]
+};
+mui.init();
+	$(document).ready(function(){ 
+		var curUrl=window.location.href;
+	    var member=curUrl.split('?')[1].split('&')[0].replace("member=","");
+	    var userName=curUrl.split('?')[1].split('&')[1].replace("userName=","");
+		userName=decodeURI(userName);
+		var userImage=curUrl.split('?')[1].split('&')[2].replace("userImage=","");
+		userImage=decodeURI(userImage);
+		var token=curUrl.split('?')[1].split('&')[3].replace("token=","");
+	    $("#member").val(member);
+		$("#userName").val(userName);
+		$("#userImage").val(userImage);
+		$("#token").val(token);
+		//初始化加载分类
+        getAllProClass();
+		//加载默认选中分类产品
+		//获取默认选中分类
+		var initGuid=getInitialProClass();
+		//加载产品
+        getTimeBuyGoodsListByFirstClass(initGuid);
+		//循环遍历倒计时
+        getEachCountDown();
+	});
+	function getInitialProClass(){
+		var guid="";
+		$('.fenl a').each(function(){
+	　　　　  var classVal= $(this).attr("class");
+	　　　　  if(classVal=="zhus"){
+				guid=$(this).attr("guid");
+			}
+　　     });
+       return guid;
+	} 
+    function getTimeBuyGoodsListByFirstClass(guid){
+		//ajax同步
+		var TOKEN=$("#token").val();
+		var url=path+"app/goods/getTimeBuyGoodsListByFirstClass?guid="+guid;
+		$.ajax({
+			url:url,
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN},
+			cache: false,
+			async: false,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var results=data.result;
+					var strhtml = "";
+					if(results.length>0){
+						$.each(results, function (index, val) {
+                           //获取倒计时时间
+							var str='<div class="shuj"><div class="shuj_left"><img src="'+val.goods.image+'" alt=""></div>\
+	                                   <div class="shuj_right">\
+		                                 <div style="margin:0">'+val.goods.name+'</div>\
+		                                 <div class="jssj" id="'+val.goodGuid+'">距离抢购结束还有</div>\
+		                                 <div class="djs" djsTime="'+val.endTime+'"><span class="hour">-</span> : <span class="minute">-</span> : <span class="second">-</span></div>\
+		                                 <p style="margin-top:0.3rem"><span>￥'+val.goods.price+'</span><span>销量：'+val.goods.salenum+'</span>\
+										 <a href="javascript:void(0);" guid="'+val.goodGuid+'" onclick="addCart(this)" ><img src="../images/fl_24.png" alt=""></a></p>\
+	                                   </div>\
+                                     </div>';
+							strhtml=strhtml+str;
+						});
+					}	
+					console.log(strhtml);
+					//var allhtml=$("#shangpinul").html();
+					//删除原来的列表元素
+					if($(".shuj")!=null&&$(".shuj")!=undefined){
+                       $(".shuj").remove();
+					}
+				    $("#fenldiv").after(strhtml);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			    mui.alert("获取限时货品失败");
+			}
+		});
+	}
+    //获取所有分类
+	function getAllProClass()
+	{
+		var TOKEN=$("#token").val();
+		//后台请求
+		$.ajax({
+			url:path+'app/goods/getFirstGradeGoodsClass',
+			type: "GET",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN},
+			//dataType: "jsonp", 
+			//jsonp:"callback", //这里定义了callback的参数名称，以便服务获取callback的函数名即getMessage  
+			//jsonpCallback:"handleResponse", //这里定义了jsonp的回调函数  
+			cache: false,
+			async: false,
+			//processData: false,
+			//timeout: 2000,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+					//刷新页面					
+					var result=data.result;
+					var strhtml = "";
+					if(result.length>0){
+						$.each(result, function (index, val) {
+							var str="";
+							if(index==0){
+                               str=str+'<a href="javascript:void(0);" class="zhus" onclick="changeChose(this)" guid="'+val.guid+'" id="'+val.id+'">'+val.name+'</a>';
+							}else{
+								str=str+'<a href="javascript:void(0);" onclick="changeChose(this)" guid="'+val.guid+'" id="'+val.id+'">'+val.name+'</a>';
+							}
+							strhtml=strhtml+str;
+						});
+					}	
+					console.log(strhtml);
+					//var allhtml=$("#shangpinul").html();
+				    $("#fenlul").html(strhtml);
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+			    mui.alert("获取分类失败");
+			}
+		});
+
+	}
+	//倒计时
+	function countDown(time,e){
+		//var end_time = new Date(time).getTime(),//月份是实际月份-1
+		//sys_second = (end_time-new Date().getTime())/1000;
+		
+		//var endtime = new Date(time).getTime();//取结束日期(毫秒值)
+		var endtime=time;
+		var nowtime = new Date().getTime();  //今天的日期(毫秒值)
+		var youtime = endtime-nowtime;//还有多久(毫秒值)
+		var timer = setInterval(function(){
+			if (youtime > 0) {
+				/*sys_second -= 1;
+				var day = Math.floor((sys_second / 3600) / 24);
+				var hour = Math.floor((sys_second / 3600) % 24);
+				//var hour =Math.floor((sys_second-(day*3600*24))/3600);
+				//var hour=Math.floor(sys_second / 3600);
+				var minute = Math.floor((sys_second / 60) % 60);
+				var second = Math.floor(sys_second % 60);
+				day_elem && $(day_elem).text(day);//计算天
+				$(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+				$(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+				$(second_elem).text(second<10?"0"+second:second);// 计算秒*/
+				youtime=youtime-1000;
+			    var seconds = youtime/1000;//秒
+			    var minutes = Math.floor(seconds/60);//分
+			    var hours = Math.floor(minutes/60);//小时
+			    var days = Math.floor(hours/24);//天
+			    var CDay= days ;
+				//if day
+			    //var CHour= hours % 24;
+				var CHour=hours;
+			    var CMinute= minutes % 60;
+			    var CSecond= Math.floor(seconds%60);//"%"是取余运算，可以理解为60进一后取余数，然后只要余数。
+			    var c=new Date();
+			    var millseconds=c.getMilliseconds();
+			    var Cmillseconds=Math.floor(millseconds %100);
+			if(CSecond<10){//如果秒数为单数，则前面补零
+					CSecond="0"+CSecond;
+				}
+				if(CMinute<10){ //如果分钟数为单数，则前面补零
+					CMinute="0"+CMinute;
+				}
+				if(CHour<10){//如果小时数为单数，则前面补零
+					CHour="0"+CHour;
+				}
+				if(Cmillseconds<10) {//如果毫秒数为单数，则前面补零
+					Cmillseconds="0"+Cmillseconds;
+				}
+				if(endtime<=nowtime){
+					//$(this).html("已过期")//如果结束日期小于当前日期就提示过期啦
+					
+					$(e).find('span[class="hour"]')[0].text("N");
+					$(e).find('span[class="minute"]')[0].text("N");
+					$(e).find('span[class="second"]')[0].text("N");
+				}else{
+					$(e).find('span[class="hour"]')[0].innerText=CHour;
+					$(e).find('span[class="minute"]')[0].innerText=CMinute;
+					$(e).find('span[class="second"]')[0].innerText=CSecond;
+				}
+			} else { 
+				//$("#"+time).html("产品抢购过期");
+				$($(e).parent()).find('div[class="jssj"]')[0].innerHTML="产品抢购过期";
+				clearInterval(timer);
+			}
+
+		}, 1000);
+	}
+
+	function getEachCountDown()
+	{
+        var djs=$(".djs");
+		for(var i=0;i<djs.length;i++){
+            var endtime=$(djs[i]).attr("djsTime");
+			countDown(endtime,djs[i]);
+		}
+	}
+    //切换banner
+	function changeChose(e){
+        var guid=$(e).attr("guid");
+         //查询 
+		 getTimeBuyGoodsListByFirstClass(guid);
+		 getEachCountDown();
+		 //变色
+		 var choseOne=$(".zhus");
+		 for(var k=0;k<choseOne.length;k++){
+			 $(choseOne).attr("class","");
+		 }
+		 $(e).attr("class","zhus");
+	}
+  //添加购物车
+  function addCart(e){
+	  var goodGuid=$(e).attr("guid");
+	    var flag=$("#"+goodGuid).html();
+	   if(flag.indexOf("过期")>=0){
+		   alert("产品已过期，谢谢");
+		   return false;
+	   }
+	   /*
+	   var member=$("#member").val();
+	   if(member=="noParam"){
+		   mui.alert("请先回首页登录");
+		   return false
+	   }
+	   */
+	   var TOKEN=$("#token").val();
+	   var url=path+"app/purchase/goodToCart";
+	   	//后台请求
+		$.ajax({
+			url:url,
+			type: "POST",
+			dataType: "JSON",
+			data:{TOKEN:TOKEN,goodGuid:goodGuid,quantity:1,prdType:0},
+			cache: false,
+			async: true,
+			success: function (data) {
+				if (data!=null&&data.code==1) {
+			        //刷新点赞数量
+                    alert("添加成功");
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert(XMLHttpRequest.status);
+				//alert(XMLHttpRequest.readyState);
+				//alert(textStatus);
+				//刷新点赞数量
+				alert("添加成功");
+			}
+		});
+	}
+function goHomePage(){
+	window.location.href=path+"shoppingCart.html";
+}
+</script>
+</body>
+</html>

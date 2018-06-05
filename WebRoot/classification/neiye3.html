@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="must-revalidate,no-cache"/>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+	<title>919</title>
+	<link href="../css/style.css" type="text/css" rel="stylesheet" />
+	<link href="../css/swiper.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../js/jquery.js"></script>
+     <script type="text/javascript" src="../js/swiper.js"></script>
+	<script type="text/javascript" src="../js/path.js?a=222"></script>
+</head>
+<body>
+
+<div class="search">
+	<a href=""><img src="../images/fl_03.png"></a><input type="text" id="productName" placeholder="搜索商品"><a href=""><img src="../images/fl_05.png" style="margin-left:1.2rem"></a><a href=""><img src="../images/shuang_03.png" style="margin-left:1.2rem"></a>
+</div>
+<ul class="paix">
+	<li class="zongh">综合排序 <img src="../images/fl_13.png"></li>
+	<li>价格</li>
+	<li>销量</li>
+	<li class="shai">筛选 <img src="../images/fl_16.png"></li>
+</ul>
+
+<div id="productList">
+   <div class="jiuh">
+	<dl>
+		<dt><img src="../images/fl_28.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><img src="../images/fl_21.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><img src="../images/fl_21.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><img src="../images/fl_28.png" alt=""></dt>
+		<dd>
+			<div>茅台品牌经典原浆</div>
+			<span>销量：1000</span>
+			<p>￥1000 <a><img src="../images/fl_24.png" alt=""></a></p>
+		</dd>
+	</dl>
+</div>
+</div>
+
+<!-- 隐藏区域 -->
+<div class="bzhezhao"></div>
+<ul class="zhpx">
+	<li class="zhpjc">综合评价<img src="../images/dui_03.png"></li>
+	<li>评价最好</li>
+	<li>最新商品</li>
+</ul>
+
+<div class="screen">
+	<div class="screen_head"><span class="quxiao qxs">取消</span>筛选<span class="queding">确定</span></div>
+	<ul class="sxs">
+		<li>商品 <span class="zhuse" id="shangpinli">白酒 <img  src="../images/you_03.png"></span></li>
+		<li>品牌 <span id="pinpaili">全部 <img src="../images/you_03.png"></span></li>
+		<li>国家 <span id="guojiali">全部 <img src="../images/you_03.png"></span></li>
+		<li class="jiage">价格 <span id="jiageli">全部 <img src="../images/you_03.png"></span></li>
+	</ul>
+	<div class="clear">清除筛选条件</div>
+</div>
+
+
+<div class="screens" >
+	<div class="screen_heads"><span class="quxiaos qxss"><img src="../images/fl_03.png"></span>商品<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss" >
+		<li class="zhuse" >全部 <span class="zhuse"><img src="../images/dui_03.png"></span></li>
+		<li>茅台 <span class="zhuse"></span></li>
+		<li>五粮液 <span class="zhuse"></span></li>
+		<li>水井坊 <span class="zhuse"></span></li>
+		<li>国窖 <span class="zhuse"></span></li>
+	</ul>
+</div>
+
+
+<div class="screenz" >
+	<div class="screen_heads"><span class="quxiaos qxsz"><img src="../images/fl_03.png"></span>价格<!-- <span class="queding">确定</span> --></div>
+	<ul class="sxss">
+		<li class="zhuse">全部 </li>
+		<li>价格区间：<input type="text"> - <input type="text"><span class="zhuse"><img src="../images/dui_03.png"></span></li>
+	</ul>
+</div>
+<!-- 隐藏区域 -->
+
+
+<div class="zhezhao"></div>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/swiper.js"></script>
+<script>
+	$(function(){
+		$('.bzhezhao').hide();
+		$('.zhpx').hide();
+		$('.zongh').click(function(){
+			$('.bzhezhao').show();
+			$('.zhpx').show();
+		});
+		$('.zhpx li').click(function(){
+			$('.bzhezhao').hide();
+			$('.zhpx').hide();
+		});
+
+
+		$('.zhezhao').hide();
+		$('.screen').hide();
+		$('.shai').click(function(){
+			$('.zhezhao').show();
+			$('.screen').show();
+		});
+
+		$('.qxs').click(function(){
+			$('.screen').hide();
+			$('.zhezhao').hide();
+		});
+
+		$('.screens').hide();
+		$('.sxs li:nth-child(1)').click(function(){
+			$('.screens').show();
+		});
+
+
+		$('.qxss').click(function(){
+			$('.screens').hide();
+		});
+
+
+		$('.screenz').hide();
+		$('.jiage').click(function(){
+			$('.screenz').show();
+		});
+		$('.qxsz').click(function(){
+			$('.screenz').hide();
+		});
+
+	});
+</script>
+</body>
+</html>
